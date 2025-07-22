@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>20250725 會議討論內容大綱</title>
+    <!-- 引入 Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Font Awesome CDN (專業圖標庫) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* 引入 Inter 字體 */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden; /* 防止水平滾動條 */
+            background-color: #f8f8f8; /* 淺色背景 */
+            color: #333; /* 預設文字顏色 */
+        }
+
+        /* 每個區塊（頁面）的容器樣式 */
+        .section-container {
+            min-height: 100vh; /* 確保每個區塊至少佔據一個視窗高度 */
+            display: flex;
+            align-items: center; /* 垂直居中內容 */
+            justify-content: center; /* 水平居中內容 */
+            position: relative;
+            padding: 4rem 0; /* 垂直內邊距 */
+            overflow: hidden; /* 隱藏超出區塊的背景圖案 */
+            scroll-snap-align: start; /* 實現類似整頁滾動的效果 */
+        }
+
+        /* 內容區塊的樣式 (3D立體區塊與陰影) */
+        .content-block {
+            background-color: #ffffff; /* 白色背景 */
+            border-radius: 1.5rem; /* 圓角 */
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); /* 陰影 */
+            padding: 2.5rem; /* 內邊距 */
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out; /* 平滑過渡效果 */
+            transform-style: preserve-3d; /* 啟用3D變換 */
+            position: relative;
+            z-index: 10; /* 確保內容區塊在背景圖案之上 */
+            max-width: 90%; /* 最大寬度，響應式設計 */
+            width: 800px; /* 固定寬度，可根據需要調整 */
+            margin: 0 auto; /* 水平居中 */
+        }
+
+        /* 滑鼠指到立體區塊時的放大效果 */
+        .content-block:hover {
+            transform: scale(1.03) translateZ(10px); /* 輕微放大並向前移動，製造立體感 */
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); /* 更強的陰影 */
+        }
+
+        /* 滾動動畫的初始狀態 */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(50px); /* 初始位置向下偏移 */
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out; /* 動畫過渡 */
+        }
+        /* 滾動到視窗時的最終狀態 */
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0); /* 恢復到原始位置 */
+        }
+
+        /* 文字行滑鼠懸停效果的容器 */
+        .text-hover-container li {
+            transition: opacity 0.3s ease-out, font-weight 0.3s ease-out, color 0.3s ease-out;
+            color: #4a5568; /* 預設文字顏色 */
+        }
+        /* 當滑鼠懸停在整個容器上時，其他行文字變淡 */
+        .text-hover-container.hovered li {
+            opacity: 0.5;
+        }
+        /* 當滑鼠懸停在特定行上時，該行文字凸顯 */
+        .text-hover-container li.highlighted {
+            opacity: 1;
+            font-weight: bold;
+            color: #1a73e8; /* 凸顯顏色，例如藍色 */
+        }
+
+        /* 背景幾何圖案 */
+        .geometric-pattern {
+            position: absolute;
+            opacity: 0.1; /* 半透明 */
+            z-index: 0; /* 在內容區塊下方 */
+        }
+        .geometric-circle-1 { top: 10%; left: 5%; width: 150px; height: 150px; background-color: #a78bfa; border-radius: 50%; } /* 紫色圓形 */
+        .geometric-square-1 { bottom: 20%; right: 10%; width: 100px; height: 100px; background-color: #fca5a5; transform: rotate(45deg); border-radius: 0.5rem; } /* 紅色方形 */
+        .geometric-triangle-1 { top: 5%; right: 20%; width: 0; height: 0; border-left: 75px solid transparent; border-right: 75px solid transparent; border-bottom: 130px solid #6ee7b7; border-radius: 0.5rem; } /* 綠色三角形 */
+        .geometric-circle-2 { bottom: 5%; left: 15%; width: 200px; height: 200px; background-color: #93c5fd; border-radius: 50%; } /* 藍色圓形 */
+        .geometric-square-2 { top: 30%; left: 25%; width: 80px; height: 80px; background-color: #fcd34d; transform: rotate(-30deg); border-radius: 0.5rem; } /* 黃色方形 */
+        .geometric-circle-3 { top: 40%; right: 5%; width: 120px; height: 120px; background-color: #f9a8d4; border-radius: 50%; } /* 粉色圓形 */
+
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            .content-block {
+                padding: 1.5rem;
+                width: 95%; /* 小螢幕下佔據更多寬度 */
+            }
+            .text-6xl { font-size: 3rem; } /* 調整字體大小 */
+            .text-7xl { font-size: 3.5rem; }
+            .text-8xl { font-size: 4rem; }
+            .text-4xl { font-size: 2.5rem; }
+            .text-5xl { font-size: 3rem; }
+            .text-lg { font-size: 1rem; }
+            .text-xl { font-size: 1.125rem; }
+            .geometric-pattern { display: none; } /* 小螢幕下隱藏圖案以簡化佈局 */
+        }
+    </style>
+</head>
+<body>
+    <!-- 第一頁：整體報告標題 -->
+    <section class="section-container bg-gradient-to-br from-blue-50 to-white">
+        <div class="geometric-pattern geometric-circle-1"></div>
+        <div class="geometric-pattern geometric-square-1"></div>
+        <div class="content-block text-center animate-on-scroll">
+            <h1 class="text-7xl md:text-8xl font-extrabold text-gray-900 mb-4 leading-tight">
+                20250725 會議討論內容大綱
+            </h1>
+            <p class="text-2xl md:text-3xl text-gray-600">
+                重要事項與未來展望
+            </p>
+        </div>
+    </section>
+
+    <!-- 第二頁：組織與行政事務 -->
+    <section class="section-container">
+        <div class="geometric-pattern geometric-circle-2"></div>
+        <div class="geometric-pattern geometric-triangle-1"></div>
+        <div class="content-block animate-on-scroll">
+            <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-6 flex items-center">
+                <i class="fas fa-clipboard-list mr-4 text-blue-500"></i>
+                組織與行政事務
+            </h2>
+            <ul class="list-disc list-inside space-y-4 text-lg md:text-xl text-gray-700 text-hover-container">
+                <li>成立大會會議記錄、理監事會議記錄報內政部（網路）、申請證書
+                    <ul class="list-circle list-inside ml-6 mt-2 space-y-2">
+                        <li>副理事長、理監事當選證書</li>
+                    </ul>
+                </li>
+                <li>松村先生的日本網路平台也可以刊登新聞資訊</li>
+                <li>銀行帳戶開戶</li>
+                <li>會員資料管理、應收已收會費管理</li>
+                <li>協會財務是否也交記帳士處理
+                    <ul class="list-decimal list-inside ml-6 mt-2 space-y-2">
+                        <li>考量未來要承接政府補助</li>
+                        <li>登記為法人要財務透明公開</li>
+                        <li>不能逃漏稅、保費維持協會信譽</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- 第三頁：品牌與策略方向 -->
+    <section class="section-container bg-gradient-to-br from-white to-purple-50">
+        <div class="geometric-pattern geometric-square-2"></div>
+        <div class="geometric-pattern geometric-circle-3"></div>
+        <div class="content-block animate-on-scroll">
+            <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-6 flex items-center">
+                <i class="fas fa-lightbulb mr-4 text-purple-500"></i>
+                品牌與策略方向
+            </h2>
+            <ul class="list-disc list-inside space-y-4 text-lg md:text-xl text-gray-700 text-hover-container">
+                <li>協會Logo設計、名片設計、網站建置</li>
+                <li>聚焦協會重點工作
+                    <ul class="list-decimal list-inside ml-6 mt-2 space-y-2">
+                        <li>有助於介紹，加強人們對協會的印象</li>
+                        <li>從責任博彩切入，明確協會定位</li>
+                        <li>有助於募款論述</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- 第四頁：研究與發展 -->
+    <section class="section-container">
+        <div class="geometric-pattern geometric-circle-1"></div>
+        <div class="geometric-pattern geometric-triangle-1"></div>
+        <div class="content-block animate-on-scroll">
+            <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-6 flex items-center">
+                <i class="fas fa-flask mr-4 text-green-500"></i>
+                研究與發展
+            </h2>
+            <ul class="list-disc list-inside space-y-4 text-lg md:text-xl text-gray-700 text-hover-container">
+                <li>臺灣彩券與博彩研究中心
+                    <ul class="list-decimal list-inside ml-6 mt-2 space-y-2">
+                        <li>建議升級為「臺灣彩券與博彩研究院」or「社團法人彩券永續發展協會-彩券與博彩研究院」（品牌）</li>
+                        <li>老師為「院長」</li>
+                        <li>工作人員名片頭銜建議用不只協會秘書長或副秘書長，讓每個人都有研究院對外的職銜（有利於經營、累積個人名聲）</li>
+                    </ul>
+                </li>
+                <li>彩券租稅優惠研究案
+                    <ul class="list-decimal list-inside ml-6 mt-2 space-y-2">
+                        <li>經費來源</li>
+                        <li>後續還可做「稅式支出評估」</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- 第五頁：行銷與財務策略 -->
+    <section class="section-container bg-gradient-to-br from-blue-50 to-white">
+        <div class="geometric-pattern geometric-circle-2"></div>
+        <div class="geometric-pattern geometric-square-1"></div>
+        <div class="content-block animate-on-scroll">
+            <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-6 flex items-center">
+                <i class="fas fa-chart-line mr-4 text-red-500"></i>
+                行銷與財務策略
+            </h2>
+            <ul class="list-disc list-inside space-y-4 text-lg md:text-xl text-gray-700 text-hover-container">
+                <li>協會行銷工作
+                    <ul class="list-decimal list-inside ml-6 mt-2 space-y-2">
+                        <li>協會是組織，研究院是品牌</li>
+                        <li>強化定位與形象</li>
+                        <li>增加知名度與口碑、公信力</li>
+                        <li>內容行銷：持續的文章刊登、增加SEO曝光、影片拍攝</li>
+                        <li>FB、IG、Youtube</li>
+                    </ul>
+                </li>
+                <li>協會財務支出與擴充
+                    <ul class="list-decimal list-inside ml-6 mt-2 space-y-2">
+                        <li>會費收入只能短期支應開銷</li>
+                        <li>工作人員工作量及時間會投入更多，建議每月有一些固定酬勞</li>
+                        <li>大捐贈者模式 / 主題性籌資模式：大型機構、個人的大額贊助，支持某項議題獲得解決（善用名譽理事長、顧問）</li>
+                        <li>提供社會服務模式：協助政府解決某項議題（運動部、財政部）</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- 最後一頁：討論議題結束 -->
+    <section class="section-container bg-gradient-to-br from-gray-100 to-gray-200">
+        <div class="geometric-pattern geometric-square-2"></div>
+        <div class="geometric-pattern geometric-circle-3"></div>
+        <div class="content-block text-center animate-on-scroll">
+            <h2 class="text-6xl md:text-7xl font-extrabold text-gray-800 mb-4 leading-tight">
+                討論議題結束
+            </h2>
+            <p class="text-xl md:text-2xl text-gray-600">
+                感謝您的參與！
+            </p>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 滾動動畫 (Intersection Observer API)
+            const observerOptions = {
+                root: null, // 觀察整個視窗
+                rootMargin: '0px',
+                threshold: 0.1 // 當元素有10%進入視窗時觸發
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // 如果元素進入視窗，則添加 'is-visible' 類別來觸發動畫
+                        entry.target.classList.add('is-visible');
+                        // 如果動畫只需要觸發一次，可以在此取消觀察
+                        // observer.unobserve(entry.target);
+                    } else {
+                        // 如果元素離開視窗，可以選擇移除 'is-visible' 類別，讓元素在再次進入時重新動畫
+                        // entry.target.classList.remove('is-visible');
+                    }
+                });
+            }, observerOptions);
+
+            // 觀察所有帶有 'animate-on-scroll' 類別的元素
+            document.querySelectorAll('.animate-on-scroll').forEach(element => {
+                observer.observe(element);
+            });
+
+            // 文字行滑鼠懸停效果
+            document.querySelectorAll('.text-hover-container').forEach(container => {
+                const listItems = container.querySelectorAll('li');
+
+                // 為整個容器添加 mouseenter 和 mouseleave 事件監聽器
+                container.addEventListener('mouseenter', () => {
+                    container.classList.add('hovered'); // 標記容器為懸停狀態
+                });
+
+                container.addEventListener('mouseleave', () => {
+                    container.classList.remove('hovered'); // 移除容器懸停狀態
+                    // 重置所有列表項的樣式
+                    listItems.forEach(item => {
+                        item.classList.remove('highlighted');
+                    });
+                });
+
+                // 為每個列表項添加 mouseenter 和 mouseleave 事件監聽器
+                listItems.forEach(item => {
+                    item.addEventListener('mouseenter', () => {
+                        // 當特定列表項被懸停時，將其標記為高亮
+                        item.classList.add('highlighted');
+                    });
+                    item.addEventListener('mouseleave', () => {
+                        // 當滑鼠離開特定列表項時，移除其高亮狀態
+                        item.classList.remove('highlighted');
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

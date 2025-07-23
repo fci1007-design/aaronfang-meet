@@ -3,373 +3,283 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>20250725會議 動態報告</title>
-    
-    <!-- TailwindCSS via CDN -->
-    <script src="https://cdn.tailwindcss.com/3.4.3"></script>
-    
-    <!-- Font Awesome via CDN -->
+    <title>20250725會議大綱</title>
+    <script src="https://cdn.tailwindcss.com/3.4.1"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-    <!-- Framer Motion via CDN -->
-    <script src="https://unpkg.com/framer-motion@11.2.10/dist/framer-motion.umd.js"></script>
-
     <style>
-        /* 自定義樣式 */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap');
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background-color: #f8f9fa;
-            color: #212529;
-            overflow-x: hidden;
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f8fafc; /* Lighter Gray */
+            color: #334155; /* Slate 700 */
+            scroll-behavior: smooth;
         }
 
-        /* 讓滾動吸附到每個 section 的開頭 */
-        .scroll-container {
-            scroll-snap-type: y mandatory;
-            overflow-y: scroll;
-            height: 100vh;
+        /* 柔和幾何背景 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image:
+                radial-gradient(circle at 15% 85%, rgba(165, 209, 238, 0.15), transparent 30%),
+                radial-gradient(circle at 85% 20%, rgba(221, 190, 221, 0.15), transparent 35%),
+                radial-gradient(circle at 50% 50%, rgba(186, 230, 253, 0.1), transparent 40%);
+            background-attachment: fixed;
         }
 
-        .scroll-section {
-            scroll-snap-align: start;
-            height: 100vh;
-            width: 100vw;
-            position: relative;
+        .slide {
+            min-height: 100vh;
+            width: 100%;
             display: flex;
-            justify-content: center;
             align-items: center;
-            overflow: hidden; /* 隱藏超出的幾何圖形 */
+            justify-content: center;
+            padding: 5rem 2rem;
         }
-        
-        /* 左側導覽列樣式 */
-        .nav-link {
+
+        /* 導航方塊 3D 效果 */
+        .nav-block {
+            background-color: white;
+            color: #475569; /* Slate 600 */
+            border: 1px solid #e2e8f0; /* Slate 200 */
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
             transition: all 0.3s ease-in-out;
-            opacity: 0.5;
-            transform: scale(0.95);
+            transform: perspective(1000px) rotateX(10deg) rotateY(-15deg);
         }
 
-        .nav-link.active {
+        .nav-block.active {
+            transform: perspective(1000px) rotateX(0) rotateY(0) scale(1.15);
+            background-color: #0ea5e9; /* Sky 500 */
+            color: white;
             opacity: 1;
-            transform: scale(1.05);
-            background-color: #ffffff;
-            color: #0d6efd;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
         }
 
-        /* 3D 內容區塊 */
+        .nav-block:not(.active) {
+            opacity: 0.5;
+        }
+
+        /* 內容區塊 3D 效果 */
         .content-card {
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(0,0,0,0.05);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease-in-out;
+            border-radius: 1.5rem;
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.15);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transform: perspective(1500px) rotateY(-5deg);
+            border: 1px solid rgba(255, 255, 255, 0.9);
         }
-        
+
         .content-card:hover {
-            transform: scale(1.03);
+            transform: perspective(1500px) rotateY(0deg) scale(1.02);
+            box-shadow: 0 35px 65px -15px rgb(0 0 0 / 0.2);
         }
-        
-        /* 互動式列表項目 */
-        .interactive-list-item {
+
+        /* 文字高亮效果 */
+        .highlightable-text li {
             transition: all 0.3s ease-in-out;
             cursor: pointer;
-            position: relative;
-            padding-left: 1.5rem; /* For custom bullet */
-        }
-        
-        .interactive-list-item::before {
-            content: '●';
-            position: absolute;
-            left: 0;
-            color: #0d6efd; /* bullet color */
-            transition: all 0.3s ease-in-out;
-        }
-        
-        /* 列表容器在有項目懸停時的樣式 */
-        .list-container:hover .interactive-list-item {
-            opacity: 0.5;
-            transform: scale(0.98);
-        }
-        
-        /* 被懸停的項目樣式 */
-        .list-container .interactive-list-item:hover {
-            opacity: 1;
-            transform: scale(1.1) translateX(10px);
-            font-weight: 700;
-            color: #0d6efd;
         }
 
-        /* 幾何背景 */
-        .geo-shape {
-            position: absolute;
-            opacity: 0.1;
-            z-index: -1;
+        .highlightable-text:hover li:not(:hover) {
+            opacity: 0.4;
+            transform: translateX(-5px);
+        }
+
+        .highlightable-text li:hover {
+            opacity: 1;
+            transform: scale(1.05) translateX(5px);
+            font-weight: 700; /* Bold */
+            color: #0284c7; /* Sky 600 */
         }
     </style>
 </head>
-<body class="bg-gray-50">
+<body class="overflow-x-hidden">
 
-    <!-- 左側固定導覽列 -->
-    <nav id="side-nav" class="fixed top-0 left-0 h-screen w-64 flex flex-col justify-center items-start p-8 z-50 space-y-3">
-        <a href="#section-1" class="nav-link p-3 rounded-lg w-full font-bold text-gray-700">會務行政</a>
-        <a href="#section-2" class="nav-link p-3 rounded-lg w-full font-bold text-gray-700">財務管理</a>
-        <a href="#section-3" class="nav-link p-3 rounded-lg w-full font-bold text-gray-700">協會形象</a>
-        <a href="#section-4" class="nav-link p-3 rounded-lg w-full font-bold text-gray-700">臺灣彩券與博彩研究中心</a>
-        <a href="#section-5" class="nav-link p-3 rounded-lg w-full font-bold text-gray-700">彩券租稅優惠研究案</a>
-        <a href="#section-6" class="nav-link p-3 rounded-lg w-full font-bold text-gray-700">協會行銷工作</a>
-        <a href="#section-7" class="nav-link p-3 rounded-lg w-full font-bold text-gray-700">協會財務支出與開源</a>
-        <a href="#section-end" class="nav-link p-3 rounded-lg w-full font-bold text-gray-700">結束</a>
+    <!-- 左側導航列 -->
+    <nav id="side-nav" class="fixed top-1/2 -translate-y-1/2 left-8 z-50 hidden md:block">
+        <ul class="space-y-6">
+            <li><a href="#slide-1" data-target="slide-1" class="nav-block p-4 rounded-lg shadow-md block w-40 text-center text-lg font-bold">會務行政</a></li>
+            <li><a href="#slide-2" data-target="slide-2" class="nav-block p-4 rounded-lg shadow-md block w-40 text-center text-lg font-bold">財務管理</a></li>
+            <li><a href="#slide-3" data-target="slide-3" class="nav-block p-4 rounded-lg shadow-md block w-40 text-center text-lg font-bold">協會形象</a></li>
+            <li><a href="#slide-4" data-target="slide-4" class="nav-block p-4 rounded-lg shadow-md block w-40 text-center text-lg font-bold">臺灣彩券與博彩研究中心</a></li>
+            <li><a href="#slide-5" data-target="slide-5" class="nav-block p-4 rounded-lg shadow-md block w-40 text-center text-lg font-bold">彩券租稅優惠研究案</a></li>
+            <li><a href="#slide-6" data-target="slide-6" class="nav-block p-4 rounded-lg shadow-md block w-40 text-center text-lg font-bold">協會行銷工作</a></li>
+            <li><a href="#slide-7" data-target="slide-7" class="nav-block p-4 rounded-lg shadow-md block w-40 text-center text-lg font-bold">協會財務支出與開源</a></li>
+            <li><a href="#slide-8" data-target="slide-8" class="nav-block p-4 rounded-lg shadow-md block w-40 text-center text-lg font-bold">結束</a></li>
+        </ul>
     </nav>
 
-    <!-- 主內容滾動容器 -->
-    <div id="scroll-container" class="scroll-container">
-    
-        <!-- Section 0: 標題頁 -->
-        <section id="section-title" class="scroll-section flex-col">
-            <div class="geo-shape bg-blue-300 w-64 h-64 rounded-full -top-10 -left-20"></div>
-            <div class="geo-shape bg-yellow-300 w-80 h-80 rounded-xl bottom-0 -right-20 transform rotate-12"></div>
-            <motion.div class="text-center"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-                <h1 class="text-7xl font-extrabold text-gray-800 tracking-tight">20250725會議</h1>
-                <p class="mt-4 text-xl text-gray-500">滾動滑鼠開始瀏覽</p>
-                <i class="fa-solid fa-angles-down mt-12 text-3xl text-gray-400 animate-bounce"></i>
-            </motion.div>
+    <main>
+        <!-- Slide 0: 標題頁 -->
+        <section id="slide-0" class="slide flex-col">
+             <h1 class="text-8xl md:text-9xl font-black text-slate-700 tracking-tighter" style="text-shadow: 3px 3px 0px #e2e8f0, 6px 6px 0px #cbd5e1;">20250725會議</h1>
+             <div class="mt-12 text-2xl text-slate-500 animate-bounce">
+                <i class="fa-solid fa-angles-down"></i>
+                <span class="ml-2">向下滾動</span>
+            </div>
         </section>
 
-        <!-- Section 1: 會務行政 -->
-        <section id="section-1" class="scroll-section">
-            <div class="geo-shape bg-purple-300 w-72 h-72 rounded-lg top-10 right-10 transform -rotate-12"></div>
-            <motion.div class="content-card w-3/5 p-12 rounded-2xl"
-                initial={{ opacity: 0, y: 100 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false, amount: 0.6 }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-            >
-                <h2 class="text-4xl font-bold mb-8 text-blue-600 flex items-center"><i class="fa-solid fa-file-signature mr-4"></i>會務行政</h2>
-                <ul class="list-container space-y-4 text-xl text-gray-700">
-                    <li class="interactive-list-item">成立大會會議記錄、理監事會議記錄報內政部（網路）、申請證書</li>
-                    <li class="interactive-list-item">副理事長、理監事當選證書</li>
-                    <li class="interactive-list-item">松村先生的日本網路平台也可以刊登新聞資訊</li>
+        <!-- Slide 1: 會務行政 -->
+        <section id="slide-1" class="slide">
+            <div class="content-card w-full max-w-4xl p-8 lg:p-12">
+                <h2 class="text-4xl lg:text-5xl font-bold text-slate-800 mb-8">會務行政</h2>
+                <ul class="space-y-4 text-xl lg:text-2xl text-slate-600 highlightable-text">
+                    <li><i class="fa-solid fa-file-signature fa-fw mr-3 text-sky-500"></i>成立大會會議記錄、理監事會議記錄報內政部（網路）、申請證書</li>
+                    <li><i class="fa-solid fa-address-card fa-fw mr-3 text-sky-500"></i>副理事長、理監事當選證書</li>
+                    <li><i class="fa-solid fa-globe fa-fw mr-3 text-sky-500"></i>松村先生的日本網路平台也可以刊登新聞資訊</li>
                 </ul>
-            </motion.div>
+            </div>
         </section>
 
-        <!-- Section 2: 財務管理 -->
-        <section id="section-2" class="scroll-section">
-            <div class="geo-shape bg-green-300 w-96 h-96 rounded-full -bottom-24 -left-24"></div>
-             <motion.div class="content-card w-3/5 p-12 rounded-2xl"
-                initial={{ opacity: 0, y: 100 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false, amount: 0.6 }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-            >
-                <h2 class="text-4xl font-bold mb-8 text-green-600 flex items-center"><i class="fa-solid fa-sack-dollar mr-4"></i>財務管理</h2>
-                <ul class="list-container space-y-4 text-xl text-gray-700 mb-8">
-                    <li class="interactive-list-item">銀行帳戶開戶</li>
-                    <li class="interactive-list-item">會員資料管理、應收已收會費管理</li>
-                    <li class="interactive-list-item">協會財務是否也交記帳士處理</li>
+        <!-- Slide 2: 財務管理 -->
+        <section id="slide-2" class="slide">
+            <div class="content-card w-full max-w-4xl p-8 lg:p-12">
+                <h2 class="text-4xl lg:text-5xl font-bold text-slate-800 mb-8">財務管理</h2>
+                <ul class="space-y-4 text-xl lg:text-2xl text-slate-600 highlightable-text">
+                    <li><i class="fa-solid fa-building-columns fa-fw mr-3 text-sky-500"></i>銀行帳戶開戶</li>
+                    <li><i class="fa-solid fa-users-viewfinder fa-fw mr-3 text-sky-500"></i>會員資料管理、應收已收會費管理</li>
+                    <li><i class="fa-solid fa-calculator fa-fw mr-3 text-sky-500"></i>協會財務是否也交記帳士處理
+                        <ul class="mt-3 ml-8 space-y-3 text-lg lg:text-xl text-slate-500">
+                            <li>- 1. 考量未來要承接政府補助</li>
+                            <li>- 2. 登記為法人要財務透明公開</li>
+                            <li>- 3. 不能逃漏稅、保費維持協會信譽</li>
+                        </ul>
+                    </li>
                 </ul>
-                <div class="pl-6 border-l-4 border-green-200 list-container space-y-4 text-xl text-gray-700">
-                    <div class="flex items-start interactive-list-item"><span class="text-6xl font-black text-green-500 mr-4 -mt-2">1.</span>考量未來要承接政府補助</div>
-                    <div class="flex items-start interactive-list-item"><span class="text-6xl font-black text-green-500 mr-4 -mt-2">2.</span>登記為法人要財務透明公開</div>
-                    <div class="flex items-start interactive-list-item"><span class="text-6xl font-black text-green-500 mr-4 -mt-2">3.</span>不能逃漏稅、保費維持協會信譽</div>
-                </div>
-            </motion.div>
+            </div>
         </section>
 
-        <!-- Section 3: 協會形象 -->
-        <section id="section-3" class="scroll-section">
-            <div class="geo-shape bg-red-200 w-72 h-72 rounded-3xl bottom-10 left-10 transform rotate-12"></div>
-            <div class="geo-shape bg-sky-200 w-52 h-52 rounded-full top-10 right-10 transform -rotate-12"></div>
-            <motion.div class="content-card w-3/5 p-12 rounded-2xl"
-                initial={{ opacity: 0, y: 100 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false, amount: 0.6 }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-            >
-                <h2 class="text-4xl font-bold mb-8 text-red-600 flex items-center"><i class="fa-solid fa-gem mr-4"></i>協會形象</h2>
-                <ul class="list-container space-y-4 text-xl text-gray-700 mb-8">
-                    <li class="interactive-list-item">協會Logo設計、名片設計、網站建置</li>
-                    <li class="interactive-list-item">聚焦協會重點工作</li>
+        <!-- Slide 3: 協會形象 -->
+        <section id="slide-3" class="slide">
+            <div class="content-card w-full max-w-4xl p-8 lg:p-12">
+                <h2 class="text-4xl lg:text-5xl font-bold text-slate-800 mb-8">協會形象</h2>
+                <ul class="space-y-4 text-xl lg:text-2xl text-slate-600 highlightable-text">
+                    <li><i class="fa-solid fa-compass-drafting fa-fw mr-3 text-sky-500"></i>協會Logo設計、名片設計、網站建置</li>
+                    <li><i class="fa-solid fa-bullseye fa-fw mr-3 text-sky-500"></i>聚焦協會重點工作
+                        <ul class="mt-3 ml-8 space-y-3 text-lg lg:text-xl text-slate-500">
+                            <li>- 1. 有助於介紹，加強人們對協會的印象</li>
+                            <li>- 2. 從責任博彩切入，明確協會定位</li>
+                            <li>- 3. 有助於募款論述</li>
+                        </ul>
+                    </li>
                 </ul>
-                <div class="pl-6 border-l-4 border-red-200 list-container space-y-4 text-xl text-gray-700">
-                     <div class="flex items-start interactive-list-item"><span class="text-6xl font-black text-red-500 mr-4 -mt-2">1.</span>有助於介紹，加強人們對協會的印象</div>
-                     <div class="flex items-start interactive-list-item"><span class="text-6xl font-black text-red-500 mr-4 -mt-2">2.</span>從責任博彩切入，明確協會定位</div>
-                     <div class="flex items-start interactive-list-item"><span class="text-6xl font-black text-red-500 mr-4 -mt-2">3.</span>有助於募款論述</div>
-                </div>
-            </motion.div>
+            </div>
         </section>
 
-        <!-- Section 4: 臺灣彩券與博彩研究中心 -->
-        <section id="section-4" class="scroll-section">
-            <div class="geo-shape bg-indigo-200 w-96 h-48 rounded-t-full top-0 left-1/4 transform"></div>
-            <motion.div class="content-card w-3/5 p-12 rounded-2xl"
-                 initial={{ opacity: 0, y: 100 }}
-                 whileInView={{ opacity: 1, y: 0 }}
-                 viewport={{ once: false, amount: 0.6 }}
-                 transition={{ duration: 0.6, ease: "easeOut" }}
-            >
-                <h2 class="text-4xl font-bold mb-8 text-indigo-600 flex items-center"><i class="fa-solid fa-building-columns mr-4"></i>臺灣彩券與博彩研究中心</h2>
-                <ul class="list-container space-y-4 text-xl text-gray-700">
-                    <li class="interactive-list-item">建議升級為「臺灣彩券與博彩研究院」or「社團法人彩券永續發展協會-彩券與博彩研究院」（品牌）</li>
-                    <li class="interactive-list-item">老師為「院長」</li>
-                    <li class="interactive-list-item">工作人員名片頭銜建議用不只協會秘書長或副秘書長，讓每個人都有研究院對外的職銜（有利於經營、累積個人名聲）</li>
+        <!-- Slide 4: 臺灣彩券與博彩研究中心 -->
+        <section id="slide-4" class="slide">
+            <div class="content-card w-full max-w-4xl p-8 lg:p-12">
+                <h2 class="text-4xl lg:text-5xl font-bold text-slate-800 mb-8">臺灣彩券與博彩研究中心</h2>
+                <ul class="space-y-4 text-xl lg:text-2xl text-slate-600 highlightable-text">
+                    <li><i class="fa-solid fa-building-flag fa-fw mr-3 text-sky-500"></i>建議升級為「臺灣彩券與博彩研究院」or「社團法人彩券永續發展協會-彩券與博彩研究院」（品牌）</li>
+                    <li><i class="fa-solid fa-user-tie fa-fw mr-3 text-sky-500"></i>老師為「院長」</li>
+                    <li><i class="fa-solid fa-id-badge fa-fw mr-3 text-sky-500"></i>工作人員名片頭銜建議用不只協會秘書長或副秘書長，讓每個人都有研究院對外的職銜（有利於經營、累積個人名聲）</li>
                 </ul>
-            </motion.div>
+            </div>
         </section>
 
-        <!-- Section 5: 彩券租稅優惠研究案 -->
-        <section id="section-5" class="scroll-section">
-             <div class="geo-shape bg-orange-300 w-72 h-72 rounded-full -bottom-20 -right-20"></div>
-             <motion.div class="content-card w-3/5 p-12 rounded-2xl flex items-center space-x-12"
-                 initial={{ opacity: 0, y: 100 }}
-                 whileInView={{ opacity: 1, y: 0 }}
-                 viewport={{ once: false, amount: 0.6 }}
-                 transition={{ duration: 0.6, ease: "easeOut" }}
-             >
-                <div class="w-1/2">
-                    <h2 class="text-4xl font-bold mb-8 text-orange-600 flex items-center"><i class="fa-solid fa-magnifying-glass-dollar mr-4"></i>彩券租稅優惠研究案</h2>
-                    <ul class="list-container space-y-4 text-xl text-gray-700">
-                        <li class="interactive-list-item">經費來源</li>
-                        <li class="interactive-list-item">後續還可做「稅式支出評估」</li>
-                    </ul>
-                </div>
-                <div class="w-1/2 flex justify-center items-center">
-                    <div class="text-9xl font-black text-orange-200">
-                        1.
-                    </div>
-                </div>
-             </motion.div>
+        <!-- Slide 5: 彩券租稅優惠研究案 -->
+        <section id="slide-5" class="slide">
+            <div class="content-card w-full max-w-4xl p-8 lg:p-12">
+                <h2 class="text-4xl lg:text-5xl font-bold text-slate-800 mb-8">彩券租稅優惠研究案</h2>
+                <ul class="space-y-4 text-xl lg:text-2xl text-slate-600 highlightable-text">
+                    <li><i class="fa-solid fa-sack-dollar fa-fw mr-3 text-sky-500"></i>1. 經費來源</li>
+                    <li><i class="fa-solid fa-chart-line fa-fw mr-3 text-sky-500"></i>2. 後續還可做「稅式支出評估」</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Slide 6: 協會行銷工作 -->
+        <section id="slide-6" class="slide">
+            <div class="content-card w-full max-w-4xl p-8 lg:p-12">
+                <h2 class="text-4xl lg:text-5xl font-bold text-slate-800 mb-8">協會行銷工作</h2>
+                <ul class="space-y-4 text-xl lg:text-2xl text-slate-600 highlightable-text">
+                    <li><i class="fa-solid fa-tags fa-fw mr-3 text-sky-500"></i>1. 協會是組織，研究院是品牌</li>
+                    <li><i class="fa-solid fa-image-portrait fa-fw mr-3 text-sky-500"></i>2. 強化定位與形象</li>
+                    <li><i class="fa-solid fa-volume-high fa-fw mr-3 text-sky-500"></i>3. 增加知名度與口碑、公信力</li>
+                    <li><i class="fa-solid fa-pen-to-square fa-fw mr-3 text-sky-500"></i>4. 內容行銷：持續的文章刊登、增加SEO曝光、影片拍攝</li>
+                    <li><i class="fa-brands fa-facebook fa-fw mr-3 text-sky-500"></i>5. FB、IG、Youtube</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Slide 7: 協會財務支出與開源 -->
+        <section id="slide-7" class="slide">
+            <div class="content-card w-full max-w-4xl p-8 lg:p-12">
+                <h2 class="text-4xl lg:text-5xl font-bold text-slate-800 mb-8">協會財務支出與開源</h2>
+                <ul class="space-y-4 text-xl lg:text-2xl text-slate-600 highlightable-text">
+                    <li><i class="fa-solid fa-coins fa-fw mr-3 text-sky-500"></i>1. 會員費收入只能短期支應開銷，若永續經營勢必需要財源支持</li>
+                    <li><i class="fa-solid fa-business-time fa-fw mr-3 text-sky-500"></i>2. 工作人員工作量及時間會投入更多，建議每月有一點固定酬勞</li>
+                    <li><i class="fa-solid fa-hand-holding-dollar fa-fw mr-3 text-sky-500"></i>3. 大捐贈者模式 / 主題性籌資模式：大型機構、個人的大額贊助，支持某項議題獲得解決（善用名譽理事長、顧問）</li>
+                    <li><i class="fa-solid fa-hands-helping fa-fw mr-3 text-sky-500"></i>4. 提供社會服務模式：協助政府解決某項議題（運動部、財政部）</li>
+                </ul>
+            </div>
         </section>
         
-        <!-- Section 6: 協會行銷工作 -->
-        <section id="section-6" class="scroll-section">
-            <div class="geo-shape bg-teal-200 w-80 h-80 rounded-full top-1/2 -translate-y-1/2 left-10"></div>
-            <motion.div class="content-card w-3/5 p-12 rounded-2xl"
-                initial={{ opacity: 0, y: 100 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false, amount: 0.6 }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-            >
-                <h2 class="text-4xl font-bold mb-8 text-teal-600 flex items-center"><i class="fa-solid fa-bullhorn mr-4"></i>協會行銷工作</h2>
-                <ul class="list-container space-y-4 text-xl text-gray-700">
-                    <li class="interactive-list-item">協會是組織，研究院是品牌</li>
-                    <li class="interactive-list-item">強化定位與形象</li>
-                    <li class="interactive-list-item">增加知名度與口碑、公信力</li>
-                    <li class="interactive-list-item">內容行銷：持續的文章刊登、增加SEO曝光、影片拍攝</li>
-                    <li class="interactive-list-item">FB、IG、Youtube</li>
-                </ul>
-            </motion.div>
+        <!-- Slide 8: 結束頁 -->
+        <section id="slide-8" class="slide">
+            <div class="text-center">
+                <a href="https://www.notion.so/235fdaa20e51805cb6bdeb37643550fe?pvs=21" target="_blank" rel="noopener noreferrer" 
+                   class="text-4xl lg:text-6xl font-extrabold text-slate-700 tracking-wider hover:text-sky-600 transition-all duration-300 ease-in-out hover:scale-105 inline-block"
+                   style="text-shadow: 1px 1px 2px rgba(0,0,0,0.1);">
+                    <i class="fa-solid fa-comments mr-4"></i>
+                    討論議題結束
+                    <i class="fa-solid fa-arrow-up-right-from-square ml-4 text-3xl lg:text-5xl"></i>
+                </a>
+            </div>
         </section>
-
-        <!-- Section 7: 協會財務支出與開源 -->
-        <section id="section-7" class="scroll-section">
-            <div class="geo-shape bg-pink-200 w-72 h-72 rounded-full top-10 right-10"></div>
-            <div class="geo-shape bg-cyan-200 w-60 h-60 rounded-xl bottom-10 left-10 transform rotate-6"></div>
-            <motion.div class="content-card w-3/5 p-12 rounded-2xl"
-                initial={{ opacity: 0, y: 100 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false, amount: 0.6 }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-            >
-                <h2 class="text-4xl font-bold mb-8 text-pink-600 flex items-center"><i class="fa-solid fa-hand-holding-dollar mr-4"></i>協會財務支出與開源</h2>
-                 <ul class="list-container space-y-4 text-xl text-gray-700">
-                    <li class="interactive-list-item">會員費收入只能短期支應開銷，若永續經營勢必需要財源支持</li>
-                    <li class="interactive-list-item">工作人員工作量及時間會投入更多，建議每月有一點固定酬勞</li>
-                    <li class="interactive-list-item">大捐贈者模式 / 主題性籌資模式：大型機構、個人的大額贊助，支持某項議題獲得解決（善用名譽理事長、顧問）</li>
-                    <li class="interactive-list-item">提供社會服務模式：協助政府解決某項議題（運動部、財政部）</li>
-                </ul>
-            </motion.div>
-        </section>
-
-        <!-- Section End: 結束 -->
-        <section id="section-end" class="scroll-section">
-             <motion.div class="text-center"
-                 initial={{ opacity: 0, scale: 0.8 }}
-                 whileInView={{ opacity: 1, scale: 1 }}
-                 viewport={{ once: false, amount: 0.8 }}
-                 transition={{ duration: 0.8, ease: "easeOut" }}
-             >
-                 <a href="https://rural-houseboat-349.notion.site/20250725-235fdaa20e51805cb6bdeb37643550fe?source=copy_link" target="_blank" rel="noopener noreferrer" class="text-6xl font-extrabold text-gray-800 tracking-tight hover:text-blue-600 transition-colors duration-300">
-                     討論議題結束
-                 </a>
-                 <p class="mt-4 text-lg text-gray-500">(點擊文字前往 Notion 頁面)</p>
-             </motion.div>
-        </section>
-
-    </div>
+    </main>
 
     <script>
-        // Framer Motion 動畫初始化 (因為是 UMD 引入，所以掛載在 window.motion)
-        const { motion } = window.motion;
-
         document.addEventListener('DOMContentLoaded', () => {
-            const sections = document.querySelectorAll('.scroll-section');
-            const navLinks = document.querySelectorAll('.nav-link');
-            const scrollContainer = document.getElementById('scroll-container');
+            const navLinks = document.querySelectorAll('#side-nav a');
+            const slides = document.querySelectorAll('section[id^="slide-"]');
 
             const observerOptions = {
-                root: scrollContainer, // 使用滾動容器作為觀察根
+                root: null,
                 rootMargin: '0px',
-                threshold: 0.6 // 當 section 佔據視窗 60% 時觸發
+                threshold: 0.5 // 當 slide 佔滿畫面 50% 時觸發
             };
 
             const observer = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        const id = entry.target.getAttribute('id');
-                        const activeLink = document.querySelector(`.nav-link[href="#${id}"]`);
+                        const activeId = entry.target.id;
+                        navLinks.forEach(link => {
+                            // 跳過 slide-0，因為它沒有導航按鈕
+                            if (activeId === 'slide-0') {
+                                document.querySelector(`a[data-target="slide-1"]`).classList.remove('active');
+                                return;
+                            }
 
-                        navLinks.forEach(link => link.classList.remove('active'));
-                        if (activeLink) {
-                            activeLink.classList.add('active');
-                        }
+                            if (link.dataset.target === activeId) {
+                                link.classList.add('active');
+                            } else {
+                                link.classList.remove('active');
+                            }
+                        });
                     }
                 });
             }, observerOptions);
 
-            sections.forEach(section => {
-                observer.observe(section);
+            slides.forEach(slide => {
+                observer.observe(slide);
             });
             
-            // 初始化，高亮第一個
-            const firstLink = document.querySelector('.nav-link[href="#section-1"]');
-            if(scrollContainer.scrollTop < window.innerHeight / 2) {
-               const titleObserver = new IntersectionObserver(entries => {
-                    if(entries[0].isIntersecting) {
-                         navLinks.forEach(link => link.classList.remove('active'));
-                    }
-               }, {root: scrollContainer, threshold: 0.6});
-               titleObserver.observe(document.getElementById('section-title'));
-            }
-
-            // Framer Motion 整合
-            // Framer Motion 的 <motion.div> 會自動處理動畫，這裡的 JS 主要是處理導覽列高亮
-            // 和文字互動效果。
-            
-            // 文字互動效果 (委派事件給 list-container)
-            const listContainers = document.querySelectorAll('.list-container');
-            listContainers.forEach(container => {
-                 // 新增 class 到父容器
-                 container.addEventListener('mouseover', (e) => {
-                     if (e.target && e.target.classList.contains('interactive-list-item')) {
-                         container.classList.add('item-hovered');
-                     }
-                 });
-
-                 // 從父容器移除 class
-                 container.addEventListener('mouseout', (e) => {
-                      if (e.target && e.target.classList.contains('interactive-list-item')) {
-                         container.classList.remove('item-hovered');
-                      }
-                 });
+            // 初始狀態下，除了第一個，其他都半透明
+            navLinks.forEach((link, index) => {
+                if(index !== 0) {
+                   // link.classList.add('opacity-50');
+                } else {
+                   // link.classList.add('active');
+                }
             });
         });
-
     </script>
-
 </body>
-</html>
+</html>```

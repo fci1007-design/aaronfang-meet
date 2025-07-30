@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>20250731會議簡報</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome CDN for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* 自定義 Tailwind 配置，確保 Inter 字體可用 */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        html {
+            scroll-snap-type: y mandatory; /* 啟用垂直滾動吸附 */
+            scroll-behavior: smooth; /* 平滑滾動 */
+            font-family: 'Inter', sans-serif; /* 設定預設字體 */
+        }
+        body {
+            background-color: #f0f2f5; /* 輕微的淺灰色背景，讓抽象圖案更突出 */
+            overflow-x: hidden; /* 防止水平滾動 */
+            position: relative; /* 為了定位抽象圖案 */
+        }
+
+        /* 抽象圖案樣式 - 模仿 iOS 模糊漸變 */
+        .abstract-shape {
+            position: absolute;
+            z-index: 0;
+            opacity: 0.15; /* 輕微提高透明度，使其更明顯 */
+            filter: blur(80px); /* 更強的模糊效果 */
+            border-radius: 50%; /* 圓形或橢圓形 */
+        }
+
+        .abstract-shape-1 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle at 30% 30%, #a7d9ff, #e0f2ff); /* 淺藍到更淺藍的漸變 */
+            top: -100px;
+            left: -100px;
+            transform: rotate(15deg);
+        }
+
+        .abstract-shape-2 {
+            width: 600px;
+            height: 300px;
+            background: radial-gradient(circle at 70% 70%, #ffc4a7, #ffe0cc); /* 淺橙到更淺橙的漸變 */
+            bottom: -150px;
+            right: -150px;
+            transform: rotate(-30deg);
+        }
+
+        .abstract-shape-3 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle at 50% 50%, #a7ffc4, #e0ffe0); /* 淺綠到更淺綠的漸變 */
+            top: 40%;
+            left: 20%;
+            transform: rotate(60deg);
+        }
+
+        .abstract-shape-4 {
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle at 20% 80%, #ffb3f0, #ffe0f8); /* 淺紫到更淺紫的漸變 */
+            top: 10%;
+            right: 15%;
+            transform: rotate(90deg);
+        }
+
+        /* 導航列樣式 */
+        .nav-sidebar {
+            width: 256px; /* w-64 */
+            /* 其他樣式保持不變 */
+        }
+
+        /* 頁面容器樣式 */
+        /* 在桌面螢幕上，為頁面容器添加左邊距，以騰出導航列的空間 */
+        @media (min-width: 768px) { /* md: breakpoint */
+            #page-container {
+                margin-left: 256px; /* 與 nav-sidebar 的 w-64 寬度相同 */
+            }
+        }
+
+        /* 每個簡報頁面的樣式 */
+        .presentation-page {
+            width: 100%; /* 佔滿 page-container 的寬度 */
+            min-height: 100vh; /* 確保頁面高度至少為視窗高度 */
+            display: flex;
+            align-items: center;
+            justify-content: center; /* 內容區塊在頁面內置中 */
+            position: relative;
+            scroll-snap-align: start; /* 頁面吸附到滾動容器的開始位置 */
+            overflow: hidden; /* 隱藏超出頁面範圍的內容 */
+            padding: 2rem; /* Add some padding to pages */
+            box-sizing: border-box; /* Include padding in element's total width and height */
+        }
+
+        /* 內容區塊的基礎樣式 */
+        .content-block {
+            background-color: rgba(255, 255, 255, 0.9); /* 內容區塊半透明白色背景 */
+            padding: 2.5rem; /* p-10 */
+            border-radius: 1.5rem; /* rounded-3xl */
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); /* shadow-xl */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* 平滑過渡效果 */
+            transform-origin: center; /* 確保從中心放大 */
+            max-width: 900px; /* 設定內容區塊的最大寬度，防止過寬 */
+            width: 90%; /* 使用百分比寬度，響應式調整 */
+            max-height: 80vh; /* 內容超出時可滾動 */
+            overflow-y: auto; /* 內容超出時可滾動 */
+            position: relative; /* 確保陰影正確顯示 */
+            z-index: 10; /* 確保內容在幾何圖案之上 */
+            /* margin-left: auto; margin-right: auto; 已經由父元素的 justify-content: center 處理 */
+        }
+
+        /* 內容區塊滑鼠懸停放大效果 */
+        .content-block:hover {
+            transform: scale(1.02); /* 輕微放大 */
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 10px 15px -3px rgba(0, 0, 0, 0.1); /* 更明顯的陰影 */
+        }
+
+        /* 導航方塊的基礎樣式 */
+        .nav-block {
+            padding: 1rem 1.5rem; /* py-4 px-6 */
+            margin-bottom: 0.75rem; /* mb-3 */
+            background-color: #e0e0e0; /* 灰色背景 */
+            border-radius: 0.75rem; /* rounded-xl */
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out, background-color 0.3s ease-in-out;
+            transform-origin: left center; /* 從左側中心放大 */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1); /* 輕微陰影 */
+            opacity: 0.6; /* 預設半透明 */
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+            color: #333;
+            white-space: normal; /* 允許換行 */
+            word-break: break-word; /* 強制在單詞內換行 */
+        }
+
+        /* 導航方塊高亮時的樣式 */
+        .nav-block.active {
+            transform: scale(1.05); /* 放大 */
+            opacity: 1; /* 完全不透明 */
+            background-color: #ffffff; /* 白色背景 */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1); /* 更明顯的陰影 */
+            color: #007bff; /* 鮮明藍色 */
+        }
+
+        /* 文字高亮效果 */
+        .text-line {
+            transition: all 0.2s ease-in-out; /* 平滑過渡 */
+            display: block; /* 確保每行獨立 */
+            line-height: 1.6; /* 行高 */
+            color: #4a4a4a; /* 預設文字顏色 */
+        }
+
+        .text-line.highlighted {
+            transform: scale(1.03); /* 輕微放大 */
+            font-weight: 700; /* 粗體 */
+            color: #007bff; /* 藍色凸顯 */
+            opacity: 1; /* 完全不透明 */
+            transform-origin: left center; /* 從左側中心放大 */
+        }
+
+        .text-line.dimmed {
+            opacity: 0.4; /* 變淡 */
+        }
+
+
+        /* 響應式調整 */
+        @media (max-width: 1024px) {
+            .nav-sidebar {
+                width: 150px; /* 導航列寬度調整 */
+                padding: 1rem;
+            }
+            .nav-block {
+                padding: 0.75rem 1rem;
+                font-size: 0.875rem; /* 文字縮小 */
+            }
+            .content-block {
+                padding: 2rem;
+                max-width: 90%; /* 在中等螢幕上調整最大寬度 */
+            }
+            .first-page-title {
+                font-size: 3rem; /* 標題字體縮小 */
+            }
+        }
+
+        @media (max-width: 768px) {
+            /* 在小螢幕上，導航列會變成水平且位於內容上方，所以移除 page-container 的 margin-left */
+            #page-container {
+                margin-left: 0;
+            }
+            .nav-sidebar {
+                width: 100%;
+                height: auto;
+                position: relative; /* 不再固定，改為在內容上方 */
+                flex-direction: row; /* 水平排列 */
+                justify-content: center;
+                padding: 0.5rem;
+                margin-bottom: 1rem;
+                overflow-x: auto; /* 允許水平滾動 */
+                white-space: nowrap; /* 防止導航項換行 */
+                border-radius: 0; /* 移除圓角 */
+                box-shadow: none; /* 移除陰影 */
+            }
+            .nav-block {
+                margin-bottom: 0;
+                margin-right: 0.5rem; /* 水平間距 */
+            }
+            .presentation-page {
+                flex-direction: column; /* 內容垂直排列 */
+                padding-top: 0; /* 移除頂部填充 */
+            }
+            .content-block {
+                max-width: 95%; /* 在小螢幕上調整最大寬度 */
+                padding: 1.5rem;
+                margin-top: 1rem; /* 與導航列間距 */
+            }
+            .first-page-title {
+                font-size: 2.5rem;
+                text-align: center;
+                margin-top: 2rem;
+            }
+            /* 抽象圖案在小螢幕上可以稍微縮小或調整模糊度 */
+            .abstract-shape {
+                filter: blur(50px);
+            }
+            .abstract-shape-1 {
+                width: 300px; height: 300px;
+            }
+            .abstract-shape-2 {
+                width: 400px; height: 200px;
+            }
+            .abstract-shape-3 {
+                width: 250px; height: 250px;
+            }
+            .abstract-shape-4 {
+                width: 350px; height: 350px;
+            }
+        }
+
+        /* Modal for image display */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 100; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.8); /* Black w/ opacity */
+            align-items: center;
+            justify-content: center;
+            flex-direction: column; /* Allow content to stack */
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain; /* Ensure image fits within bounds */
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .modal-close:hover,
+        .modal-close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 2rem;
+            line-height: 1;
+            user-select: none;
+            transition: background-color 0.3s;
+        }
+
+        .modal-nav-button:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .modal-prev {
+            left: 20px;
+        }
+
+        .modal-next {
+            right: 20px;
+        }
+
+        /* Styling for horizontal image display */
+        .image-gallery {
+            display: flex;
+            flex-wrap: wrap; /* Allow images to wrap to the next line on smaller screens */
+            justify-content: center;
+            gap: 1rem; /* Space between images */
+            margin-top: 1rem;
+        }
+
+        .image-gallery img {
+            width: 100%; /* Default to full width of its container */
+            max-width: 280px; /* Limit individual image width for larger screens */
+            height: auto;
+            object-fit: contain;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .image-gallery img:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-800">
+
+    <!-- 抽象圖案背景 - 模仿 iOS 模糊漸變 -->
+    <div class="abstract-shape abstract-shape-1"></div>
+    <div class="abstract-shape abstract-shape-2"></div>
+    <div class="abstract-shape abstract-shape-3"></div>
+    <div class="abstract-shape abstract-shape-4"></div>
+
+    <!-- 導航列 -->
+    <nav class="nav-sidebar fixed left-0 top-0 h-full w-64 p-6 flex flex-col items-start justify-center z-20 bg-white bg-opacity-80 backdrop-blur-sm shadow-lg rounded-r-3xl hidden md:flex">
+        <!-- 導航項目將由 JavaScript 動態生成 -->
+    </nav>
+
+    <!-- 頁面容器 -->
+    <div id="page-container" class="relative w-full h-full">
+        <!-- 頁面內容將由 JavaScript 動態生成 -->
+    </div>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="modal">
+        <span class="modal-close">&times;</span>
+        <img class="modal-content" id="modalImage">
+        <a class="modal-nav-button modal-prev" id="modalPrev">&#10094;</a>
+        <a class="modal-nav-button modal-next" id="modalNext">&#10095;</a>
+    </div>
+
+    <script>
+        // 內容大綱 (請在此處替換為您的實際內容)
+        // 使用 Markdown 語法表示層級和分頁
+        // 提示：
+        //   - 使用 '#' 表示報告總標題 (僅限第一頁)
+        //   - 使用 '##' 表示頁面主題標題 (會顯示在導航列)
+        //   - 使用 '###' 表示頁面內的小節標題
+        //   - 使用 '* ' 表示列表項目
+        //   - 使用 '**文字**' 表示粗體文字
+        //   - 使用 '數字%' 表示百分比數字，會自動放大顯示
+        //   - 使用 '---' (三個破折號) 來分隔不同的簡報頁面
+        //   - 使用 '[link:URL]' 來表示超連結，例如: '[link:https://example.com]'
+        //   - 使用 '[image:URL]' 來表示圖片，例如: '[image:https://example.com/image.png]'
+        //   - 使用 '[youtube:VIDEO_ID]' 來內嵌 YouTube 影片，例如: '[youtube:dQw4w9WgXcQ]'
+        const contentOutline = `
+# 20250731會議
+---
+## Youtube節目「上課了！地緣經濟學」的主持人彭光偉訪談
+[youtube:zvmdr0Db9HM]
+### 台灣少數戰地記者 [link:https://www.youtube.com/watch?v=zvmdr0Db9HM]
+### 光偉 3 分鐘 [link:https://www.youtube.com/playlist?list=PLCeYQcTtElRWxKYmMe4JzvvjpBmwSMrK3]
+### POP大國民節目專訪 [link:https://www.youtube.com/results?search_query=%E5%BD%AD%E5%85%89%E5%81%89%E5%B0%88%E8%A8%AA]
+---
+## LOGO設計討論
+[image_gallery: https://i.meee.com.tw/bGicElU.jpg, https://i.meee.com.tw/641XT8t.png, https://i.meee.com.tw/L7nPG7m.png]
+---
+## 會員管理系統
+* 連結: [link:https://script.google.com/macros/s/AKfycbyQt5ZX1a4KLP9odOZNhncMpe27ius2WcgcyLuAQgUHpUgPYnohVElCwriFauffjBsz/exec]
+---
+## 臺灣彩券與博彩研究院組織架構
+### 「臺」灣或「台」灣
+### 協會比較沒有學術色彩，研究院能從學術的角度創造客觀、專業的形象
+### 職務
+* 院長-老師
+* 副院長-
+* 執行長-
+* 營運長- 家揚 研究員 兼 營運長
+* 永續長- 勝負 研究員 兼 永續長
+* 策略長- 崇懿 研究員 兼 策略長
+* 財務長- 慧君 財務長 兼 國際聯絡主任
+* 研發長- 汶君 研究員 兼 研發長
+* 數位長- 勇誌 研究員 兼 數位長
+---
+## 委託研究計畫管理辦法
+* 1、管理費 % 數：10％、15％、20％
+* 2、是否累退計％
+---
+## 討論議題結束
+`;
+
+        const pageContainer = document.getElementById('page-container');
+        const navSidebar = document.querySelector('.nav-sidebar');
+        const imageModal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const modalClose = document.querySelector('.modal-close');
+        const modalPrev = document.getElementById('modalPrev');
+        const modalNext = document.getElementById('modalNext');
+
+        let pagesData = []; // 儲存解析後頁面數據
+        let currentModalImages = []; // 儲存當前頁面所有可點擊圖片的 URL
+        let currentModalImageIndex = 0; // 儲存當前顯示圖片的索引
+
+        // 解析 Markdown 內容大綱
+        function parseContentOutline(outline) {
+            const pages = outline.trim().split('---');
+            return pages.map((pageContent, index) => {
+                const lines = pageContent.trim().split('\n').map(line => line.trim());
+                let title = '';
+                let contentHtml = '';
+                let navTitle = '';
+                let pageImages = []; // 儲存當前頁面的圖片 URL
+
+                // 確定導航標題 (取第一個 ## 或 # 標題)
+                const firstHeadingLine = lines.find(line => line.startsWith('## ') || line.startsWith('# '));
+                if (firstHeadingLine) {
+                    if (firstHeadingLine.startsWith('## ')) {
+                        navTitle = firstHeadingLine.substring(3);
+                    } else if (firstHeadingLine.startsWith('# ')) {
+                        navTitle = firstHeadingLine.substring(2);
+                    }
+                } else {
+                    navTitle = `頁面 ${index + 1}`; // 預設導航標題
+                }
+
+
+                if (index === 0) {
+                    // 第一頁特殊處理：只有超大標題
+                    title = lines[0].startsWith('# ') ? lines[0].substring(2) : '報告標題';
+                    contentHtml = `<h1 class="first-page-title text-center text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 mb-8">${title}</h1>`;
+                } else if (index === pages.length - 1) {
+                    // 最後一頁特殊處理：只顯示一個 H2 標題
+                    title = lines[0].startsWith('## ') ? lines[0].substring(3) : '討論議題結束';
+                    contentHtml = `<h2 class="text-3xl font-bold text-blue-700 mb-4 text-center text-line">${title}</h2>`; // 添加 text-line class
+                }
+                else {
+                    // For non-first/last pages, ensure the main heading is always the first element in contentHtml
+                    const mainHeadingLineIndex = lines.findIndex(line => line.startsWith('## '));
+                    if (mainHeadingLineIndex !== -1) {
+                        const headingText = lines[mainHeadingLineIndex].substring(3);
+                        contentHtml += `<h2 class="text-3xl font-bold text-blue-700 mb-4">${headingText}</h2>`;
+                    }
+
+                    lines.forEach((line, lineIndex) => {
+                        // Skip the main heading line if it was already processed
+                        if (mainHeadingLineIndex !== -1 && lineIndex === mainHeadingLineIndex) {
+                            return;
+                        }
+
+                        if (line.startsWith('### ')) {
+                            // H3 標題使用紫色，並添加 text-line class
+                            // Check for hyperlinks in H3
+                            const linkMatch = line.match(/(.*?) \[link:(.*?)]/);
+                            if (linkMatch && linkMatch.length > 2) { // 確保有足夠的捕獲組
+                                const linkText = linkMatch[1].substring(4).trim(); // Remove '### ' prefix
+                                const linkUrl = linkMatch[2];
+                                contentHtml += `<h3 class="text-2xl font-semibold text-purple-700 mt-6 mb-3 text-line"><a href="${linkUrl}" target="_blank" class="text-blue-500 hover:underline">${linkText} <i class="fas fa-external-link-alt text-lg ml-1"></i></a></h3>`;
+                            } else {
+                                contentHtml += `<h3 class="text-2xl font-semibold text-purple-700 mt-6 mb-3 text-line">${line.substring(4)}</h3>`;
+                            }
+                        } else if (line.startsWith('* ')) {
+                            // 列表項目，每個項目包裝在 span 中用於文字高亮
+                            const listItemContent = line.substring(2);
+                            const linkMatch = listItemContent.match(/(.*?) \[link:(.*?)]/);
+                            if (linkMatch && linkMatch.length > 2) { // 確保有足夠的捕獲組
+                                const linkText = linkMatch[1].trim();
+                                const linkUrl = linkMatch[2];
+                                contentHtml += `<p class="text-line text-lg mb-2 leading-relaxed">${linkText}: <a href="${linkUrl}" target="_blank" class="text-blue-500 hover:underline">${linkUrl} <i class="fas fa-external-link-alt text-base ml-1"></i></a></p>`;
+                            } else {
+                                const parts = listItemContent.split(/(\*\*.*?\*\*|\d+%)/g); // 分割粗體和數字
+                                let formattedLine = '';
+                                parts.forEach(part => {
+                                    if (part.startsWith('**') && part.endsWith('**')) {
+                                        formattedLine += `<span class="font-bold text-blue-600">${part.slice(2, -2)}</span>`; // 粗體文字保持藍色
+                                    } else if (/\d+%/.test(part)) {
+                                        formattedLine += `<span class="text-4xl font-extrabold text-purple-700">${part}</span>`; // 數字特大字體使用紫色
+                                    } else {
+                                        formattedLine += part;
+                                    }
+                                });
+                                contentHtml += `<p class="text-line text-lg mb-2 leading-relaxed">${formattedLine}</p>`;
+                            }
+                        } else if (line.startsWith('[image_gallery:')) {
+                            const imageGalleryMatch = line.match(/\[image_gallery:\s*([^\]]+)\]/);
+                            if (imageGalleryMatch && imageGalleryMatch.length > 1) { // 確保有捕獲組
+                                const imageUrls = imageGalleryMatch[1].split(',').map(url => url.trim());
+                                contentHtml += `<div class="image-gallery">`;
+                                imageUrls.forEach(imageUrl => {
+                                    pageImages.push(imageUrl); // Collect image URLs for the current page
+                                    contentHtml += `<img src="${imageUrl}" class="w-full max-w-xs h-auto rounded-lg shadow-md cursor-pointer image-clickable" alt="簡報圖片" onerror="this.onerror=null;this.src='https://placehold.co/400x300/cccccc/333333?text=Image+Not+Found';" data-full-src="${imageUrl}">`;
+                                });
+                                contentHtml += `</div>`;
+                            } else {
+                                console.error("Error: Malformed image_gallery syntax or missing content in line:", line);
+                            }
+                        } else if (line.startsWith('[image:')) { // Keep single image for backward compatibility if needed
+                            const imageMatch = line.match(/\[image:(.*?)]/);
+                            if (imageMatch && imageMatch.length > 1) { // 確保有捕獲組
+                                const imageUrl = imageMatch[1];
+                                pageImages.push(imageUrl); // Collect image URLs for the current page
+                                contentHtml += `<img src="${imageUrl}" class="w-full max-w-md mx-auto my-4 rounded-lg shadow-md cursor-pointer image-clickable" alt="簡報圖片" onerror="this.onerror=null;this.src='https://placehold.co/400x300/cccccc/333333?text=Image+Not+Found';" data-full-src="${imageUrl}">`;
+                            } else {
+                                console.error("Error: Malformed image syntax:", line);
+                            }
+                        } else if (line.startsWith('[youtube:')) {
+                            const youtubeMatch = line.match(/\[youtube:(.*?)]/);
+                            if (youtubeMatch && youtubeMatch.length > 1) { // 確保有捕獲組
+                                const videoId = youtubeMatch[1];
+                                contentHtml += `
+                                <div class="relative w-full aspect-video my-4 rounded-lg overflow-hidden shadow-md">
+                                    <iframe
+                                        class="absolute top-0 left-0 w-full h-full"
+                                        src="https://www.youtube.com/embed/${videoId}"
+                                        frameborder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowfullscreen
+                                    ></iframe>
+                                </div>
+                                `;
+                            } else {
+                                console.error("Error: Malformed youtube syntax:", line);
+                            }
+                        }
+                        else if (line) {
+                            // 普通段落
+                            contentHtml += `<p class="text-line text-lg mb-2 leading-relaxed">${line}</p>`;
+                        }
+                    });
+                }
+                return { navTitle, contentHtml, id: `page-${index}`, images: pageImages };
+            });
+        }
+
+        // 渲染頁面和導航
+        function renderPagesAndNav() {
+            pagesData = parseContentOutline(contentOutline);
+            pageContainer.innerHTML = ''; // 清空現有內容
+            navSidebar.innerHTML = ''; // 清空現有導航
+
+            pagesData.forEach((page, index) => {
+                // 創建頁面元素
+                const pageDiv = document.createElement('div');
+                pageDiv.id = page.id;
+                pageDiv.className = `presentation-page relative flex items-center justify-content-center ${index === 0 ? 'bg-gradient-to-br from-blue-50 to-white' : ''}`; // 第一頁可有漸變背景
+
+                // 創建內容區塊
+                const contentBlock = document.createElement('div');
+                contentBlock.className = 'content-block w-full h-full flex flex-col justify-center items-start';
+                contentBlock.innerHTML = page.contentHtml;
+
+                // 處理文字高亮事件 (對所有具有 text-line class 的元素進行文字高亮)
+                // 現在 H3 和最後一頁的 H2 也會被選中
+                const textLines = contentBlock.querySelectorAll('.text-line');
+                textLines.forEach(line => {
+                    line.addEventListener('mouseover', () => {
+                        textLines.forEach(otherLine => {
+                            if (otherLine !== line) {
+                                otherLine.classList.add('dimmed');
+                            }
+                        });
+                        line.classList.add('highlighted');
+                    });
+                    line.addEventListener('mouseout', () => {
+                        textLines.forEach(otherLine => {
+                            otherLine.classList.remove('dimmed');
+                        });
+                        line.classList.remove('highlighted');
+                    });
+                });
+
+                // Add click listener for images to open modal
+                const images = contentBlock.querySelectorAll('.image-clickable');
+                images.forEach((img, imgIndex) => {
+                    img.addEventListener('click', () => {
+                        // Ensure currentModalImages only contains images from the currently displayed page
+                        const currentPageId = img.closest('.presentation-page').id;
+                        const currentPageData = pagesData.find(p => p.id === currentPageId);
+                        if (currentPageData) {
+                            currentModalImages = currentPageData.images;
+                        } else {
+                            currentModalImages = []; // Fallback
+                        }
+
+                        currentModalImageIndex = imgIndex; // Set the index of the clicked image
+                        modalImage.src = currentModalImages[currentModalImageIndex];
+                        imageModal.style.display = 'flex'; // Use flex to center
+                    });
+                });
+
+
+                pageDiv.appendChild(contentBlock);
+                pageContainer.appendChild(pageDiv);
+
+                // 創建導航方塊 (第一頁和最後一頁不顯示在導航列)
+                if (index > 0 && index < pagesData.length - 1) { // 排除第一頁和最後一頁
+                    const navBlock = document.createElement('div');
+                    navBlock.className = 'nav-block';
+                    navBlock.textContent = page.navTitle;
+                    navBlock.dataset.targetId = page.id; // 儲存目標頁面ID
+                    navBlock.addEventListener('click', () => {
+                        document.getElementById(page.id).scrollIntoView({ behavior: 'smooth' });
+                    });
+                    navSidebar.appendChild(navBlock);
+                }
+            });
+
+            // 最後一頁的內容區塊，確保居中對齊
+            const lastPageContentBlock = document.querySelector(`#page-${pagesData.length - 1} .content-block`);
+            if (lastPageContentBlock) {
+                lastPageContentBlock.classList.add('justify-center', 'items-center');
+            }
+        }
+
+        // 導航高亮邏輯 (使用 IntersectionObserver)
+        const observerOptions = {
+            root: null, // 視窗作為根元素
+            rootMargin: '0px',
+            threshold: 0.5 // 當頁面有 50% 可見時觸發
+        };
+
+        const pageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const targetId = entry.target.id;
+                const navBlocks = document.querySelectorAll('.nav-block');
+                const correspondingNavBlock = document.querySelector(`.nav-block[data-target-id="${targetId}"]`);
+
+                if (entry.isIntersecting) {
+                    // 移除所有導航方塊的 active 狀態
+                    navBlocks.forEach(block => block.classList.remove('active'));
+                    // 為當前可見頁面對應的導航方塊添加 active 狀態
+                    if (correspondingNavBlock) {
+                        correspondingNavBlock.classList.add('active');
+                    }
+                }
+            });
+        }, observerOptions);
+
+        // 顯示下一張圖片
+        function showNextImage() {
+            currentModalImageIndex = (currentModalImageIndex + 1) % currentModalImages.length;
+            modalImage.src = currentModalImages[currentModalImageIndex];
+        }
+
+        // 顯示上一張圖片
+        function showPrevImage() {
+            currentModalImageIndex = (currentModalImageIndex - 1 + currentModalImages.length) % currentModalImages.length;
+            modalImage.src = currentModalImages[currentModalImageIndex];
+        }
+
+        // 初始化：渲染頁面，並觀察每個頁面
+        document.addEventListener('DOMContentLoaded', () => {
+            renderPagesAndNav();
+            // 觀察所有簡報頁面，除了第一頁和最後一頁（因為它們沒有對應的導航方塊）
+            document.querySelectorAll('.presentation-page').forEach((page, index) => {
+                if (index > 0 && index < pagesData.length - 1) { // 從第二頁開始觀察，直到倒數第二頁
+                    pageObserver.observe(page);
+                }
+            });
+
+            // 處理小螢幕下導航列的顯示/隱藏
+            const navToggle = document.createElement('button');
+            navToggle.className = 'md:hidden fixed top-4 left-4 z-50 p-2 bg-white rounded-full shadow-md text-gray-700';
+            navToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            document.body.appendChild(navToggle);
+
+            navToggle.addEventListener('click', () => {
+                navSidebar.classList.toggle('hidden');
+                navSidebar.classList.toggle('flex');
+            });
+
+            // Close modal when clicking on the close button
+            modalClose.addEventListener('click', () => {
+                imageModal.style.display = 'none';
+            });
+
+            // Close modal when clicking outside the image
+            imageModal.addEventListener('click', (event) => {
+                if (event.target === imageModal) {
+                    imageModal.style.display = 'none';
+                }
+            });
+
+            // Modal navigation buttons
+            modalPrev.addEventListener('click', (event) => {
+                event.stopPropagation(); // Prevent modal from closing
+                showPrevImage();
+            });
+
+            modalNext.addEventListener('click', (event) => {
+                event.stopPropagation(); // Prevent modal from closing
+                showNextImage();
+            });
+        });
+
+    </script>
+</body>
+</html>

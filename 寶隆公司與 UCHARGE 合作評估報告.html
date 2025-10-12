@@ -5,105 +5,101 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>寶隆公司與 UCHARGE 合作評估報告</title>
 <style>
+    /* 基本設定 */
+    html {
+        scroll-behavior: smooth; /* 讓捲動更平滑 */
+    }
     body {
         font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif;
         background-color: #f0f2f5;
         margin: 0;
         padding: 0;
+        color: #333;
+        line-height: 1.8;
+    }
+
+    /* 頁面區塊 (模擬簡報頁) */
+    .page-section {
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
-        height: 100vh;
-        overflow: hidden;
-    }
-    .slider-container {
-        width: 90%;
-        max-width: 1000px;
-        height: 90vh;
-        max-height: 700px;
-        position: relative;
-        overflow: hidden;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        border-radius: 12px;
+        min-height: 100vh; /* 每個區塊至少佔滿一整個螢幕的高度 */
+        width: 100%;
+        box-sizing: border-box;
+        padding: 60px 5vw; /* 上下邊距與左右邊距 */
+        border-bottom: 1px solid #e0e0e0;
         background-color: #ffffff;
     }
-    .slide {
-        position: absolute;
-        top: 0;
-        left: 0;
+    .page-section:nth-child(even) {
+        background-color: #f8f9fa; /* 交錯底色 */
+    }
+
+    /* 內容容器 */
+    .content-wrapper {
         width: 100%;
-        height: 100%;
-        padding: 40px 50px;
-        box-sizing: border-box;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
-        transform: translateX(20px);
-        line-height: 1.8;
-        font-size: 16px;
-        color: #333;
-        overflow-y: auto;
+        max-width: 1200px; /* 限制內容最大寬度，提升可讀性 */
     }
-    .slide.active {
-        opacity: 1;
-        visibility: visible;
-        transform: translateX(0);
-    }
-    .slide h1, .slide h2, .slide h3 {
+
+    /* 標題樣式 */
+    h1, h2, h3, h4 {
         color: #003366;
-        border-bottom: 2px solid #005A9C;
-        padding-bottom: 10px;
+    }
+    h1 { 
+        font-size: 3em; 
+        text-align: center; 
         margin-top: 0;
+        margin-bottom: 20px;
     }
-    .slide h1 { font-size: 2.5em; text-align: center; border: none; margin-top: 15%; }
-    .slide h2 { font-size: 1.8em; margin-bottom: 20px; }
-    .slide h3 { font-size: 1.4em; border-bottom: 1px solid #ddd; margin-top: 30px; }
-    ul, ol {
-        padding-left: 20px;
+    h2 { 
+        font-size: 2.2em; 
+        border-bottom: 3px solid #005A9C; 
+        padding-bottom: 15px; 
+        margin-bottom: 30px;
     }
-    li {
-        margin-bottom: 15px;
+    h3 { 
+        font-size: 1.6em; 
+        border-bottom: 1px solid #ddd; 
+        padding-bottom: 10px;
+        margin-top: 35px; 
+        margin-bottom: 20px;
     }
-    .nav-button {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        background-color: rgba(0, 51, 102, 0.7);
-        color: white;
-        border: none;
-        padding: 15px;
-        font-size: 24px;
-        cursor: pointer;
-        z-index: 100;
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        line-height: 20px;
+    h4 {
+        font-size: 1.2em;
+        margin-bottom: 8px;
+    }
+
+    /* 標題頁專用樣式 */
+    .title-page {
         text-align: center;
-    }
-    .prev { left: 20px; }
-    .next { right: 20px; }
-    .page-number {
-        position: absolute;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 14px;
-        color: #888;
     }
     .title-page-subtitle {
-        text-align: center;
-        font-size: 1.2em;
+        font-size: 1.5em;
         color: #555;
-        margin-top: 20px;
     }
-    /* Table styles */
+
+    /* 列表樣式 */
+    ul, ol {
+        padding-left: 25px;
+    }
+    li {
+        margin-bottom: 18px;
+        font-size: 1.1em;
+    }
+    li p {
+        margin: 5px 0 0 0;
+        font-size: 0.95em;
+    }
+
+    /* 表格樣式 */
     .styled-table {
         border-collapse: collapse;
-        margin: 25px 0;
-        font-size: 0.9em;
+        margin: 30px 0;
+        font-size: 1em;
         width: 100%;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
     }
     .styled-table thead tr {
         background-color: #005A9C;
@@ -111,7 +107,7 @@
         text-align: left;
     }
     .styled-table th, .styled-table td {
-        padding: 12px 15px;
+        padding: 15px 20px;
     }
     .styled-table tbody tr {
         border-bottom: 1px solid #dddddd;
@@ -120,320 +116,316 @@
         background-color: #f3f3f3;
     }
     .styled-table tbody tr:last-of-type {
-        border-bottom: 2px solid #005A9C;
+        border-bottom: 3px solid #005A9C;
     }
-    .styled-table td:nth-of-type(1) { font-weight: bold; }
-    /* Flexbox for diagrams */
-    .diagram-container {
-        display: flex;
-        justify-content: space-around;
-        gap: 20px;
+    .styled-table td:nth-of-type(1) { 
+        font-weight: bold; 
+        color: #003366;
+    }
+
+    /* 圖示/網格佈局 */
+    .diagram-container, .tech-grid {
+        display: grid;
+        gap: 25px;
         margin-top: 30px;
-        text-align: center;
     }
+    .diagram-container { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+    .tech-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+
     .diagram-item {
         background-color: #e7f0f7;
-        padding: 20px;
+        padding: 25px;
         border-radius: 8px;
-        border: 1px solid #b6d4e8;
-        flex: 1;
+        border-left: 5px solid #005A9C;
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .diagram-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
     }
     .diagram-item-title {
         font-weight: bold;
         color: #003366;
-        font-size: 1.2em;
+        font-size: 1.3em;
         margin-bottom: 10px;
     }
     .diagram-item-content {
-        font-size: 1em;
+        font-size: 1.1em;
         color: #333;
-    }
-    .tech-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
     }
 </style>
 </head>
 <body>
 
-<div class="slider-container">
-    
+<main class="report-container">
+
     <!-- Slide 1: Title Page -->
-    <div class="slide active">
-        <h1>寶隆公司與 UCHARGE 合作評估報告</h1>
-        <p class="title-page-subtitle">內部策略評估與投資可行性分析</p>
-    </div>
+    <section class="page-section title-page">
+        <div class="content-wrapper">
+            <h1>寶隆公司與 UCHARGE 合作評估報告</h1>
+            <p class="title-page-subtitle">合作評估與投資可行性分析</p>
+        </div>
+    </section>
 
     <!-- Slide 2: Part 1 - Industry Environment -->
-    <div class="slide">
-        <h2>第一部分：產業環境與 UCHARGE 公司評析</h2>
-        <h3>一、 產業環境分析</h3>
-        <p>台灣電動車市場正處於高速成長期，充電基礎設施是此趨勢下的關鍵一環。截至 2025 年 6 月，全台已有超過 3,500 座充電站及近 1.2 萬支充電槍，車樁比約 9.1:1，優於歐盟標準，顯示基礎建設佈局相當積極。市場競爭激烈，已有 42 家營運商投入，主要業者如 EVOASIS、EVALUE、U-POWER 等，多以自建快充站或整合硬體銷售來擴大市佔。同時，政府法規要求新建物需預留充電管線，這為鎖定社區與建案市場的業者創造了龐大的潛在商機。市場趨勢已從單純的硬體建置，轉向更注重軟體管理、能源效率與使用者體驗的整合服務。</p>
-        <div class="diagram-container">
-            <div class="diagram-item">
-                <div class="diagram-item-title">📈 市場規模</div>
-                <div class="diagram-item-content">3,500+ 充電站<br>12,000+ 充電槍</div>
-            </div>
-            <div class="diagram-item">
-                <div class="diagram-item-title">⚔️ 市場競爭</div>
-                <div class="diagram-item-content">42 家營運商<br>市場進入白熱化</div>
-            </div>
-            <div class="diagram-item">
-                <div class="diagram-item-title">🔑 未來趨勢</div>
-                <div class="diagram-item-content">硬體建置 →<br>軟體與服務整合</div>
+    <section class="page-section">
+        <div class="content-wrapper">
+            <h2>第一部分：產業環境與 UCHARGE 公司評析</h2>
+            <h3>一、 產業環境分析</h3>
+            <p>台灣電動車市場正處於高速成長期，充電基礎設施是此趨勢下的關鍵一環。截至 2025 年 6 月，全台已有超過 3,500 座充電站及近 1.2 萬支充電槍，車樁比約 9.1:1，優於歐盟標準，顯示基礎建設佈局相當積極。市場競爭激烈，已有 42 家營運商投入，主要業者如 EVOASIS、EVALUE、U-POWER 等，多以自建快充站或整合硬體銷售來擴大市佔。同時，政府法規要求新建物需預留供電動車充電設備及裝置的裝設空間，這為鎖定社區與建案市場的業者創造了龐大的潛在商機。市場趨勢已從單純的硬體建置，轉向更注重軟體管理、能源效率與使用者體驗的整合服務。</p>
+            <div class="diagram-container">
+                <div class="diagram-item">
+                    <div class="diagram-item-title">📈 市場規模</div>
+                    <div class="diagram-item-content">3,500+ 充電站<br>12,000+ 充電槍</div>
+                </div>
+                <div class="diagram-item">
+                    <div class="diagram-item-title">⚔️ 市場競爭</div>
+                    <div class="diagram-item-content">42 家營運商<br>市場進入白熱化</div>
+                </div>
+                <div class="diagram-item">
+                    <div class="diagram-item-title">🔑 未來趨勢</div>
+                    <div class="diagram-item-content">硬體建置 →<br>軟體與服務整合</div>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
     
     <!-- Slide 3: Part 1 - UCHARGE Company Analysis -->
-    <div class="slide">
-        <h2>第一部分：產業環境與 UCHARGE 公司評析</h2>
-        <h3>二、 UCHARGE 公司產品與技術評析</h3>
-        <p>台灣車輛充電股份有限公司 (UCHARGE) 成立於 2018 年，初期曾嘗試效仿 Ionity 建立第三方快充站，但隨後調整策略，轉型為一家專注於雲端充電管理軟體即服務 (SaaS) 的供應商。其核心商業模式並非大量投資硬體，而是提供一套智慧管理系統給社區、停車場、物流業者等 B2B 客戶，協助他們整合不同品牌的充電設備與金流服務。</p>
-        
-        <h4>• 商業模式：</h4>
-        <p>採取輕資產策略，軟體由 UCHARGE 提供，硬體安裝與後續營運可與外部廠商合作。合作夥伴可掛 UCHARGE 品牌，也可選擇白牌模式，彈性極高，有利於快速拓展市場，甚至已佈局新加坡、日本、泰國等海外市場。</p>
-        
-        <h4>• 市場定位：</h4>
-        <p>相較於 U-POWER 專攻高功率快充站或台達電提供軟硬體整合方案，UCHARGE 的獨特定位是「充電管理的大腦」，專注於解決集合式住宅與商辦的充電管理難題，避開了高資本投入的快充站點競賽。</p>
-    </div>
+    <section class="page-section">
+        <div class="content-wrapper">
+            <h2>第一部分：產業環境與 UCHARGE 公司評析</h2>
+            <h3>二、 UCHARGE 公司產品與技術評析</h3>
+            <p>台灣車輛充電股份有限公司 (UCHARGE) 成立於 2018 年，初期曾嘗試效仿 Ionity 建立第三方快充站，但隨後調整策略，轉型為一家專注於雲端充電管理軟體即服務 (SaaS) 的供應商。其核心商業模式並非大量投資硬體，而是提供一套智慧管理系統給社區、停車場、物流業者等 B2B 客戶，協助他們整合不同品牌的充電設備與金流服務。</p>
+            
+            <h4>• 商業模式：</h4>
+            <p>採取輕資產策略，軟體由 UCHARGE 提供，硬體安裝與後續營運可與外部廠商合作。合作夥伴可掛 UCHARGE 品牌，也可選擇白牌模式，彈性極高，有利於快速拓展市場，甚至已佈局新加坡、日本、泰國等海外市場。</p>
+            
+            <h4>• 市場定位：</h4>
+            <p>相較於 U-POWER 專攻高功率快充站或台達電提供軟硬體整合方案，UCHARGE 的獨特定位是「充電管理的大腦」，專注於解決集合式住宅與商辦的充電管理難題，避開了高資本投入的快充站點競賽。</p>
+        </div>
+    </section>
 
     <!-- Slide 4: UCHARGE Core Technology -->
-    <div class="slide">
-        <h2>第一部分：UCHARGE 核心技術</h2>
-        <h3>• 核心技術：</h3>
-        <p>UCHARGE 的平台擁有多項專利技術，是其主要競爭力來源。包含：</p>
-        <div class="tech-grid">
-            <div class="diagram-item">
-                <div class="diagram-item-title">🔌 插槍即充 (Plug and Charge)</div>
-                <div class="diagram-item-content">簡化車主充電流程，提升便利性。</div>
-            </div>
-            <div class="diagram-item">
-                <div class="diagram-item-title">📸 車牌辨識與智慧地鎖</div>
-                <div class="diagram-item-content">即使車輛不支援，也能自動化完成認證、開鎖與計費，解決使用者痛點。</div>
-            </div>
-            <div class="diagram-item">
-                <div class="diagram-item-title">⚡ 智慧優先配電</div>
-                <div class="diagram-item-content">在有限的社區電力契約容量下，動態分配電力，滿足多車同時充電的需求，避免增設高昂的電力基礎設施。</div>
-            </div>
-             <div class="diagram-item">
-                <div class="diagram-item-title">🛡️ 安全與共享</div>
-                <div class="diagram-item-content">防偷電機制與共享充電等功能，也強化了社區管理的安全性與靈活性。</div>
+    <section class="page-section">
+        <div class="content-wrapper">
+            <h2>第一部分：UCHARGE 核心技術</h2>
+            <h3>• 核心技術：</h3>
+            <p>UCHARGE 的平台擁有多項專利技術，是其主要競爭力來源。包含：</p>
+            <div class="tech-grid">
+                <div class="diagram-item">
+                    <div class="diagram-item-title">🔌 插槍即充</div>
+                    <div class="diagram-item-content">(Plug and Charge)<br>簡化車主充電流程，提升便利性。</div>
+                </div>
+                <div class="diagram-item">
+                    <div class="diagram-item-title">📸 車牌辨識與智慧地鎖</div>
+                    <div class="diagram-item-content">即使車輛不支援，也能自動化完成認證、開鎖與計費，解決使用者痛點。</div>
+                </div>
+                <div class="diagram-item">
+                    <div class="diagram-item-title">⚡ 智慧優先配電</div>
+                    <div class="diagram-item-content">在有限的社區電力契約容量下，動態分配電力，滿足多車同時充電的需求，避免增設高昂的電力基礎設施。</div>
+                </div>
+                 <div class="diagram-item">
+                    <div class="diagram-item-title">🛡️ 安全與共享</div>
+                    <div class="diagram-item-content">防偷電機制與共享充電等功能，也強化了社區管理的安全性與靈活性。</div>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
     
     <!-- Slide 5: Part 2 - Partnership Benefits -->
-    <div class="slide">
-        <h2>第二部分：寶隆公司與 UCHARGE 合作可行性評估</h2>
-        <h3>一、 合作的可能效益</h3>
-        <ol>
-            <li>
-                <h4>通路對接：</h4>
-                <p>寶隆長年深耕廚具與廚房設備，與建商擁有穩固的合作關係。在建商規劃新案時，能將 UCHARGE 的充電管理方案與廚具設備打包，提供「一站式購足」的服務，有機會增加寶隆在建案中的附加價值。</p>
-            </li>
-            <li>
-                <h4>掌握政策紅利：</h4>
-                <p>新建物預留充電管線的法規，是切入市場的時機。寶隆可藉此機會，從單純的廚房設備供應商，轉型為智慧建築解決方案的提供者之一。</p>
-            </li>
-            <li>
-                <h4>輕資產模式降低進入門檻：</h4>
-                <p>UCHARGE 的合作模式不要求寶隆投入大量資金自建硬體，初期可扮演「銷售」或「專案經理人」的角色，風險較低。</p>
-            </li>
-        </ol>
-    </div>
+    <section class="page-section">
+        <div class="content-wrapper">
+            <h2>第二部分：寶隆公司與 UCHARGE 合作可行性評估</h2>
+            <h3>一、 合作的可能效益</h3>
+            <ol>
+                <li>
+                    <h4>通路對接：</h4>
+                    <p>寶隆長年深耕廚具與廚房設備，與建商擁有穩固的合作關係。在建商規劃新案時，能將 UCHARGE 的充電管理方案與廚具設備打包，提供「一站式購足」的服務，有機會增加寶隆在建案中的附加價值。</p>
+                </li>
+                <li>
+                    <h4>掌握政策紅利：</h4>
+                    <p>新建物預留充電管線的法規，是切入市場的時機。寶隆有機會從單純的廚房設備供應商，轉型為智慧建築解決方案的提供者之一。</p>
+                </li>
+                <li>
+                    <h4>輕資產模式降低進入門檻：</h4>
+                    <p>UCHARGE 的合作模式不要求寶隆投入大量資金自建硬體，初期可扮演「銷售」或「專案經理人」的角色，風險較低。</p>
+                </li>
+            </ol>
+        </div>
+    </section>
 
     <!-- Slide 6: Part 2 - Partnership Challenges -->
-    <div class="slide">
-        <h2>第二部分：寶隆公司與 UCHARGE 合作可行性評估</h2>
-        <h3>二、 合作的劣勢與挑戰</h3>
-        <ol>
-            <li>
-                <h4>跨領域專業門檻：</h4>
-                <p>寶隆的核心能力在於廚房空間規劃與設備銷售，對於電力工程、充電樁施工、軟體系統整合等領域相對陌生，需投入資源建立新團隊或培訓現有人員。</p>
-            </li>
-            <li>
-                <h4>UCHARGE 品牌知名度與市佔率低：</h4>
-                <p>目前充電市場由幾大龍頭業者主導。UCHARGE 雖有技術優勢，但在終端使用者與建商端的品牌認知度較低，推廣初期可能需要花費更多力氣說服客戶。</p>
-            </li>
-            <li>
-                <h4>整合供應鏈的複雜性：</h4>
-                <p>合作案成功與否，不僅仰賴 UCHARGE 的軟體，還需要可靠的硬體設備商與施工團隊。寶隆需扮演好整合者的角色，確保從規劃、安裝到售後服務的流暢性。</p>
-            </li>
-        </ol>
-    </div>
+    <section class="page-section">
+        <div class="content-wrapper">
+            <h2>第二部分：寶隆公司與 UCHARGE 合作可行性評估</h2>
+            <h3>二、 合作的劣勢與挑戰</h3>
+            <ol>
+                <li>
+                    <h4>跨領域專業門檻：</h4>
+                    <p>寶隆的核心能力在於廚房空間規劃與設備銷售，對於電力工程、充電樁施工、軟體系統整合等領域相對陌生，需投入資源建立新團隊或培訓現有人員。</p>
+                </li>
+                <li>
+                    <h4>UCHARGE 品牌知名度與市佔率低：</h4>
+                    <p>目前充電市場由幾大龍頭業者主導。UCHARGE 雖有技術優勢，但在終端使用者與建商端的品牌認知度較低，推廣初期可能需要花費更多力氣說服客戶。</p>
+                </li>
+                <li>
+                    <h4>整合供應鏈的複雜性：</h4>
+                    <p>合作案成功與否，不僅仰賴 UCHARGE 的軟體，還需要可靠的硬體設備商與施工團隊。寶隆需扮演好整合者的角色，確保從規劃、安裝到售後服務的流暢性。</p>
+                </li>
+            </ol>
+        </div>
+    </section>
 
     <!-- Slide 7: Part 2 - Cooperation Models -->
-    <div class="slide">
-        <h2>第二部分：寶隆公司與 UCHARGE 合作可行性評估</h2>
-        <h3>三、 不同合作模式分析</h3>
-        <table class="styled-table">
-            <thead>
-                <tr>
-                    <th>合作模式</th>
-                    <th>內容說明</th>
-                    <th>寶隆投入程度</th>
-                    <th>預估利潤空間</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>模式一：<br>經銷/轉介夥伴</td>
-                    <td>在銷售廚具時，向建商推薦 UCHARGE 的解決方案。由 UCHARGE 或其合作夥伴負責後續技術說明與安裝，寶隆賺取介紹費或經銷佣金。</td>
-                    <td><strong>低：</strong><br>僅需業務人員的教育訓練。</td>
-                    <td><strong>較低：</strong><br>以單次佣金為主。</td>
-                </tr>
-                <tr>
-                    <td>模式二：<br>專案整合服務商</td>
-                    <td>以寶隆為主導，向建商提供包含廚具與充電設施的整合方案。寶隆負責對接建商需求，並協調 UCHARGE (軟體) 與硬體施工商 (硬體)。</td>
-                    <td><strong>中：</strong><br>需建立專案管理與技術窗口。</td>
-                    <td><strong>中等：</strong><br>可賺取專案管理費與設備差價。</td>
-                </tr>
-                <tr>
-                    <td>模式三：<br>品牌聯名/白牌營運</td>
-                    <td>寶隆推出自有品牌的充電服務，核心系統由 UCHARGE 提供。寶隆負責品牌行銷、通路推廣與第一線客服。</td>
-                    <td><strong>高：</strong><br>需投入品牌行銷與客服團隊資源。</td>
-                    <td><strong>較高：</strong><br>可賺取長期服務月費或充電費用分潤。</td>
-                </tr>
-                <tr>
-                    <td>模式四：<br>共同投資營運</td>
-                    <td>與 UCHARGE、建商三方合資，在特定社區或停車場建置充電樁並長期營運，分享充電服務的持續性收入。</td>
-                    <td><strong>極高：</strong><br>需投入資本，承擔營運風險。</td>
-                    <td><strong>最高：</strong><br>但回收期長，與場域使用率高度相關。</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <section class="page-section">
+        <div class="content-wrapper">
+            <h2>第二部分：寶隆公司與 UCHARGE 合作可行性評估</h2>
+            <h3>三、 不同合作模式分析</h3>
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>合作模式</th>
+                        <th>內容說明</th>
+                        <th>寶隆投入程度</th>
+                        <th>預估利潤空間</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>模式一：<br>經銷/轉介夥伴</td>
+                        <td>在銷售廚具時，向建商推薦 UCHARGE 的解決方案。由 UCHARGE 或其合作夥伴負責後續技術說明與安裝，寶隆賺取介紹費或經銷佣金。</td>
+                        <td><strong>低：</strong><br>僅需業務人員的教育訓練。</td>
+                        <td><strong>較低：</strong><br>以單次佣金為主。</td>
+                    </tr>
+                    <tr>
+                        <td>模式二：<br>專案整合服務商</td>
+                        <td>以寶隆為主導，向建商提供包含廚具與充電設施的整合方案。寶隆負責對接建商需求，並協調 UCHARGE (軟體) 與硬體施工商 (硬體)。</td>
+                        <td><strong>中：</strong><br>需建立專案管理與技術窗口。</td>
+                        <td><strong>中等：</strong><br>可賺取專案管理費與設備差價。</td>
+                    </tr>
+                    <tr>
+                        <td>模式三：<br>品牌聯名/白牌營運</td>
+                        <td>寶隆推出自有品牌的充電服務，核心系統由 UCHARGE 提供。寶隆負責品牌行銷、通路推廣與第一線客服。</td>
+                        <td><strong>高：</strong><br>需投入品牌行銷與客服團隊資源。</td>
+                        <td><strong>較高：</strong><br>可賺取長期服務月費或充電費用分潤。</td>
+                    </tr>
+                    <tr>
+                        <td>模式四：<br>共同投資營運</td>
+                        <td>與 UCHARGE、建商三方合資，在特定社區或停車場建置充電樁並長期營運，分享充電服務的持續性收入。</td>
+                        <td><strong>極高：</strong><br>需投入資本，承擔營運風險。</td>
+                        <td><strong>最高：</strong><br>但回收期長，與場域使用率高度相關。</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
     
     <!-- Slide 8: Part 2 - Capability & Necessity -->
-    <div class="slide">
-        <h2>第二部分：寶隆公司與 UCHARGE 合作可行性評估</h2>
-        <h3>四、 寶隆公司是否具備合作能力與必要性？</h3>
-        <h4>• 能力評估：</h4>
-        <p>寶隆的核心優勢在於「通路」而非「技術」。因此，初期從「經銷/轉介」或「專案整合」模式著手最為務實。寶隆現有的業務團隊足以勝任，但需要額外的產品與技術培訓。</p>
-        
-        <h4>• 必要性評估：</h4>
-        <p>合作的必要性在於「拓展業務邊界」與「提升客戶黏著度」。當所有建商都在尋找充電解決方案時，若寶隆能提供此服務，將不僅是賣廚具，更是協助建商提升建案價值的策略夥伴，這有助於鞏固核心業務的競爭力。</p>
-    </div>
+    <section class="page-section">
+        <div class="content-wrapper">
+            <h2>第二部分：寶隆公司與 UCHARGE 合作可行性評估</h2>
+            <h3>四、 寶隆公司是否具備合作能力與必要性？</h3>
+            <h4>• 能力評估：</h4>
+            <p>寶隆的核心優勢在於「通路」而非「技術」。因此，初期從「經銷/轉介」或「專案整合」模式著手最為務實。寶隆現有的業務團隊可進行轉介，但需要額外的產品與技術培訓。</p>
+            
+            <h4>• 必要性評估：</h4>
+            <p>合作的必要性在於「拓展業務邊界」與「提升客戶黏著度」。當建商在尋找充電解決方案時，若寶隆能提供此服務，將不僅是賣廚具，更是協助建商提升建案價值的策略夥伴，這有助於鞏固核心業務的競爭力。</p>
+        </div>
+    </section>
 
     <!-- Slide 9: Part 2 - Preparation -->
-    <div class="slide">
-        <h2>第二部分：寶隆公司與 UCHARGE 合作可行性評估</h2>
-        <h3>五、 合作前的準備與注意事項</h3>
-        <ol>
-            <li><h4>內部培訓：</h4><p>需安排業務及專案人員，接受 UCHARGE 關於系統操作、技術優勢及銷售模式的完整訓練。</p></li>
-            <li><h4>尋找合作夥伴：</h4><p>應預先尋找數家品質可靠的充電樁硬體製造商與具備合格證照的電力工程施工廠商，建立合作生態系。</p></li>
-            <li><h4>擬定合約細節：</h4><p>與 UCHARGE 需明確界定雙方的權利義務，包含利潤分配、品牌使用、客戶資料歸屬、售後服務責任劃分等。</p></li>
-            <li><h4>選擇試點專案：</h4><p>建議先挑選 1-2 個關係良好的建商客戶作為試點，累積成功案例後再全面推廣。</p></li>
-        </ol>
-    </div>
+    <section class="page-section">
+        <div class="content-wrapper">
+            <h2>第二部分：寶隆公司與 UCHARGE 合作可行性評估</h2>
+            <h3>五、 合作前的準備與注意事項</h3>
+            <ol>
+                <li><h4>內部培訓：</h4><p>需安排業務及專案人員，接受 UCHARGE 關於系統操作、技術優勢及銷售模式的完整訓練。</p></li>
+                <li><h4>尋找合作夥伴：</h4><p>若合作模式由寶隆「專案整合」，應預先尋找數家品質可靠的充電樁硬體製造商與具備合格證照的電力工程施工廠商，建立合作生態系。</p></li>
+                <li><h4>擬定合約細節：</h4><p>與 UCHARGE 需明確界定雙方的權利義務，包含利潤分配、品牌使用、客戶資料歸屬、售後服務責任劃分等。</p></li>
+                <li><h4>選擇試點專案：</h4><p>建議先挑選 1-2 個關係良好的建商客戶作為試點，累積成功案例後再全面推廣。</p></li>
+            </ol>
+        </div>
+    </section>
 
     <!-- Slide 10: Part 2 - Initial Suggestion -->
-    <div class="slide">
-        <h2>第二部分：寶隆公司與 UCHARGE 合作可行性評估</h2>
-        <h3>六、 初步建議</h3>
-        <p>如欲合作，需採取漸進式策略。建議從「模式一：經銷/轉介夥伴」開始試水溫，以最低的風險熟悉產業生態。若市場反應良好，再逐步發展為「模式二：專案整合服務商」，將此業務納為公司新的成長曲線。</p>
-         <div class="diagram-container">
-            <div class="diagram-item" style="background-color: #e7f7e7;">
-                <div class="diagram-item-title">第一步 (低風險)</div>
-                <div class="diagram-item-content">模式一：<br>經銷/轉介夥伴</div>
-            </div>
-            <div style="font-size: 3em; color: #005A9C; align-self: center;">→</div>
-            <div class="diagram-item" style="background-color: #f7f3e7;">
-                <div class="diagram-item-title">第二步 (中度投入)</div>
-                <div class="diagram-item-content">模式二：<br>專案整合服務商</div>
+    <section class="page-section">
+        <div class="content-wrapper">
+            <h2>第二部分：寶隆公司與 UCHARGE 合作可行性評估</h2>
+            <h3>六、 初步建議</h3>
+            <p>如欲合作，需採取漸進式策略。建議從「模式一：經銷/轉介夥伴」開始試水溫，以最低的風險熟悉產業生態。若市場反應良好，再逐步發展為「模式二：專案整合服務商」，將此業務納為公司新的成長曲線。</p>
+             <div class="diagram-container">
+                <div class="diagram-item" style="background-color: #e7f7e7;">
+                    <div class="diagram-item-title">第一步 (低風險)</div>
+                    <div class="diagram-item-content">模式一：<br>經銷/轉介夥伴</div>
+                </div>
+                <div style="font-size: 4em; color: #005A9C; align-self: center; text-align: center;">→</div>
+                <div class="diagram-item" style="background-color: #f7f3e7;">
+                    <div class="diagram-item-title">第二步 (中度投入)</div>
+                    <div class="diagram-item-content">模式二：<br>專案整合服務商</div>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
     
-    <!-- Slide 11: Part 3 - Investment Risks -->
-    <div class="slide">
-        <h2>第三部分：投資 UCHARGE 可行性評估</h2>
-        <h3>一、 商業模式的生存條件與風險</h3>
-        <div class="tech-grid">
-            <div class="diagram-item" style="background-color: #e7f7e7;">
-                <div class="diagram-item-title">✅ 生存條件</div>
-                <div class="diagram-item-content" style="text-align: left; padding-left: 10px;">
-                    <ol>
-                        <li>市場需求明確</li>
-                        <li>輕資產易擴張</li>
-                        <li>技術具差異化</li>
-                    </ol>
+    <!-- Slide 11: Part 3 - Investment Risks & Conditions -->
+    <section class="page-section">
+        <div class="content-wrapper">
+            <h2>第三部分：投資 UCHARGE 可行性評估</h2>
+            <h3>一、 商業模式的生存條件與風險</h3>
+            <div class="tech-grid">
+                <div class="diagram-item" style="background-color: #e7f7e7; border-left-color: #28a745;">
+                    <div class="diagram-item-title">✅ 生存條件</div>
+                    <div class="diagram-item-content" style="text-align: left; padding-left: 10px;">
+                        <ol>
+                            <h4>市場需求明確</h4>
+ <p>社區充電管理是剛性需求，能解決管委會收費與電力分配的痛點。</p>
+                            <h4>輕資產易擴張</h4>
+ <p>SaaS 模式無需承擔龐大的硬體庫存與折舊，有利於快速複製到不同場域乃至海外。</p>
+                            <h4>技術具差異化</h4>
+ <p>「插槍即充」與「智慧配電」等專利，是其與其他僅提供通用軟體的廠商相比的護城河。</p>
+                        </ol>
+                    </div>
                 </div>
-            </div>
-            <div class="diagram-item" style="background-color: #f7e7e7;">
-                <div class="diagram-item-title">⚠️ 風險評估</div>
-                <div class="diagram-item-content" style="text-align: left; padding-left: 10px;">
-                     <ol>
-                        <li>資本規模過小</li>
-                        <li>市場競爭激烈</li>
-                        <li>獲利週期長</li>
-                        <li>股權流動性低</li>
-                    </ol>
+                <div class="diagram-item" style="background-color: #f7e7e7; border-left-color: #dc3545;">
+                    <div class="diagram-item-title">⚠️ 風險評估</div>
+                    <div class="diagram-item-content" style="text-align: left; padding-left: 10px;">
+                         <ol>
+                            <h4>資本規模過小</h4>
+ <p>UCHARGE公司實收資本額僅約 1,104 萬元，在需要持續投入研發與市場推廣的產業中，資金實力相對薄弱，抗風險能力較低。</p>
+                            <h4>市場競爭激烈</h4>
+<p>面對台達電、華城等軟硬體整合大廠的競爭，UCHARGE 純軟體的模式是否能說服客戶，以及能否維持技術領先，是一大考驗。</p>
+                            <h4>獲利週期長</h4>
+<p>SaaS 商業模式需要累積大量用戶才能實現規模化獲利。在此之前，公司可能持續處於虧損或現金流緊張的狀態。</p>
+                            <h4>股權流動性低</h4>
+<p>作為未上市公司，股權缺乏流動性。投資後若公司發展不如預期，資金可能難以退出。</p>
+                        </ol>
+                    </div>
                 </div>
             </div>
         </div>
-        <p style="margin-top:20px;"><b>• 生存條件：</b><br>1. 市場需求明確：社區充電管理是剛性需求，能解決管委會收費與電力分配的痛點。<br>2. 輕資產易擴張：SaaS 模式無需承擔龐大的硬體庫存與折舊，有利於快速複製到不同場域乃至海外。<br>3. 技術具差異化：「插槍即充」與「智慧配電」等專利，是其與其他僅提供通用軟體的廠商相比的護城河。</p>
-        <p><b>• 風險評估：</b><br>1. 資本規模過小：UCHARGE公司實收資本額僅約 1,104 萬元，在需要持續投入研發與市場推廣的產業中，資金實力相對薄弱，抗風險能力較低。<br>2. 市場競爭激烈：面對台達電、華城等軟硬體整合大廠的競爭，UCHARGE 純軟體的模式是否能說服客戶，以及能否維持技術領先，是一大考驗。<br>3. 獲利週期長：SaaS 商業模式需要累積大量用戶才能實現規模化獲利。在此之前，公司可能持續處於虧損或現金流緊張的狀態。<br>4. 股權流動性低：作為未上市公司，股權缺乏流動性。投資後若公司發展不如預期，資金可能難以退出。</p>
-    </div>
+    </section>
 
     <!-- Slide 12: Part 3 - Investment Suggestion -->
-    <div class="slide">
-        <h2>第三部分：投資 UCHARGE 可行性評估</h2>
-        <h3>二、 投資可行性分析與初步建議</h3>
-        <p><b>應定位為高風險的策略性天使投資。</b></p>
-        <h4>1. 投資的價值：</h4>
-        <p>投資 UCHARGE，不僅是財務投資，更是策略投資。建商人脈可以直接為 UCHARGE 帶來業務，加速其商業模式的驗證與市場擴張，這是一般財務投資者無法提供的價值。</p>
-        <h4>2. 風險控管：</h4>
-        <p>鑑於公司規模尚小且市場競爭激烈，建議：</p>
-        <ul>
-            <li><b>進行詳盡的盡職調查 (Due Diligence)：</b><br>務必深入了解其財務狀況、專利組合的法律狀態、技術團隊實力以及現有客戶合約等。</li>
-            <li><b>合理評估公司估值：</b><br>切勿以市場熱度來決定投資金額，應回歸其基本面進行客觀評估。</li>
-            <li><b>爭取策略性權益：</b><br>投資條件中可要求獲得一席董事席位，以便深度參與公司決策，並確保資源能有效挹注。</li>
-            <li><b>考慮投資額度：</b><br>建議投入的資金，應是可以承受完全損失的風險資本。</li>
-        </ul>
-    </div>
+    <section class="page-section">
+        <div class="content-wrapper">
+            <h2>第三部分：投資 UCHARGE 可行性評估</h2>
+            <h3>二、 投資可行性分析與初步建議</h3>
+            <p style="text-align: center; font-size: 1.5em; font-weight: bold; background-color: #e7f0f7; padding: 15px; border-radius: 8px;">應定位為高風險的策略性天使投資。</p>
+            <h4>1. 投資的價值：</h4>
+            <p>投資 UCHARGE，不僅是財務投資，更是策略投資。建商人脈可以直接為 UCHARGE 帶來業務，加速其商業模式的驗證與市場擴張，這是一般財務投資者無法提供的價值。</p>
+            <h4>2. 風險控管：</h4>
+            <p>鑑於UCHARGE公司規模尚小且市場競爭激烈，建議：</p>
+            <ul>
+                <li><b>進行詳盡的盡職調查 (Due Diligence)：</b><br>務必深入了解其財務狀況、專利組合的法律狀態、技術團隊實力以及現有客戶合約等。</li>
+                <li><b>合理評估公司估值：</b><br>切勿以市場熱度來決定投資金額，應回歸其基本面進行客觀評估。</li>
+                <li><b>爭取策略性權益：</b><br>投資條件中可要求獲得一席董事席位，以便深度參與公司決策，並確保資源能有效挹注。</li>
+                <li><b>考慮投資額度：</b><br>建議投入的資金，應是可以承受完全損失的風險資本。</li>
+            </ul>
+        </div>
+    </section>
 
-
-    <button class="nav-button prev" onclick="changeSlide(-1)">&#10094;</button>
-    <button class="nav-button next" onclick="changeSlide(1)">&#10095;</button>
-    <div class="page-number"></div>
-</div>
-
-<script>
-    let currentSlide = 0;
-    const slides = document.querySelectorAll('.slide');
-    const pageNumberDisplay = document.querySelector('.page-number');
-    const totalSlides = slides.length;
-
-    function showSlide(n) {
-        slides.forEach((slide, index) => {
-            slide.classList.remove('active');
-        });
-        slides[n].classList.add('active');
-        updatePageNumber();
-    }
-
-    function changeSlide(n) {
-        currentSlide += n;
-        if (currentSlide >= totalSlides) {
-            currentSlide = 0;
-        }
-        if (currentSlide < 0) {
-            currentSlide = totalSlides - 1;
-        }
-        showSlide(currentSlide);
-    }
-    
-    function updatePageNumber() {
-        pageNumberDisplay.textContent = `${currentSlide + 1} / ${totalSlides}`;
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        showSlide(currentSlide);
-    });
-</script>
+</main>
 
 </body>
 </html>

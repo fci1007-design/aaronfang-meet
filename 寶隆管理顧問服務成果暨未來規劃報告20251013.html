@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>寶隆室內工藝股份有限公司 - 管理顧問服務成果暨未來規劃報告</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif;
+            line-height: 1.8;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="4" height="4" viewBox="0 0 4 4"%3E%3Cpath fill="%23cccccc" fill-opacity="0.1" d="M1 3h1v1H1V3zm2-2h1v1H3V1z"%3E%3C/path%3E%3C/svg%3E');
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: #c00000;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            color: #c00000;
+            border-bottom: 2px solid #c00000;
+            padding-bottom: 10px;
+            margin-top: 50px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+        }
+
+        h3 {
+            font-size: 1.4em;
+            color: #333;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        h3::before {
+            content: '';
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            margin-right: 15px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            flex-shrink: 0;
+        }
+
+        h3.strategy::before {
+            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"%3E%3Cpath fill="%23c00000" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/%3E%3C/svg%3E');
+        }
+        h3.risk::before {
+            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"%3E%3Cpath fill="%23c00000" d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/%3E%3C/svg%3E');
+        }
+        h3.digital::before {
+            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"%3E%3Cpath fill="%23c00000" d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8h16v10zM4 6h16v2H4z"/%3E%3C/svg%3E');
+        }
+        h3.internal::before {
+            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"%3E%3Cpath fill="%23c00000" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/%3E%3C/svg%3E');
+        }
+        
+        h3.future-strategy::before {
+             background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"%3E%3Cpath fill="%23c00000" d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6h-5.6z"/%3E%3C/svg%3E');
+        }
+        h3.future-digital::before {
+            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"%3E%3Cpath fill="%23c00000" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/%3E%3C/svg%3E');
+        }
+        h3.future-internal::before {
+            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"%3E%3Cpath fill="%23c00000" d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/%3E%3C/svg%3E');
+        }
+
+
+        p, li {
+            font-size: 1.1em;
+            color: #333;
+        }
+
+        .intro p {
+            font-size: 1.2em;
+            line-height: 1.9;
+            margin-bottom: 20px;
+        }
+        
+        .signature {
+            text-align: right;
+            margin-top: 60px;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+        
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        li {
+            padding: 15px 20px;
+            margin-bottom: 12px;
+            border-left: 4px solid #c00000;
+            background-color: #fff;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-radius: 0 5px 5px 0;
+        }
+        
+        li:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            background-color: #fff8f8;
+        }
+
+        li strong {
+            display: block;
+            color: #000;
+            margin-bottom: 5px;
+            font-size: 1.15em;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin-top: 30px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 16px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: #c00000;
+            color: white;
+            font-size: 1.2em;
+        }
+        
+        td {
+             background-color: #fff;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        td ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        td ul li {
+            padding: 5px 0;
+            margin-bottom: 5px;
+            border: none;
+            background: none;
+            box-shadow: none;
+            list-style-type: disc;
+        }
+        
+        td ul li:hover {
+             transform: none;
+             box-shadow: none;
+             background-color: transparent;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid #e0e0e0;
+            color: #888;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>寶隆室內工藝股份有限公司</h1>
+            <p>管理顧問服務成果暨未來規劃報告</p>
+        </header>
+
+        <section class="intro">
+            <p><strong>致 董事長：</strong></p>
+            <p>自2024年10月，我們承蒙您的信任，開始為寶隆公司提供管理顧問服務。最初，我們的合作目標是針對公司的重要會議資料與專案進行研究分析，為您的決策提供分析意見。隨著合作的深入，我們的服務範圍也逐步擴展至策略、營運、風險管理及數位轉型等多個面向，致力於協助公司提升整體營運效能。</p>
+            <p>本報告彙整過去近一年來的工作投入與成果，並提出下一階段的工作規劃，供您回顧與決策參考。</p>
+        </section>
+
+        <section id="review">
+            <h2>一、 顧問服務投入與成果回顧</h2>
+            <p>過去的合作期間，在您的支持下，我們投入了以下主要工作項目，為公司的營運管理提供了諸多分析與建議：</p>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>層面</th>
+                            <th>主要成果與貢獻</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><h3><strong>策略與營運層面</strong></h3></td>
+                            <td>
+                                <ul>
+                                    <li><strong>財務與流程優化：</strong>協助年度預算編列的審查作業，並針對經費報銷流程提出優化建議。</li>
+                                    <li><strong>公司slogan定調：</strong>協助將公司slogan定調為「智慧美學、美好生活」，作為未來發展的指導方針。</li>
+                                    <li><strong>管理制度建議：</strong>針對預算管控、會議指示追蹤等方面提出具體管理建議，並引薦董事長特別助理人選以利相關制度的落實。</li>
+                                    <li><strong>業務專案評估：</strong>針對三機部總經銷獎金方案及SP促銷案進行分析評估，提供決策參考；並歸納分析總經銷會議中所反映的問題，提出相應建議。</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><h3><strong>風險管理與危機處理</strong></h3></td>
+                            <td>
+                                <ul>
+                                    <li><strong>資安事件應對：</strong>在公司遭遇駭客攻擊時，第一時間提供處置建議，並協助完成後續的資安調查報告。</li>
+                                    <li><strong>突發事件處理：</strong>就臺北營業所貨品短差及屏東營業所火災等事件，提供應變處理建議。</li>
+                                    <li><strong>合約與維修評估：</strong>針對公司車輛維修模式的選擇，以及與全國電子開店贊助費的合約調整，進行評估並提出建議。</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><h3><strong>數位轉型與行銷強化</strong></h3></td>
+                            <td>
+                                <ul>
+                                    <li><strong>轉型組織籌設：</strong>建議籌組「數位轉型推動小組」，並已於今年7月1日協助辦理成立會議與共識會議，正式啟動小組運作。</li>
+                                    <li><strong>數位知能提升：</strong>為公司同仁辦理生成式AI的內部教育訓練，並引介外部講師進行SEO與數位設計專題演講，提升團隊數位素養。</li>
+                                    <li><strong>網路行銷規劃：</strong>完成公司網站重建的訪價與評估，並提出提升網路行銷成效的具體行動步驟建議。</li>
+                                    <li><strong>行銷專案分析：</strong>針對櫥櫃部「愛媽咪」行銷提案，完成分析並提供具體建議。</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><h3><strong>內部控制與組織改善</strong></h3></td>
+                            <td>
+                                <ul>
+                                    <li><strong>資訊與資安盤點：</strong>協助盤點內部資訊工作現況，並依據盤點結果提出資安改善建議。</li>
+                                    <li><strong>組織運作建議：</strong>針對公司重大事件的處理流程與組織權責調整，提出相關建議。</li>
+                                    <li><strong>內部控管強化：</strong>執行臺北營業所的突擊盤點，以協助強化內部控管機制，並審核三機部提交之檢討報告，協助部門流程改善。</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="future-planning">
+            <h2>二、 未來工作規劃</h2>
+            <p>為使公司的轉型能持續深化，我們規劃將未來的顧問工作聚焦於以下三大核心領域，以系統性的方式協助公司應對挑戰：</p>
+            
+            <h3 class="future-strategy">高階策略與決策支援</h3>
+            <ul>
+                <li>
+                    <strong>會議參與</strong>
+                    <span>持續參與公司重要會議，就各項專案與營運議題進行討論及建議，為董事長及高階主管提供即時決策參考。</span>
+                </li>
+                <li>
+                    <strong>研究評估</strong>
+                    <span>針對董事長或高階主管提出之公司各項發展議題，進行研究評估提供決策參考（例如近期評估與ESG產業連結之可行性）。</span>
+                </li>
+            </ul>
+
+            <h3 class="future-digital">數位轉型與人才發展</h3>
+            <ul>
+                <li>
+                    <strong>組織運作</strong>
+                    <span>持續輔導「數位轉型推動小組」的運作，將先前各項數位化建議，如網站建置、ERP導入評估、數位行銷、專案研究等，轉化為具體的執行方案並追蹤進度。</span>
+                </li>
+                <li>
+                    <strong>人才培育</strong>
+                    <span>公司人才與幹部的培養及銜接將是未來的重點議題，我們規劃透過數位轉型推動小組，結合數位工具與系統化方法，處理此項議題，逐步建立公司的人才發展機制。</span>
+                </li>
+            </ul>
+
+            <h3 class="future-internal">內部控制制度建置</h3>
+            <ul>
+                <li>
+                    <strong></strong>
+                    <span>輔導成立「內部控制推動小組」，盤點公司現有作業流程，協助建立與完善標準作業程序（SOP）及相關規章，以強化公司治理，降低營運風險。</span>
+                </li>
+            </ul>
+        </section>
+
+        <section class="conclusion">
+            <p>我們期待在下一個階段，能持續為寶隆公司的永續發展貢獻專業，協助公司在穩健的基礎上，逐步落實轉型藍圖，再創佳績。</p>
+            <div class="signature">
+                <p>顧問 方崇懿、吳勝富 敬上</p>
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2025 寶隆室內工藝股份有限公司. All Rights Reserved.</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>

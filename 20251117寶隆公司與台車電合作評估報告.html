@@ -170,10 +170,48 @@
         padding: 25px 35px;
         border-radius: 8px;
         text-align: center;
+        flex: 1;
+        min-width: 250px;
     }
-    .process-step-title { font-weight: bold; font-size: 2.0em; color: #d9534f; }
-    .arrow { font-size: 4em; color: #005A9C; }
+    .process-step p {
+        font-size: 1.1em;
+    }
+    .process-step-title {
+        font-weight: bold;
+        font-size: 2.0em;
+        margin-bottom: 15px;
+    }
+    /* 為三個標題設定不同顏色 */
+    .step-1 { color: #005A9C; }
+    .step-2 { color: #f0ad4e; }
+    .step-3 { color: #5cb85c; }
 
+    .arrow {
+        font-size: 4em;
+        color: #005A9C;
+    }
+
+    /* --- Responsive Design --- */
+    /* 當螢幕寬度小於等於 768px 時套用以下樣式 */
+    @media (max-width: 768px) {
+        /* 適度縮小標題，以符合手機螢幕 */
+        h1 { font-size: 2.5em; }
+        h2 { font-size: 1.8em; }
+        h3 { font-size: 1.5em; }
+        .page-section { padding: 40px 5vw; }
+
+        /* 將流程圖改為垂直排列 */
+        .process-flow {
+            flex-direction: column; /* 垂直堆疊 */
+            align-items: stretch; /* 讓每個區塊都填滿寬度 */
+        }
+        
+        /* 將箭頭旋轉90度，變為向下箭頭 */
+        .arrow {
+            transform: rotate(90deg);
+            margin: -15px 0; /* 調整箭頭的垂直間距 */
+        }
+    }
 </style>
 </head>
 <body>
@@ -205,18 +243,18 @@
             <h1>評估背景與流程</h1>
             <div class="process-flow">
                 <div class="process-step">
-                    <div class="process-step-title"></div>
-                    <h3><br>市場、商業模式、潛在效益分析</h3>
+                    <div class="process-step-title step-1">第一階段</div>
+                    <p>市場、商業模式、潛在效益分析</p>
                 </div>
                 <div class="arrow">→</div>
                 <div class="process-step">
-                    <div class="process-step-title"></div>
-                    <h3><br>專利檢視、與台車電執行長訪談、評估結論</h3>
+                    <div class="process-step-title step-2">第二階段</div>
+                    <p>專利檢視、與台車電執行長訪談、評估結論</p>
                 </div>
                  <div class="arrow">→</div>
                 <div class="process-step" style="background-color: #d4edda; border: 1px solid #c3e6cb;">
-                    <div class="process-step-title"></div>
-                    <h3>評估與策略建議</h3>
+                    <div class="process-step-title step-3">最終產出</div>
+                    <p>評估與策略建議</p>
                 </div>
             </div>
         </div>
@@ -226,7 +264,6 @@
     <section class="page-section">
         <div class="content-wrapper">
             <h2>綜合評估(Part 1)</h2>
-            <h3></h3>
             <div class="grid-container">
                 <div class="info-card" style="border-left-color: #5cb85c;">
                     <div class="card-title">✅ 市場潛力與效益</div>
@@ -252,7 +289,6 @@
     <section class="page-section">
         <div class="content-wrapper">
             <h2>綜合評估分析 (Part 2)</h2>
-            <h3></h3>
             <div class="grid-container">
                 <div class="info-card">
                     <div class="card-title">🛡️ 技術護城河不如預期</div>

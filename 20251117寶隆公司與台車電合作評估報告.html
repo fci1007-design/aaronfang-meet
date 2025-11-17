@@ -191,7 +191,7 @@
         color: #005A9C;
     }
 
-    /* --- Responsive Design --- */
+    /* --- Responsive Design (響應式設計) --- */
     /* 當螢幕寬度小於等於 768px 時套用以下樣式 */
     @media (max-width: 768px) {
         /* 適度縮小標題，以符合手機螢幕 */
@@ -204,12 +204,23 @@
         .process-flow {
             flex-direction: column; /* 垂直堆疊 */
             align-items: stretch; /* 讓每個區塊都填滿寬度 */
+            gap: 0; /* 移除區塊間的空隙，由箭頭的 margin 來控制 */
         }
         
-        /* 將箭頭旋轉90度，變為向下箭頭 */
+        /* 【修正重點】在手機上隱藏原本的水平箭頭 */
         .arrow {
-            transform: rotate(90deg);
-            margin: -15px 0; /* 調整箭頭的垂直間距 */
+            display: none;
+        }
+
+        /* 【修正重點】為每個流程步驟 (除了最後一個) 的下方添加一個向下的箭頭 */
+        .process-step:not(:last-child)::after {
+            content: '↓'; /* 箭頭的內容就是一個向下符號 */
+            display: block; /* 讓箭頭獨佔一行 */
+            font-size: 2.5em; /* 箭頭大小 */
+            color: #005A9C; /* 箭頭顏色 */
+            font-weight: bold;
+            margin-top: 20px; /* 與上方內容的間距 */
+            margin-bottom: 20px; /* 與下方區塊的間距 */
         }
     }
 </style>

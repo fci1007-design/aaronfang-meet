@@ -223,6 +223,24 @@
             margin-bottom: 20px; /* 與下方區塊的間距 */
         }
     }
+/* --- 報告連結按鈕樣式 (新增) --- */
+.report-link-button {
+    display: inline-block; /* 讓連結可以設定內外距 */
+    background-color: #e7f0f7; /* 按鈕背景色 */
+    color: #003366; /* 文字顏色 */
+    padding: 12px 24px; /* 按鈕內距 (上下、左右) */
+    border-radius: 8px; /* 圓角 */
+    text-decoration: none; /* 移除底線 */
+    font-weight: bold; /* 粗體字 */
+    font-size: 1.1em; /* 字體大小 */
+    border: 1px solid #b8cde0; /* 邊框 */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* 滑鼠移過時的過渡效果 */
+}
+.report-link-button:hover {
+    background-color: #d0e0f0; /* 滑鼠移過時的背景色 */
+    transform: translateY(-2px); /* 滑鼠移過時稍微向上浮動 */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* 加上陰影 */
+}
 </style>
 </head>
 <body>
@@ -255,12 +273,17 @@
             <div class="process-flow">
                 <div class="process-step">
                     <div class="process-step-title step-1">第一階段</div>
-                    <h3>市場、商業模式、潛在效益分析</h3>
+                    <h3>
+        市場、商業模式、潛在效益分析<br>
+        <a href="https://fci1007-design.github.io/aaronfang-meet/%E5%AF%B6%E9%9A%86%E5%85%AC%E5%8F%B8%E8%88%87%20UCHARGE%20%E5%90%88%E4%BD%9C%E8%A9%95%E4%BC%B0%E5%A0%B1%E5%91%8A.html" target="_blank" rel="noopener noreferrer" style="font-size: 0.9em; color: #005A9C; font-weight: bold;">
+            (點此查看先前評估報告)
+        </a>
+    </h3>
                 </div>
                 <div class="arrow">→</div>
                 <div class="process-step">
                     <div class="process-step-title step-2">第二階段</div>
-                    <h3>專利檢視、與台車電執行長訪談、評估結論</h3>
+                    <h3>專利檢視、<br>11月12日與台車電執行長進行視訊訪談、<br>評估結論</h3>
                 </div>
                  <div class="arrow">→</div>
                 <div class="process-step" style="background-color: #d4edda; border: 1px solid #c3e6cb;">
@@ -275,6 +298,13 @@
     <section class="page-section">
         <div class="content-wrapper">
             <h2>綜合評估</h2>
+<!-- ▼▼▼ 請將以下這段程式碼加到標題下方 ▼▼▼ -->
+<p style="text-align: center; margin: 20px 0 40px;">
+    <a href="https://fci1007-design.github.io/aaronfang-meet/%E5%AF%B6%E9%9A%86%E5%85%AC%E5%8F%B8%E8%88%87%20UCHARGE%20%E5%90%88%E4%BD%9C%E8%A9%95%E4%BC%B0%E5%A0%B1%E5%91%8A.html" target="_blank" rel="noopener noreferrer" class="report-link-button">
+        點此查看：先前評估報告
+    </a>
+</p>
+<!-- ▲▲▲ 新增程式碼結束 ▲▲▲ -->
             <div class="grid-container">
                 <div class="info-card" style="border-left-color: #5cb85c;">
                     <div class="card-title">✅ 市場潛力與效益</div>

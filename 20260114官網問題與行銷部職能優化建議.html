@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>官網問題與行銷部職能優化建議</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Framer Motion -->
+    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        morandi: {
+                            base: '#F5F0EF',      // 淺灰粉底
+                            text: '#5E5050',      // 深暖灰字
+                            primary: '#A97171',   // 莫蘭迪紅主色
+                            secondary: '#C9Aba9', // 淺莫蘭迪紅
+                            accent: '#8C6A6A',    // 深重音色
+                            light: '#FFFFFF',     // 純白卡片
+                            subtle: '#D9D0D0'     // 分隔線
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Noto Sans TC"', '"Helvetica Neue"', 'Arial', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #F5F0EF;
+            color: #5E5050;
+            overflow-x: hidden;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F5F0EF;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #C9Aba9;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #A97171;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+        }
+        /* Base styles for projection */
+        p, li {
+            font-size: 1.25rem;
+            line-height: 1.8;
+        }
+        h1 { font-size: 3.5rem; }
+        h2 { font-size: 2.5rem; }
+        h3 { font-size: 2rem; }
+        
+        @media (max-width: 768px) {
+            p, li { font-size: 1rem; }
+            h1 { font-size: 2rem; }
+            h2 { font-size: 1.75rem; }
+            h3 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+    const { motion, useScroll, useSpring } = window.Motion;
+
+    // --- Components ---
+
+    const Section = ({ children, className = "", bgColor = "" }) => (
+        <motion.section 
+            className={`min-h-screen w-full flex flex-col justify-center items-center px-8 py-20 relative overflow-hidden ${bgColor} ${className}`}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: false, amount: 0.3 }}
+        >
+            {children}
+        </motion.section>
+    );
+
+    const FadeInUp = ({ children, delay = 0, className = "" }) => (
+        <motion.div
+            className={`w-full max-w-6xl ${className}`}
+            initial={{ opacity: 0, y: 50, scale: 0.98 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.8, delay: delay, ease: [0.22, 1, 0.36, 1] }}
+            viewport={{ once: false, amount: 0.3 }}
+        >
+            {children}
+        </motion.div>
+    );
+
+    const FocusCard = ({ title, icon, children, delay = 0 }) => (
+        <motion.div 
+            className="glass-card p-10 md:p-14 rounded-3xl w-full mx-auto"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            whileHover={{ y: -5, boxShadow: "0 25px 50px rgba(169, 113, 113, 0.2)" }}
+            transition={{ duration: 0.6, delay: delay }}
+        >
+            {title && (
+                <div className="flex items-center mb-8 border-b border-morandi-subtle pb-6">
+                    {icon && (
+                        <div className="w-16 h-16 rounded-full bg-morandi-primary/10 flex items-center justify-center mr-6 text-morandi-primary shrink-0">
+                            <i className={`fa-solid ${icon} text-3xl`}></i>
+                        </div>
+                    )}
+                    <h3 className="text-3xl md:text-4xl font-bold tracking-wide text-morandi-text">{title}</h3>
+                </div>
+            )}
+            <div className="text-morandi-text text-justify leading-relaxed text-xl font-medium">
+                {children}
+            </div>
+        </motion.div>
+    );
+
+    const SectionHeader = ({ number, title, subtitle }) => (
+        <div className="text-center mb-12">
+             {number && (
+                <div className="text-morandi-primary font-black text-6xl md:text-8xl opacity-10 mb-[-30px] md:mb-[-50px] select-none">
+                    {number}
+                </div>
+             )}
+            <h2 className="text-3xl md:text-5xl font-bold text-morandi-text relative z-10">{title}</h2>
+            {subtitle && <p className="text-xl md:text-2xl text-morandi-accent mt-6 font-light">{subtitle}</p>}
+        </div>
+    );
+
+    const KPIGraph = () => {
+        const canvasRef = useRef(null);
+        
+        useEffect(() => {
+            if (!canvasRef.current) return;
+            const ctx = canvasRef.current.getContext('2d');
+            const chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['全公司業績 (不公平)', '網站增長', '詢價轉換', '社群互動'],
+                    datasets: [{
+                        label: 'KPI 相關性',
+                        data: [20, 85, 90, 75],
+                        backgroundColor: [
+                            'rgba(140, 106, 106, 0.3)',
+                            'rgba(169, 113, 113, 0.9)',
+                            'rgba(169, 113, 113, 0.9)',
+                            'rgba(169, 113, 113, 0.9)'
+                        ],
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true }, x: { grid: { display: false } } }
+                }
+            });
+            return () => chart.destroy();
+        }, []);
+        return <div className="h-64 w-full mt-4"><canvas ref={canvasRef} /></div>;
+    };
+
+    // --- Main Application ---
+
+    const App = () => {
+        const { scrollYProgress } = useScroll();
+        const scaleX = useSpring(scrollYProgress, {
+            stiffness: 100,
+            damping: 30,
+            restDelta: 0.001
+        });
+
+        return (
+            <div className="font-sans antialiased text-morandi-text">
+                
+                {/* Progress Bar */}
+                <motion.div
+                    className="fixed top-0 left-0 right-0 h-2 bg-morandi-primary origin-left z-50"
+                    style={{ scaleX }}
+                />
+
+                {/* --- Page 1: Cover --- */}
+                <Section className="bg-gradient-to-br from-[#FDFBFB] to-[#EBEDEE]">
+                    <div className="text-center max-w-5xl mx-auto z-10">
+                        <FadeInUp>
+                            <span className="inline-block py-2 px-6 border border-morandi-primary rounded-full text-morandi-primary text-lg font-bold mb-8 tracking-widest">
+                                HCG BaoLong
+                            </span>
+                        </FadeInUp>
+                        <FadeInUp delay={0.2}>
+                            <h1 className="leading-tight mb-10 font-black text-gray-800">
+                                官網問題與<br />
+                                <span className="text-morandi-primary">行銷部職能優化建議</span>
+                            </h1>
+                        </FadeInUp>
+                        <FadeInUp delay={0.4}>
+                            <div className="w-24 h-1 bg-morandi-primary mx-auto mb-10"></div>
+                            <p className="text-2xl md:text-3xl text-morandi-text font-light tracking-wide leading-normal">
+                                針對新版官網驗收缺失之結構性分析，<br/>暨行銷部職能優化計畫。
+                            </p>
+                        </FadeInUp>
+                    </div>
+                </Section>
+
+                {/* --- Page 2: Preface --- */}
+                <Section>
+                    <FadeInUp>
+                        <SectionHeader title="問題即是轉機" />
+                        <div className="glass-card p-12 rounded-3xl">
+                            <div className="mb-8">
+                                <p className="mb-6">針對的網站缺失進行了全面的歸納與分析。</p>
+                                <blockquote className="text-2xl md:text-3xl font-bold text-morandi-primary italic border-l-4 border-morandi-primary pl-6 my-8 py-2 bg-morandi-primary/5 rounded-r-lg">
+                                    「不怕有問題，只怕不知道問題。」
+                                </blockquote>
+                                <p className="mb-6">這次網站總體檢雖然暴露了許多執行面的瑕疵，但這正是檢視「委外廠商能力」與「內部行銷量能」的最佳機會。</p>
+                                <p>目前的狀況顯示，若不進行結構性調整，行銷部將陷入「修補錯誤」的無限迴圈，無法發揮應有的價值。以下分為三個層面進行報告。</p>
+                            </div>
+                            <div className="grid md:grid-cols-3 gap-4 mt-8">
+                                <div className="bg-white p-4 rounded-xl shadow-sm border text-center font-bold text-morandi-text">
+                                    <span className="block text-4xl text-morandi-subtle mb-2">01</span>
+                                    網站與委外廠商的<br/>結構性缺失
+                                </div>
+                                <div className="bg-white p-4 rounded-xl shadow-sm border text-center font-bold text-morandi-text">
+                                    <span className="block text-4xl text-morandi-subtle mb-2">02</span>
+                                    行銷部面臨的<br/>結構性困境與職能缺口
+                                </div>
+                                <div className="bg-white p-4 rounded-xl shadow-sm border text-center font-bold text-morandi-text">
+                                    <span className="block text-4xl text-morandi-subtle mb-2">03</span>
+                                    行銷部優化（賦能）<br/>行動方案
+                                </div>
+                            </div>
+                        </div>
+                    </FadeInUp>
+                </Section>
+
+                {/* --- Page 3: Level 1 Intro --- */}
+                <Section className="bg-[#EFE6E6]">
+                    <FadeInUp>
+                        <SectionHeader number="01" title="01 網站與委外廠商的結構性缺失" subtitle="" />
+                        <FocusCard title="專業度與回應速度" icon="fa-triangle-exclamation">
+                            <p className="mb-6">經過檢核，發現目前的網站製作廠商在專業度與回應速度上均有不及格之處，這直接拖累了行銷部的運作效率。</p>
+                            <div className="bg-white/60 p-6 rounded-xl border-l-4 border-morandi-accent">
+                                <p className="font-bold text-morandi-accent text-2xl mb-2">表面工程</p>
+                                <p>廠商僅完成了網頁的外觀，卻忽略了許多使用者體驗 (UX)與後續維護邏輯。</p>
+                            </div>
+                        </FocusCard>
+                    </FadeInUp>
+                </Section>
+
+                {/* --- Page 4: Level 1 Details --- */}
+                <Section className="bg-[#EFE6E6]">
+                    <FadeInUp>
+                        <FocusCard title="缺失細節分析" icon="fa-list-check">
+                            <div className="space-y-6">
+                                <div>
+                                    <strong className="block text-morandi-primary text-2xl mb-2"><i className="fa-solid fa-link-slash mr-2"></i>功能失效與錯誤連結</strong>
+                                    <p className="mb-2">許多按鈕（如進口事業的小圖標、主要品牌圖片）點擊無反應，或僅是重新整理網頁。這在數位行銷中是大忌，會讓客戶誤以為網站故障，不耐煩就跳出了，影響信心與觀感。</p>
+                                    <ul className="list-disc pl-8 text-morandi-accent bg-white/50 p-3 rounded-lg">
+                                        <li>例如 ALA 產品無法點擊看細節</li>
+                                        <li>Baumatic 點擊無資料，可能是廠商在架構資訊時就沒有考量到資料層級。</li>
+                                    </ul>
+                                </div>
+                                <div className="h-px bg-morandi-subtle"></div>
+                                <div>
+                                    <strong className="block text-morandi-primary text-2xl mb-2"><i className="fa-solid fa-image mr-2"></i>SEO 基礎缺失</strong>
+                                    <p>圖片缺乏詳細的 alt 屬性，將導致 Google 搜尋不到圖片，影響曝光，這些都是現代網頁製作的基本標準，廠商卻未落實。</p>
+                                </div>
+                                <div className="h-px bg-morandi-subtle"></div>
+                                <div>
+                                    <strong className="block text-morandi-primary text-2xl mb-2"><i className="fa-solid fa-user-clock mr-2"></i>被動的服務模式</strong>
+                                    <p>同仁反應問題後，廠商修改緩慢，導致行銷部同仁必須花費大量時間在「除錯」與「監工」，而非進行「行銷」。</p>
+                                </div>
+                            </div>
+                        </FocusCard>
+                    </FadeInUp>
+                </Section>
+
+                {/* --- Page 5: Level 1 Summary --- */}
+                <Section className="bg-[#EFE6E6]">
+                    <FadeInUp>
+                        <div className="bg-white p-12 rounded-3xl shadow-xl border-t-8 border-morandi-primary text-center">
+                            <div className="inline-block p-4 rounded-full bg-morandi-primary/10 text-morandi-primary mb-6">
+                                <i className="fa-solid fa-clipboard-check text-4xl"></i>
+                            </div>
+                            <h2 className="text-4xl font-bold mb-8 text-morandi-text">小結：網站體質不良</h2>
+                            <p className="text-xl leading-loose text-justify text-morandi-text">
+                                源於廠商製作網站時可能數位行銷邏輯較欠缺，或者缺乏主動積極，沒辦法協助客戶做好的規劃（本次網站製作過程討論次數）。
+                                <br/><br/>
+                                <span className="text-morandi-primary font-bold bg-morandi-primary/10 px-2 rounded">未來如網站要更新</span>，應要求廠商具備數位行銷觀念、主動積極服務，而不是只標榜能低價做出網站。
+                            </p>
+                        </div>
+                    </FadeInUp>
+                </Section>
+
+                {/* --- Page 6: Level 2 Intro --- */}
+                <Section>
+                    <FadeInUp>
+                        <SectionHeader number="02" title="02 行銷部面臨的結構性困境與職能缺口" subtitle="" />
+                        <div className="glass-card p-12 rounded-3xl text-center">
+                            <i className="fa-solid fa-users-gear text-6xl text-morandi-secondary mb-6 block"></i>
+                            <p className="text-2xl font-medium leading-relaxed">
+                                除了廠商問題，我們必須誠實面對內部行銷部的結構性問題。<br/>
+                                目前的 3 位同仁雖努力，但受限於<span className="text-morandi-primary font-bold mx-2">人力不足</span>與<span className="text-morandi-primary font-bold mx-2">職能缺口</span>，應對現代化的數位行銷會負荷很重。
+                            </p>
+                        </div>
+                    </FadeInUp>
+                </Section>
+
+                {/* --- Page 7: Level 2 - Point 1 --- */}
+                <Section>
+                    <FadeInUp>
+                        <FocusCard title="1. 「瑣事」吃掉了「行銷」的產能" icon="fa-rotate">
+                            <p className="text-2xl font-bold text-morandi-primary mb-6 bg-morandi-primary/5 p-4 rounded-lg">
+                                光修補破網，無法撒網捕魚。
+                            </p>
+                            <ul className="space-y-6 list-none">
+                                <li className="flex items-start">
+                                    <i className="fa-solid fa-circle-exclamation text-morandi-accent mt-2 mr-4"></i>
+                                    <span>光是要修正本次提出的數十項網站改進項目（如連結失效、文案不足、照片標示），就足以耗盡團隊數週的產能。</span>
+                                </li>
+                                <li className="flex items-start">
+                                    <i className="fa-solid fa-palette text-morandi-accent mt-2 mr-4"></i>
+                                    <span>行銷部目前像是美工，時間多被要求用於畫圖製卡、協調製作商品型錄。</span>
+                                </li>
+                                <li className="flex items-start">
+                                    <i className="fa-solid fa-ban text-morandi-accent mt-2 mr-4"></i>
+                                    <span>團隊若忙於日常瑣事，會無暇顧及品牌資產的創造與維護、社群的經營與負評消毒。</span>
+                                </li>
+                            </ul>
+                        </FocusCard>
+                    </FadeInUp>
+                </Section>
+
+                {/* --- Page 8: Level 2 - Point 2 --- */}
+                <Section>
+                    <FadeInUp>
+                        <FocusCard title="2. 「內容行銷」的質量不足" icon="fa-pen-nib">
+                            <p className="mb-8 font-bold">網站不是做好就沒事，真正的戰場在於「內容」。目前的內容呈現出「有做就好」的狀況，而非「要做得有競爭力」。</p>
+                            <div className="grid md:grid-cols-2 gap-6">
+                                <div className="bg-red-50 p-6 rounded-2xl border border-red-100">
+                                    <h4 className="text-xl font-bold text-red-800 mb-3"><i className="fa-solid fa-xmark mr-2"></i>缺乏高質感內容</h4>
+                                    <p className="text-base">高端品牌（ALA/Berlolini）圖片解析度差、文案空泛。行銷部需要時間與能力去撰寫能帶來溢價的文案，而不只是複製貼上規格。</p>
+                                </div>
+                                <div className="bg-red-50 p-6 rounded-2xl border border-red-100">
+                                    <h4 className="text-xl font-bold text-red-800 mb-3"><i className="fa-solid fa-xmark mr-2"></i>缺乏 CTA</h4>
+                                    <p className="text-base">產品頁面「加入詢問」後無後續指引，客戶不知所措。這會浪費掉進站的流量。（考量經銷商會抗議）</p>
+                                </div>
+                            </div>
+                        </FocusCard>
+                    </FadeInUp>
+                </Section>
+
+                {/* --- Page 9: Level 2 - Point 3 --- */}
+                <Section>
+                    <FadeInUp>
+                        <FocusCard title="3. 缺乏新世代數位職能 (SEO/GEO/AEO)" icon="fa-robot">
+                            <p className="mb-6 font-bold text-2xl text-center">未來的行銷不只是寫文案，還要寫給機器看：</p>
+                            <div className="space-y-4">
+                                <div className="p-6 bg-white rounded-xl shadow-sm border-l-8 border-morandi-primary">
+                                    <h4 className="text-2xl font-bold text-morandi-primary mb-2">SEO (搜尋引擎優化)</h4>
+                                    <p>讓客戶在 Google 搜尋時可以看到寶隆排名在前面，排名在前5名內才有可能被點閱。</p>
+                                </div>
+                                <div className="p-6 bg-white rounded-xl shadow-sm border-l-8 border-morandi-secondary">
+                                    <h4 className="text-2xl font-bold text-morandi-secondary mb-2">GEO & AEO (答案引擎優化)</h4>
+                                    <p>未來 AI 搜尋成為趨勢，我們的內容結構必須調整，才讓 AI 能抓取並推薦我們。</p>
+                                </div>
+                            </div>
+                            <p className="mt-8 text-center font-bold text-morandi-accent">目前行銷部同仁若無暇學習並應用這些新技術，網站的效果將會大打折扣甚至會失去大部分作用。
+</p>
+                        </FocusCard>
+                    </FadeInUp>
+                </Section>
+
+                {/* --- Page 10: Level 2 - Point 4 --- */}
+                <Section>
+                    <FadeInUp>
+                        <FocusCard title="4. KPI 定義模糊，無法歸因" icon="fa-chart-pie">
+                            <div className="flex flex-col lg:flex-row items-center gap-8 w-full">
+                                <div className="flex-1 w-full min-w-0">
+                                    <p className="mb-4">目前看「全公司業績」來評估行銷成效是不公平且無效的。</p>
+                                    <div className="bg-morandi-primary/10 p-6 rounded-xl border border-morandi-primary/20">
+                                        <p className="font-bold text-morandi-primary mb-2">建議方向</p>
+                                        <p>行銷部的 KPI 應該聚焦於「流量帶來的機會」例如：網站流量增長率、詢價單轉換數、社群互動率（而非只是PO沒人看的節慶賀卡）。</p>
+                                    </div>
+                                </div>
+                                <div className="flex-1 w-full min-w-0 h-auto">
+                                    <KPIGraph />
+                                </div>
+                            </div>
+                        </FocusCard>
+                    </FadeInUp>
+                </Section>
+
+                {/* --- Page 11: Level 3 Intro --- */}
+                <Section className="bg-[#EFE6E6]">
+                    <FadeInUp>
+                        <SectionHeader number="03" title="03 行銷部優化（賦能）行動方案" subtitle="" />
+                        <div className="glass-card p-10 rounded-3xl text-center">
+                            <p className="text-2xl font-bold mb-8">為了讓行銷部成為公司的戰略武器，建議分三階段進行優化：</p>
+                            <div className="flex flex-col md:flex-row justify-center gap-6 text-left">
+                                <div className="bg-white p-6 rounded-xl shadow-md flex-1">
+                                    <div className="text-morandi-primary font-black text-4xl mb-2">01</div>
+                                    <div className="font-bold text-xl">第一階段：<br/>從瑣事解放出來</div>
+                                </div>
+                                <div className="bg-white p-6 rounded-xl shadow-md flex-1">
+                                    <div className="text-morandi-secondary font-black text-4xl mb-2">02</div>
+                                    <div className="font-bold text-xl">第二階段：<br/>建立現代化 KPI 體系</div>
+                                </div>
+                                <div className="bg-white p-6 rounded-xl shadow-md flex-1">
+                                    <div className="text-morandi-accent font-black text-4xl mb-2">03</div>
+                                    <div className="font-bold text-xl">第三階段：<br/>SOP 標準化與流程再造</div>
+                                </div>
+                            </div>
+                        </div>
+                    </FadeInUp>
+                </Section>
+
+                {/* --- Page 12: Level 3 - Stage 1 --- */}
+                <Section className="bg-[#EFE6E6]">
+                    <FadeInUp>
+                        <div className="relative">
+                            <div className="absolute -top-6 -left-6 bg-morandi-primary text-white w-16 h-16 rounded-full flex items-center justify-center text-3xl font-bold shadow-lg z-10">1</div>
+                            <FocusCard title="第一階段：從瑣事解放出來" icon="fa-dove">
+                                <div className="space-y-8 mt-4">
+                                    <div className="flex gap-6">
+                                        <div className="shrink-0 w-12 h-12 rounded-full bg-white flex items-center justify-center text-morandi-primary text-xl"><i className="fa-solid fa-unlock"></i></div>
+                                        <div>
+                                            <strong className="block text-2xl text-morandi-primary mb-2">業務分流</strong>
+                                            <p>將「低階重複性工作」（如單純製圖、修圖、基礎上架）盡量自動化或外包，將同仁從瑣事解放出來，把重點放在提升行銷KPI</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-6">
+                                        <div className="shrink-0 w-12 h-12 rounded-full bg-white flex items-center justify-center text-morandi-primary text-xl"><i className="fa-solid fa-compass-drafting"></i></div>
+                                        <div>
+                                            <strong className="block text-2xl text-morandi-primary mb-2">制定「優化計畫」</strong>
+                                            <p>顧問協助行銷組長，重新盤點每位成員的業務職掌，並制定行銷優化計畫。</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </FocusCard>
+                        </div>
+                    </FadeInUp>
+                </Section>
+
+                {/* --- Page 13: Level 3 - Stage 2 --- */}
+                <Section className="bg-[#EFE6E6]">
+                    <FadeInUp>
+                        <div className="relative">
+                            <div className="absolute -top-6 -left-6 bg-morandi-secondary text-white w-16 h-16 rounded-full flex items-center justify-center text-3xl font-bold shadow-lg z-10">2</div>
+                            <FocusCard title="第二階段：建立現代化 KPI 體系" icon="fa-chart-line">
+                                <p className="mb-8 font-medium">協助行銷部建立「可量化、可歸因」的績效指標，不讓行銷部背負沈重的全公司業績壓力，而是專注於他們能控制的變數：</p>
+                                <div className="grid md:grid-cols-3 gap-4">
+                                    <div className="bg-white p-6 rounded-2xl text-center shadow-sm">
+                                        <i className="fa-solid fa-arrow-trend-up text-4xl text-morandi-primary mb-4"></i>
+                                        <h4 className="font-bold text-xl mb-2">流量指標</h4>
+                                        <p className="text-sm">自然搜尋流量成長（SEO 成效）。</p>
+                                    </div>
+                                    <div className="bg-white p-6 rounded-2xl text-center shadow-sm">
+                                        <i className="fa-solid fa-users text-4xl text-morandi-primary mb-4"></i>
+                                        <h4 className="font-bold text-xl mb-2">轉換指標</h4>
+                                        <p className="text-sm">官網「加入詢問」點擊數、Line@ 有效好友增長數、FB互動率。</p>
+                                    </div>
+                                    <div className="bg-white p-6 rounded-2xl text-center shadow-sm">
+                                        <i className="fa-solid fa-file-pen text-4xl text-morandi-primary mb-4"></i>
+                                        <h4 className="font-bold text-xl mb-2">內容指標</h4>
+                                        <p className="text-sm">高質量文章/案例產出數量（需符合 GEO/AEO 規範）。</p>
+                                    </div>
+                                </div>
+                            </FocusCard>
+                        </div>
+                    </FadeInUp>
+                </Section>
+
+                {/* --- Page 14: Level 3 - Stage 3 --- */}
+                <Section className="bg-[#EFE6E6]">
+                    <FadeInUp>
+                        <div className="relative">
+                            <div className="absolute -top-6 -left-6 bg-morandi-accent text-white w-16 h-16 rounded-full flex items-center justify-center text-3xl font-bold shadow-lg z-10">3</div>
+                            <FocusCard title="第三階段：SOP 標準化與流程再造" icon="fa-sitemap">
+                                <p className="mb-8">協助制定細部作業流程：</p>
+                                <div className="space-y-4">
+                                    <div className="flex items-center bg-white p-4 rounded-xl shadow-sm">
+                                        <span className="font-bold text-morandi-primary w-48 shrink-0 text-xl">數位資產上架 SOP</span>
+                                        <span className="text-base border-l pl-4 border-gray-200">確保圖片 Alt、關鍵字埋設、RWD 檢查在發布前完成。</span>
+                                    </div>
+                                    <div className="flex items-center bg-white p-4 rounded-xl shadow-sm">
+                                        <span className="font-bold text-morandi-primary w-48 shrink-0 text-xl">社群營運 SOP</span>
+                                        <span className="text-base border-l pl-4 border-gray-200">包含負評處理機制、定期留言回覆規範。</span>
+                                    </div>
+                                    <div className="flex items-center bg-white p-4 rounded-xl shadow-sm">
+                                        <span className="font-bold text-morandi-primary w-48 shrink-0 text-xl">外包管理 SOP</span>
+                                        <span className="text-base border-l pl-4 border-gray-200">建立對廠商的驗收標準清單，不再被廠商牽著走。</span>
+                                    </div>
+                                </div>
+                            </FocusCard>
+                        </div>
+                    </FadeInUp>
+                </Section>
+
+                {/* --- Page 15: Conclusion --- */}
+                <Section className="bg-morandi-primary text-white">
+                    <div className="max-w-5xl mx-auto text-center">
+                        <FadeInUp>
+                            <h2 className="mb-12 text-5xl font-bold">伍、 結語</h2>
+                        </FadeInUp>
+                        <FadeInUp delay={0.2}>
+                            <div className="text-2xl md:text-3xl leading-loose space-y-12 font-light text-justify bg-white/10 p-10 rounded-3xl backdrop-blur-sm border border-white/20">
+                                <p>
+                                    這次網站發現的問題其實是公司轉型過程中的陣痛。透過這次的檢驗，我們看見了行銷部在「量能」與「職能」上的不足。
+                                </p>
+                                <p>
+                                    發現問題不是要苛責行銷部的同仁，而是透過制度面的調整，給予他們正確的武器（新觀念、新工具）與方向（正確的 KPI），行銷同仁才能真正從「行政美工」升級為推動公司成長的<span className="font-bold border-b-4 border-white pb-1">「行銷戰隊」</span>。
+                                </p>
+                            </div>
+                        </FadeInUp>
+                        <FadeInUp delay={0.4}>
+                            <div className="mt-16 animate-pulse">
+                                <i className="fa-solid fa-flag-checkered text-8xl opacity-60"></i>
+                            </div>
+                        </FadeInUp>
+                    </div>
+                </Section>
+
+                {/* Footer */}
+                <footer className="bg-[#5E5050] text-[#D9D0D0] py-12 text-center text-lg">
+                    <p>&copy; 2026 官網問題與行銷部職能優化建議報告</p>
+                </footer>
+
+            </div>
+        );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+</script>
+
+</body>
+</html>

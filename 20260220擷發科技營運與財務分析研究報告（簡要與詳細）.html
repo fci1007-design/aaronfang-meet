@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>擷發科技研究報告：簡要與詳細</title>
+<style>
+    /* --- 全域共用基礎設定 --- */
+    html {
+        scroll-behavior: smooth;
+    }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft JhengHei', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        background-color: #F4F7F9; /* 兩者的背景色值剛好相同 */
+        margin: 0;
+        padding: 0;
+        line-height: 1.8;
+    }
+
+    /* ========================================================= */
+    /* --- 簡要說明報告專用樣式 (Summary View) --- */
+    /* ========================================================= */
+    :root {
+        --bg-primary: #ffffff;
+        --bg-secondary: #F4F7F9;
+        --bg-dark: #0F172A; 
+        --text-main: #334155;
+        --text-light: #F8FAFC;
+        --heading-dark: #1E293B;
+        --accent-amber: #F59E0B; 
+        --accent-teal: #0D9488;  
+        --accent-rose: #E11D48;  
+        --accent-indigo: #4F46E5;
+    }
+
+    #summary-view {
+        color: var(--text-main);
+    }
+    #summary-view .page-section {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 80px 5vw;
+        border-bottom: 1px solid #e2e8f0;
+        background-color: var(--bg-primary);
+    }
+    #summary-view .page-section:nth-child(even) { background-color: var(--bg-secondary); }
+    #summary-view .page-section.dark-section { background-color: var(--bg-dark); color: var(--text-light); }
+    #summary-view .content-wrapper { width: 100%; max-width: 1100px; }
+    #summary-view h1, #summary-view h2, #summary-view h3, #summary-view h4 { color: var(--heading-dark); font-weight: bold; }
+    #summary-view .dark-section h1, #summary-view .dark-section h2, #summary-view .dark-section h3 { color: var(--text-light); }
+    #summary-view h1 { font-size: 2.8em; text-align: center; margin-top: 0; margin-bottom: 25px; }
+    #summary-view h2 { font-size: 2.2em; border-bottom: 4px solid var(--accent-amber); padding-bottom: 15px; margin-bottom: 40px; display: inline-block; }
+    #summary-view h3 { font-size: 1.5em; margin-top: 0; margin-bottom: 15px; }
+    #summary-view .title-page { text-align: center; }
+    #summary-view .title-page h1 { color: var(--accent-amber); border: none; margin-bottom: 30px; }
+    #summary-view .report-meta { margin-top: 40px; color: #94A3B8; font-size: 1.1em; border-top: 1px solid #334155; padding-top: 30px; display: inline-block; text-align: left; line-height: 2; }
+    #summary-view ul { padding-left: 25px; margin: 0; }
+    #summary-view li { margin-bottom: 15px; font-size: 1.1em; line-height: 1.8; }
+    #summary-view li:last-child { margin-bottom: 0; }
+    #summary-view .grid-container { display: grid; gap: 30px; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); width: 100%; }
+    #summary-view .color-card { background-color: var(--bg-primary); padding: 35px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.06); transition: transform 0.3s ease, box-shadow 0.3s ease; font-size: 1.05em; display: flex; flex-direction: column; height: 100%; box-sizing: border-box; }
+    #summary-view .color-card:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(0,0,0,0.12); }
+    #summary-view .card-teal { border-top: 8px solid var(--accent-teal); }
+    #summary-view .card-indigo { border-top: 8px solid var(--accent-indigo); }
+    #summary-view .card-amber { border-top: 8px solid var(--accent-amber); }
+    #summary-view .card-rose { border-top: 8px solid var(--accent-rose); background-color: #FFF1F2; }
+    #summary-view .card-title { font-weight: bold; font-size: 1.35em; margin-bottom: 15px; color: var(--heading-dark); }
+    #summary-view .card-teal .card-title { color: var(--accent-teal); }
+    #summary-view .card-indigo .card-title { color: var(--accent-indigo); }
+    #summary-view .card-amber .card-title { color: #D97706; }
+    #summary-view .card-rose .card-title { color: var(--accent-rose); }
+    #summary-view .highlight-block { background-color: var(--bg-dark); color: var(--text-light); padding: 45px; border-radius: 20px; border-left: 10px solid var(--accent-amber); font-size: 1.15em; box-shadow: 0 20px 40px rgba(15, 23, 42, 0.2); }
+    #summary-view .highlight-block li { margin-bottom: 20px; }
+    #summary-view .info-block { background-color: #F0FDF4; border: 1px solid #BBF7D0; border-left: 10px solid var(--accent-teal); padding: 40px; border-radius: 16px; font-size: 1.1em; }
+    @media (max-width: 768px) {
+        #summary-view h1 { font-size: 2.2em; }
+        #summary-view h2 { font-size: 1.8em; }
+        #summary-view .page-section { padding: 60px 5vw; min-height: auto; }
+        #summary-view .highlight-block, #summary-view .color-card, #summary-view .info-block { padding: 25px; }
+        #summary-view .grid-container { grid-template-columns: 1fr; }
+    }
+
+
+    /* ========================================================= */
+    /* --- 詳細報告專用樣式 (Detailed View) --- */
+    /* ========================================================= */
+    #detailed-view {
+        color: #4A4A4A;
+    }
+    #detailed-view .page-section {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 80px 5vw;
+        border-bottom: 1px solid #e0e0e0;
+        background-color: #ffffff;
+    }
+    #detailed-view .page-section:nth-child(even) { background-color: #f8f9fa; }
+    #detailed-view .content-wrapper { width: 100%; max-width: 1100px; }
+    #detailed-view h1, #detailed-view h2, #detailed-view h3, #detailed-view h4 { color: #003366; }
+    #detailed-view h1 { font-size: 2.5em; text-align: center; margin-top: 0; margin-bottom: 25px; }
+    #detailed-view h2 { font-size: 2.2em; border-bottom: 3px solid #005A9C; padding-bottom: 20px; margin-bottom: 50px; text-align: center; }
+    #detailed-view h3 { font-size: 1.5em; color: #005A9C; margin-top: 30px; margin-bottom: 15px; }
+    #detailed-view .title-page { text-align: center; }
+    #detailed-view .title-page-subtitle { font-size: 1.4em; color: #555; margin-top: 20px; }
+    #detailed-view .report-meta { margin-top: 40px; color: #666; font-size: 1.1em; border-top: 1px solid #ddd; padding-top: 20px; display: inline-block; line-height: 2; }
+    #detailed-view ul, #detailed-view ol { padding-left: 20px; }
+    #detailed-view li { margin-bottom: 15px; font-size: 1.05em; line-height: 1.7; }
+    #detailed-view .grid-container { display: grid; gap: 30px; margin-top: 30px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+    #detailed-view .info-card { background-color: #ffffff; padding: 30px; border-radius: 12px; border-left: 6px solid #005A9C; transition: transform 0.3s ease, box-shadow 0.3s ease; font-size: 1.05em; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+    #detailed-view .info-card:hover { transform: translateY(-8px); box-shadow: 0 12px 25px rgba(0,0,0,0.1); }
+    #detailed-view .card-title { font-weight: bold; color: #003366; font-size: 1.3em; margin-bottom: 15px; display: flex; align-items: center; }
+    #detailed-view .conclusion-card { background-color: #e7f0f7; border: 1px solid #b8cde0; padding: 40px; border-radius: 16px; font-size: 1.15em; line-height: 1.9; box-shadow: 0 4px 15px rgba(0, 51, 102, 0.1); }
+    #detailed-view .conclusion-card p { margin: 0 0 20px 0; }
+    #detailed-view .conclusion-card p:last-child { margin-bottom: 0; }
+    #detailed-view .conclusion-card strong { color: #d9534f; font-size: 1.1em; }
+    #detailed-view .risk-card { padding: 30px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); text-align: left; height: 100%; box-sizing: border-box; }
+    #detailed-view .risk-high { background-color: #fff2f2; border-left: 8px solid #d9534f; }
+    #detailed-view .risk-medium { background-color: #fffaf0; border-left: 8px solid #f0ad4e; }
+    #detailed-view .risk-low { background-color: #f2fff2; border-left: 8px solid #5cb85c; }
+    #detailed-view .risk-neutral { background-color: #f8f9fa; border-left: 8px solid #6c757d; }
+    #detailed-view .risk-card .card-title { font-size: 1.4em; }
+    #detailed-view .risk-card .card-title::before { font-size: 1.5em; margin-right: 15px; }
+    #detailed-view .risk-high .card-title::before { content: '⚠️'; }
+    #detailed-view .risk-medium .card-title::before { content: '🟡'; }
+    #detailed-view .risk-low .card-title::before { content: '✅'; }
+    #detailed-view .risk-neutral .card-title::before { content: 'ℹ️'; }
+    #detailed-view .table-responsive { width: 100%; overflow-x: auto; margin-top: 20px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-radius: 8px; }
+    #detailed-view table { width: 100%; border-collapse: collapse; background-color: #ffffff; min-width: 800px; }
+    #detailed-view th, #detailed-view td { border: 1px solid #ddd; padding: 12px 15px; text-align: center; font-size: 1.05em; }
+    #detailed-view th { background-color: #005A9C; color: white; font-weight: bold; }
+    #detailed-view tr:nth-child(even) { background-color: #f9f9f9; }
+    #detailed-view tr:hover { background-color: #f1f7fc; }
+    #detailed-view td:last-child { text-align: left; }
+    #detailed-view .highlight { font-weight: bold; color: #d9534f; }
+    @media (max-width: 768px) {
+        #detailed-view h1 { font-size: 2.2em; }
+        #detailed-view h2 { font-size: 1.8em; }
+        #detailed-view h3 { font-size: 1.4em; }
+        #detailed-view .page-section { padding: 50px 5vw; }
+    }
+
+
+    /* ========================================================= */
+    /* --- 跳轉按鈕專屬樣式 (CTA Buttons) --- */
+    /* ========================================================= */
+    .btn-jump-detailed {
+        background-color: var(--accent-amber);
+        color: #fff;
+        border: none;
+        padding: 12px 28px;
+        font-size: 1.1em;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        transition: all 0.3s ease;
+    }
+    .btn-jump-detailed:hover {
+        background-color: #D97706;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    }
+    
+    .btn-jump-summary {
+        background-color: #005A9C;
+        color: #fff;
+        border: none;
+        padding: 12px 28px;
+        font-size: 1.1em;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+    .btn-jump-summary:hover {
+        background-color: #004477;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    }
+</style>
+
+<script>
+    // 切換至「詳細報告」
+    function showDetailed() {
+        document.getElementById('summary-view').style.display = 'none';
+        document.getElementById('detailed-view').style.display = 'block';
+        window.scrollTo(0, 0);
+    }
+
+    // 切換回「簡要說明」
+    function showSummary() {
+        document.getElementById('detailed-view').style.display = 'none';
+        document.getElementById('summary-view').style.display = 'block';
+        window.scrollTo(0, 0);
+    }
+</script>
+</head>
+<body>
+
+<!-- ======================================================= -->
+<!-- 第一部分：簡要說明 (Summary View) -->
+<!-- ======================================================= -->
+<div id="summary-view" style="display: block;">
+    <main class="report-container">
+        <!-- Slide 1: 標題頁 -->
+        <section class="page-section dark-section title-page">
+            <div class="content-wrapper">
+                <h1>擷發科技調查報告簡要說明</h1>
+                <div class="report-meta">
+                    <p>報告撰寫人：顧問 方崇懿、吳勝富</p>
+                    <p>資料來源：本報告係基於公開網路資料進行彙整與分析</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 2: 總結摘要 -->
+        <section class="page-section">
+            <div class="content-wrapper">
+                <div style="text-align: center;"><h2>總結摘要</h2></div>
+                <div class="highlight-block">
+                    <ul>
+                        <li>擷發科技在技術上具一定創新性，特別是結合客製化晶片設計與 AI 軟體平台，可填補中小企業AI邊緣運算需求。</li>
+                        <li>然而公司規模小、營收靠專案項目認列且虧損持續，短期內難提供穩定現金流。</li>
+                        <li>建議董事長若看好AI邊緣運算長期成長，可視為策略性投資，投入資金應控制在可接受範圍內，並密切關注其專案項目轉量產的進展與實際市場導入成果。</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3: 調查簡要說明 - 公司定位 -->
+        <section class="page-section">
+            <div class="content-wrapper">
+                <div style="text-align: center;"><h2>調查簡要說明</h2></div>
+                <div class="color-card card-indigo" style="max-width: 900px; margin: 0 auto;">
+                    <div class="card-title">公司定位</div>
+                    <ul>
+                        <li>擷發科技是一家台灣新創，主要提供客製化 ASIC 晶片設計服務（Custom ASIC Technology and Solutions, CATS）與跨平台 AI 軟體服務（Cross-Platform AI Powered Solutions, CAPS）。</li>
+                        <li>公司擁有自研 EDA（Electronic Design Automation）工具及「Designless」設計流程，目標是協助客戶更快、更便宜地打造專用晶片。</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: 技術能力 -->
+        <section class="page-section">
+            <div class="content-wrapper">
+                <div style="text-align: center;"><h2>技術能力</h2></div>
+                <div class="grid-container">
+                    <div class="color-card card-teal">
+                        <div class="card-title">自研設計工具：</div>
+                        <p>公司開發了 Architecture Compiler 與 Performance Analyzer 等軟體，可以自動協助客戶完成晶片架構設計與效能分析，縮短前端設計時程。</p>
+                    </div>
+
+                    <div class="color-card card-teal">
+                        <div class="card-title">AI 軟體平台 （AI Vision Operation, AIVO）：</div>
+                        <p>CAPS架構下的 AIVO 平台提供零程式碼環境，可讓客戶快速訓練與部署 AI 模型；AIVO 採主從式分散運算設計，能在網路不穩定的現場即時處理影像並集中管理。目前已在智慧交通、農業與無人載具等場域做概念驗證。</p>
+                    </div>
+
+                    <div class="color-card card-teal">
+                        <div class="card-title">自主晶片開發：</div>
+                        <p>2025 年底公司宣稱首顆自研 NFC 收發器晶片投片成功，功能良率高達 99%，計畫搭配 AI 影像辨識軟體應用於工業與安全場域。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5: 商業模式 -->
+        <section class="page-section">
+            <div class="content-wrapper">
+                <div style="text-align: center;"><h2>商業模式</h2></div>
+                <div class="grid-container">
+                    <div class="color-card card-indigo">
+                        <div class="card-title">設計服務專案：</div>
+                        <p>目前營收主要來自客製化 ASIC 設計專案。客戶提出需求後，公司提供架構規劃、模擬驗證到晶圓交付的一站式服務，按專案進度認列收入。</p>
+                    </div>
+
+                    <div class="color-card card-indigo">
+                        <div class="card-title">AI 軟體平台授權：</div>
+                        <p>CAPS/AIVO 平台提供模型訓練、部署及維運功能，收費模式包含平台授權及後續維護費。公司希望透過平台累積多個客戶應用，建立持續性收入來源。</p>
+                    </div>
+
+                    <div class="color-card card-indigo">
+                        <div class="card-title">產品營收：</div>
+                        <p>自主 NFC 晶片及未來可能推出的 AI SoC（System-on-Chip）若能量產，將為公司帶來產品銷售收入。目前仍在早期階段，尚未貢獻大量營收。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 6: 營運近況 -->
+        <section class="page-section">
+            <div class="content-wrapper">
+                <div style="text-align: center;"><h2>營運近況</h2></div>
+                <div class="color-card card-rose" style="max-width: 900px; margin: 0 auto;">
+                    <ul>
+                        <li>2025 年全年合併營收約 4,929 萬元，較 2024 年下滑約 27%。</li>
+                        <li>2026 年 1 月營收約 80 萬元，官方說明多項 ASIC 與 AI 專案仍在概念驗證與客戶導入調整期，尚未轉入正式認列。</li>
+                        <li>營收來源專案性質濃厚，單月波動大；公司仍處於虧損狀態，需透過增資維持研發。</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 7: 成長動能 -->
+        <section class="page-section">
+            <div class="content-wrapper">
+                <div style="text-align: center;"><h2>成長動能</h2></div>
+                <div class="info-block" style="max-width: 900px; margin: 0 auto;">
+                    <ul>
+                        <li>擷發科技採用「軟體驅動硬體」策略，以客製化 ASIC 服務搭配 AI 軟體平台形成垂直整合。藉此降低客戶投入門檻，並鎖定工業自動化、智慧農業、交通安全和機器人等邊緣 AI 場域。</li>
+                        <li>公司與聯發科、Axelera AI 等合作夥伴建立策略聯盟，在國際展會展示 AIVO 平台並尋求客戶，期望透過平台規模化創造長期、可預期的收入。</li>
+                        <li>目前技術與產品多處於試驗與導入初期，缺乏大量實際營收貢獻；若未來能順利將 POC（Proof of Concept）專案轉為量產，才有機會提升獲利。</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 8: 附註 (含 CTA 跳轉按鈕) -->
+        <section class="page-section dark-section">
+            <div class="content-wrapper">
+                <div style="text-align: center;"><h2>附註</h2></div>
+                <div style="max-width: 800px; margin: 0 auto; background: rgba(255,255,255,0.05); padding: 30px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+                    <ul style="color: #cbd5e1; list-style-type: circle;">
+                        <li>此摘要為調查結果的簡要說明，若想了解更多細節，請參考完整調查報告。
+                            <!-- 跳轉按鈕增加在此處 -->
+                            <div style="margin-top: 25px; margin-bottom: 10px; text-align: left;">
+                                <button onclick="showDetailed()" class="btn-jump-detailed">閱讀完整詳細報告 ➡</button>
+                            </div>
+                        </li>
+                        <li>上述資訊來源均為公開資料，如需進一步深入了解公司運作，應另外取得該公司的正式財報及其他相關資料後再加以分析。</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+
+<!-- ======================================================= -->
+<!-- 第二部分：詳細報告 (Detailed View) -->
+<!-- ======================================================= -->
+<div id="detailed-view" style="display: none;">
+    <main class="report-container">
+        <!-- Slide 1: Title Page -->
+        <section class="page-section title-page">
+            <div class="content-wrapper">
+                <!-- 頂部返回按鈕 -->
+                <div style="margin-bottom: 40px; text-align: left;">
+                    <button onclick="showSummary()" class="btn-jump-summary">⬅ 返回簡要說明</button>
+                </div>
+                
+                <h1>擷發科技營運與財務分析研究報告（詳細）</h1>
+                <div class="report-meta">
+                    <p><strong>報告撰寫人：</strong>顧問 方崇懿、吳勝富</p>
+                    <p><strong>資料來源：</strong>本報告係基於公開網路資料進行彙整與分析</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 2: 報告重點摘要 -->
+        <section class="page-section">
+            <div class="content-wrapper">
+                <h2>報告重點摘要</h2>
+                <div class="conclusion-card">
+                    <ul>
+                        <li>擷發科技專注於客製化 ASIC 設計服務與跨平台 AI 軟體，透過自研 EDA 工具（Architecture Compiler、Performance Analyzer）結合 Designless 模式，試圖降低客戶開發門檻。公司亦於 2025 年 12 月宣布首款自研 NFC 收發器投片成功；然而目前大部分技術成果多來自公司與合作夥伴宣傳，尚缺第三方驗證。</li>
+                        <li>根據財報資料，擷發科技 2024 年合併營收約 0.68 億元，2023 年為 0.35 億元，2022 年為 0.34 億元，顯示營收規模雖有成長但仍偏小。2025 年累計至第二季合併營收約 0.4 億元，毛利率達 62.1%，較 2024 年 53.3% 大幅改善。</li>
+                        <li>公司的營業費用遠高於營業毛利，導致營業利益率持續為負，2024 年、2023 年和 2022 年分別為 -144%、-331% 及 -330%，2025 年上半年下降至 -169%。</li>
+                        <li>稅後淨利率長年負值，2024 年約 -93.4%，2025 年上半年惡化至約 -204%。ROE、ROA 持續為負，2024 年 ROE 為 -27.4%。</li>
+                        <li>月營收波動劇烈。2025 年 8 月單月營收 0.025 億元，年增 292%，但 9 月又降至 0.017 億元；2026 年 1 月單月僅 0.008 億元，年減 94.5%，反映營收多依賴專案項目認列。</li>
+                        <li>若看好邊緣 AI 與客製化晶片的中長期需求，可小額投資參與，並持續關注新產品量產與財務體質改善；如無法於未來二至三年內扭轉虧損及擴大營收，投資風險將大幅增加。</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3: 公司背景與營運模式 -->
+        <section class="page-section">
+            <div class="content-wrapper">
+                <h2>公司背景與營運模式</h2>
+                <p style="font-size: 1.1em; line-height: 1.8;">擷發科技成立於 2011 年，核心業務為 IC 設計服務與 AI 軟體平台。公司早期以矽智財 IP 交易平台起家，2013 年起布局專利，聲稱擁有 12 件專利申請並取得 5 項發明專利；2017 年建立全球委外設計服務系統，2018 年推出 Architecture Compiler 架構編譯器，2021 年推出 Performance Analyzer 效能分析器。公司於 2024 年底登錄櫃買中心興櫃（股票代號 7796）。</p>
+                
+                <h3>Designless 模式與主要服務</h3>
+                <div class="grid-container">
+                    <div class="info-card">
+                        <div class="card-title">1. CATS 客製化 IC 設計服務</div>
+                        <p><strong>（Custom ASIC Turnkey Service）：</strong>擷發科技利用自有 EDA 工具 iPROfiler 缩短前端設計時間 20–40%，專注於成熟製程 (28nm 以上) 的架構設計與效能優化。服務流程包括規格確認、架構設計、模擬驗證及佈局交付矽晶。客戶可藉由公司的 Architecture Compiler 自動產生 SoC 架構、透過 Performance Analyzer 分析瓶頸，降低設計門檻。</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="card-title">2. CAPS 跨平台 AI 軟體服務</div>
+                        <p><strong>（Cross Platform AI Software）：</strong>提供模型訓練、量化、部署與資料標註工具，協助客戶將 AI 模型快速部署在擷發的客製化晶片或合作夥伴晶片上。2025 年與聯發科合作推出 Genio AIoT 平台，採用 6 nm 製程並結合擷發的模型優化技術。</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="card-title">3. NFC IC 開發與其他產品</div>
+                        <p>2025 年 12 月公司宣布自主研發的首顆 NFC 收發器 IC 一次投片成功，初步功能良率 99%，支援 ISO15693/14443/18092 等標準；公司計畫將 NFC 晶片與 AI 影像辨識結合，推出工業用雙因子認證方案。</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 40px;">營運策略與市場定位</h3>
+                <div class="conclusion-card" style="background-color: #fffaf0; border-color: #f0ad4e;">
+                    <ul>
+                        <li>擷發科技主打中小企業的客製化晶片需求，利用 Designless 模式提供一站式 IC 設計服務並降低成本。公司與聯發科等大廠合作，並參與國科會國際合作計畫，在捷克成立先進晶片設計中心，預計 2027 年研發人員增至 40–80 人。</li>
+                        <li>自 2025 年起公司積極參展 CES、COMPUTEX 等國際展，宣傳極速 IC 設計平台與 AIVO 邊緣運算平台，並與荷蘭新創 Axelera AI 等合作，拓展工業監控、零售醫療等場域。</li>
+                        <li>公司員工約百人，其中六至七成為研發人員。董事長強調新人訓練 SOP 完整，並與大學進行產學合作。</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: 技術與專利評估 -->
+        <section class="page-section">
+            <div class="content-wrapper">
+                <h2>技術與專利評估</h2>
+                <div class="grid-container">
+                    <div class="risk-card risk-neutral">
+                        <div class="card-title">1. 專利與技術成果</div>
+                        <p>擷發科技官網表示早期曾申請 12 件專利並取得 5 項發明專利。公開資料顯示，公司主要技術集中於前端架構自動化（Architecture Compiler）、效能分析工具（Performance Analyzer）及 ASIC/NFC 晶片設計服務，近年少見新的專利公告，仍需關注研發能否形成可護城河的 IP。</p>
+                    </div>
+
+                    <div class="risk-card risk-medium">
+                        <div class="card-title">2. Architecture Compiler 與 Performance Analyzer</div>
+                        <p>官方宣稱這兩套工具可將客戶尋找 SoC 架構問題的時間大幅縮短，但目前缺乏獨立評測或大型客戶採用案例，技術競爭力有待觀察。</p>
+                    </div>
+
+                    <div class="risk-card risk-low">
+                        <div class="card-title">3. NFC 晶片</div>
+                        <p>2025 年底自研 NFC IC 投片成功，支援多項國際標準，若能量產並與 AI 模組結合，有望提升毛利率並建立自有產品線。但截至報告撰寫時，尚未見公開的量產進度或營收貢獻。</p>
+                    </div>
+
+                    <div class="risk-card risk-neutral">
+                        <div class="card-title">4. 與聯發科合作的 Genio AI 平台</div>
+                        <p>公司與聯發科推出的 6 nm 工業級 AIoT 平台結合 NPU 與擷發的 AI 優化技術，鎖定邊緣 AI 市場；但競爭者眾，平台能否快速擴大市場份額仍須觀察。</p>
+                    </div>
+
+                    <div class="risk-card risk-medium">
+                        <div class="card-title">5. CAPS 軟體平台</div>
+                        <p>CAPS 提供無程式碼的資料標記、模型訓練與部署功能，支持 ARM/RISC V 平台，優勢在於與自家 ASIC 服務整合緊密。然而平台規模仍小，生態系有限，與國際大廠相比尚無法提供完整的硬體/軟體整合服務。</p>
+                    </div>
+                </div>
+
+                <div class="info-card" style="margin-top: 30px; border-left-color: #6c757d; background-color: #f8f9fa;">
+                    <div class="card-title">技術競爭性與未來性</div>
+                    <p>IC 設計及 EDA 市場競爭激烈，Cadence、Synopsys 等國際大廠與許多新創均投入邊緣 AI 與 ASIC 領域。擷發科技以 Designless 模式與客製化 AI 晶片服務切入，對資金有限或缺乏內部設計團隊的客戶具吸引力。然而其產品線集中於成熟製程與特殊應用，市場規模相對有限，且未見第三方驗證的技術成果。投資人應謹慎評估其競爭優勢與長期可持續性。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5: 財務分析 1 -->
+        <section class="page-section">
+            <div class="content-wrapper">
+                <h2>財務分析</h2>
+                
+                <h3>營收與獲利概況</h3>
+                <p>下表整理擷發科技近三年與 2025 年上半年（累計）主要財務指標。</p>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>年度/期間</th>
+                                <th>營業收入 (百萬元)</th>
+                                <th>毛利率</th>
+                                <th>營業利益率</th>
+                                <th>稅後淨利率</th>
+                                <th>ROE</th>
+                                <th>EPS (元)</th>
+                                <th>說明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2022（111年）</td>
+                                <td>約 34</td>
+                                <td>57.8%</td>
+                                <td>-330%</td>
+                                <td>-334%</td>
+                                <td>-1,059%</td>
+                                <td>-28.44</td>
+                                <td>2022 年營收 0.34 億元，稅後淨損 1.12 億元；營業利益率與淨利率分別為 -330% 與 -334%，ROE 低至 -1,059%，EPS -28.44 元。此年公司因增資稀釋，EPS 出現極大負值。</td>
+                            </tr>
+                            <tr>
+                                <td>2023（112年）</td>
+                                <td>約 35</td>
+                                <td>42.3%</td>
+                                <td>-331%</td>
+                                <td>-92.7%</td>
+                                <td>-61.8%</td>
+                                <td>-3.36</td>
+                                <td>2023 年營收 0.35 億元；雖毛利率 42.3%，但營業費用龐大，營業利益率 -331%，稅後淨利率 -92.7%，EPS -3.36 元。</td>
+                            </tr>
+                            <tr>
+                                <td>2024（113年）</td>
+                                <td>約 68</td>
+                                <td>53.3%</td>
+                                <td>-144%</td>
+                                <td>-93.4%</td>
+                                <td>-27.4%</td>
+                                <td>-3.62</td>
+                                <td>2024 年營收增至 0.68 億元，毛利率升至 53.3%。然而營業費用 1.34 億元仍遠高於毛利，導致營業利益率 -144%、淨利率 -93.4%。ROE 改善為 -27.4%，但仍為負。</td>
+                            </tr>
+                            <tr>
+                                <td>2025 Q1~Q2（累計）</td>
+                                <td>約 40</td>
+                                <td>62.1%</td>
+                                <td>-169%</td>
+                                <td>-204%</td>
+                                <td>-49.7%</td>
+                                <td>-3.54</td>
+                                <td>2025 年上半年累計營收約 0.4 億元，毛利率升至 62.1%，但營業利益率仍為 -169%，稅後淨利率 -204%，ROE -49.7%，累計 EPS -3.54 元。</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 style="margin-top: 40px;">財務觀察重點</h3>
+                <div class="grid-container">
+                    <div class="risk-card risk-neutral">
+                        <p><strong>1. 營收規模仍小但快速成長。</strong> 2022 年營收約 0.34 億元，2023 年增至 0.35 億元，2024 年再增至 0.68 億元；2025 年上半年累計 0.4 億元。儘管成長率高，但以半導體業標準仍屬微型公司。</p>
+                    </div>
+                    <div class="risk-card risk-high">
+                        <p><strong>2. 長期虧損且虧損幅度大。</strong> 2022–2025 年公司每年稅後淨利均為負，營業利益率更長期在 -144% 至 -331% 之間，2025 上半年的稅後淨利率 -204% 表示每 100 元營收要虧損超過 200 元。</p>
+                    </div>
+                    <div class="risk-card risk-high">
+                        <p><strong>3. 毛利率改善不足以彌補費用。</strong> 毛利率從 2023 年的 42.3% 提升至 2024 年 53.3%，2025 上半年進一步提升至 62.1%。然而公司研發、推銷與管理費用合計遠高於毛利，使營業利益率仍為深負值。</p>
+                    </div>
+                    <div class="risk-card risk-high">
+                        <p><strong>4. ROE、ROA 持續為負。</strong> 2024 年 ROE 為 -27.4%，ROA -19.4%，現金流量比率 214.2%。負 ROE 表示股東投入資金未能產生正回報。</p>
+                    </div>
+                    <div class="risk-card risk-medium">
+                        <p><strong>5. 財報表現普通。</strong> 公司在現金比率、應收帳款比率與負債比率項目尚可，但營業利益率、淨利率、ROE 等核心指標均為深負值，顯示體質脆弱。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 6: 財務分析 2 -->
+        <section class="page-section">
+            <div class="content-wrapper">
+                <h2>財務分析 (續)</h2>
+
+                <div class="info-card" style="border-left-color: #f0ad4e;">
+                    <div class="card-title">📈 月營收與成長性</div>
+                    <p>擷發科技營收以專案型 IC 設計服務為主，收入認列具專案與時間特性，導致單月營收波動大。</p>
+                    <ul>
+                        <li><strong>2025 年 8 月至 9 月波動劇烈。</strong> 2025 年 8 月單月營收 0.025 億元，月增率 +128%、年增率 +292%；9 月營收降至 0.017 億元，月減 31.7%，年減 91.2%。</li>
+                        <li><strong>2025 年第四季及 2026 年初下滑明顯。</strong> 2025 年 11 月及 12 月單月營收約 0.011–0.012 億元。進入 2026 年 1 月單月營收僅 0.008 億元，年減 94.5%，連續刷新新低。累計營收也從 2025 年 9 月的 0.451 億元增加至 12 月的 0.493 億元，但年增率轉為 -27.1%，顯示前期成長來自少數專案，新年度缺乏新案認列。</li>
+                        <li><strong>專案依賴與季節性。</strong> 月營收大幅波動，反映公司目前以少數委案認列為主，尚未建立穩定的產品銷售收入；任何單一專案延遲或取消都可能對營收造成重大影響。</li>
+                    </ul>
+                </div>
+
+                <div class="grid-container">
+                    <div class="info-card">
+                        <div class="card-title">💰 現金流量與負債</div>
+                        <p>擷發科技近年透過多次增資取得資金。2024 年營業活動現金流為 +1.2 億元，投資活動 -1.5 億元，融 পুনরায়資活動 +2.5 億元，期末現金餘額 2.3 億元；2023 年營運現金流 -0.6 億元，融資活動 +0.8 億元，期末現金 0.2 億元。這些數據顯示公司主要資金來源仍依靠股東增資而非營運本身。</p>
+                        <p>負債比率方面，2024 年負債比約 14%，現金比率 54.7%，應收帳款比率 4.79%，現金流量比率 214%。負債比偏低代表公司負債壓力不大，但營運資金主要靠股本支撐，若未來虧損擴大可能需要再次增資。</p>
+                    </div>
+
+                    <div class="info-card" style="border-left-color: #999;">
+                        <div class="card-title">📄 股利政策</div>
+                        <p>擷發科技尚處於研發與擴張階段，2024 年僅以股票配股 1.5 元的形式發放股利，未配發現金股利。由於公司仍處虧損且需大量研發投入，短期內難以提供穩定的現金股利。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 7: 信用風險與投資風險評估 -->
+        <section class="page-section">
+            <div class="content-wrapper">
+                <h2>信用風險與投資風險評估</h2>
+                <div class="grid-container">
+                    <div class="risk-card risk-low">
+                        <div class="card-title">優勢與機會</div>
+                        <ol>
+                            <li><strong>差異化技術與自主工具：</strong> 自研的 Architecture Compiler、Performance Analyzer 以及 iPROfiler 能加速前端架構設計，若技術能被業界廣泛採用，將形成競爭壁壘。</li>
+                            <li><strong>毛利率改善與高附加價值專案：</strong> 2024 年毛利率 53.3%，2025 上半年更升至 62.1%，表明公司專案具高附加價值。若營收持續成長，毛利有望支持未來獲利。</li>
+                            <li><strong>新產品與合作拓展：</strong> NFC 晶片一次投片成功，與聯發科合作推出工業級 AIoT 平台，並與 Axelera AI 等海外新創合作，若這些產品順利量產，有機會帶來營收突破。</li>
+                            <li><strong>政策與產業趨勢：</strong> 全球對邊緣運算與專用 AI 晶片需求快速增長。摩根士丹利預估客製 AI 晶片市場將從 2024 年 120 億美元成長至 2027 年 300 億美元。擷發如果能專注中小企業客製化需求，有望占據利基市場。</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="risk-card risk-high">
+                        <div class="card-title">風險與限制</div>
+                        <ol>
+                            <li><strong>長期虧損與增資需求：</strong> 近三年均出現重大虧損且營業利益率為負，2025 上半年稅後淨利率更降至 -204%。若新產品或專案遞延，虧損可能擴大，需仰賴股東持續增資。</li>
+                            <li><strong>營收高度波動與專案集中：</strong> 月營收數據顯示公司收入多來自單一或少數專案，任一專案延遲或取消都可能使營收大幅下滑。</li>
+                            <li><strong>技術缺乏第三方驗證：</strong> 公司聲稱的技術優勢多來自自家或合作夥伴宣傳，缺乏大型客戶或獨立機構驗證。投資人難以評估其技術在全球市場的競爭力。</li>
+                            <li><strong>市場競爭激烈：</strong> 客製化 ASIC 與 EDA 市場由國際大廠主導，新創要在成熟製程與邊緣 AI 市場取得市佔需投入大量資金與技術服務成本；國際大廠掌握完整 IP 生態系，客戶黏性高。</li>
+                            <li><strong>股票流動性與估值風險：</strong> 擷發股票於興櫃交易，流動性有限且價格波動大。2025年Q2每股淨值約 12.5 元，而2026興櫃股價封關約 101 元，市值相對高估。若財報未快速改善，股價可能面臨修正壓力。</li>
+                            <li><strong>國際擴張與人力成本：</strong> 公司計畫在捷克與歐美擴張研發據點，勢必增加人力與管理成本，若營收未同步成長將加重虧損。</li>
+                            <li><strong>稀釋風險：</strong> 公司近年多次增資，資本額從 3 億元增至約 10 億元。未來若資金需求持續增加可能再度增資，造成原股東持股被稀釋。</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 8: 投資建議、成員誠信與結論 -->
+        <section class="page-section">
+            <div class="content-wrapper">
+                <h2>投資建議、成員誠信與結論</h2>
+                
+                <div class="info-card" style="margin-bottom: 30px; background-color: #f0f8ff;">
+                    <div class="card-title">📋 投資建議與注意事項</div>
+                    <p>擷發科技目前仍處研發與市場開拓階段，財務體質脆弱。若有興趣參與投資，建議控制投資金額，並注意下列要點：</p>
+                    <ul>
+                        <li><strong>1. 卡位邊緣 AI 與客製化晶片利基市場：</strong> 若看好 AI 專用晶片及智慧邊緣運算的長期需求，可以小額佈局。擷發的 Designless 模式與自研工具提供快速客製服務，具有一定差異化。</li>
+                        <li><strong>2. 關注新產品量產與毛利率趨勢：</strong> 毛利率提升表示專案價值高，未來若 NFC 晶片與 Genio AI 平台順利量產，營收與毛利有望大幅增加。投資人應密切追蹤新產品導入市場的時間表與實際出貨量。</li>
+                        <li><strong>3. 留意財務改善與增資動態：</strong> 持續關注營業費用率與現金流量是否改善，若公司仍需透過增資維持營運，須評估被稀釋的可能性。</li>
+                        <li><strong>4. 分散投資降低風險：</strong> 由於公司營收波動大且長期虧損，投資人應避免投入過高比例資金，並搭配其他產業或公司分散風險。</li>
+                    </ul>
+                </div>
+
+                <div class="info-card" style="margin-bottom: 30px; border-left-color: #5bc0de;">
+                    <div class="card-title">👔 公司主要成員誠信</div>
+                    <p>截至目前公開資訊，擷發科技的董事與主要經理人經歷多來自半導體與設計服務產業，未發現涉及舞弊或法律糾紛的報導。公司於各類媒體發佈的大多數資訊為產品新聞或策略合作訊息，無獨立媒體對管理層誠信的質疑。</p>
+                </div>
+
+                <div class="conclusion-card">
+                    <div class="card-title" style="margin-top: 0;">結論</div>
+                    <p>擷發科技以自研 EDA 工具與客製化 ASIC 服務切入半導體新創市場，並藉由與聯發科、Axelera AI 等夥伴合作提升能見度。Goodinfo 的財報資料顯示公司營收雖逐年成長，但營業費用遠高於毛利，導致長期虧損且 ROE、ROA 為負。毛利率在 2024–2025 年有所改善，但短期內仍難達損益平衡。投資人若看好邊緣 AI 市場，可以小額佈局並觀察未來二至三年內技術落地與財務轉盈情況；若無法快速擴大營收並控制費用，投資風險將顯著增加。</p>
+                    <p style="margin-top: 20px; font-size: 0.9em; color: #666;">報告撰寫人：顧問 方崇懿、吳勝富</p>
+                </div>
+                
+                <!-- 底部返回按鈕 -->
+                <div style="margin-top: 40px; text-align: center;">
+                    <button onclick="showSummary()" class="btn-jump-summary">⬅ 返回簡要說明</button>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+</body>
+</html>

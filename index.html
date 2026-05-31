@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>波蘭 Local Content 政策與電動車、巴士規範研究</title>
+  <meta name="description" content="針對波蘭 Local Content 政策、電動車與電動巴士製造要求，以及 51% 零件傳言的研究整理。">
+  <meta name="theme-color" content="#7c4e54">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+TC:wght@400;500;600;700&family=Noto+Serif+TC:wght@500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #5a3a40;
+      --paper: rgba(252, 245, 242, 0.94);
+      --paper-strong: rgba(255, 249, 246, 0.98);
+      --ink: #23191a;
+      --muted: #69595b;
+      --accent: #8c424e;
+      --accent-deep: #4d2128;
+      --accent-soft: rgba(140, 66, 78, 0.15);
+      --line: rgba(77, 45, 49, 0.15);
+      --shadow: 0 28px 72px rgba(46, 26, 29, 0.25);
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --max-width: 1180px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "IBM Plex Sans TC", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(166, 99, 110, 0.25), transparent 38%),
+        radial-gradient(circle at 84% 14%, rgba(135, 78, 86, 0.2), transparent 26%),
+        linear-gradient(180deg, #744e54 0%, #633f46 42%, var(--bg) 100%);
+      line-height: 1.8;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(24, 21, 18, 0.028) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(24, 21, 18, 0.028) 1px, transparent 1px);
+      background-size: 36px 36px;
+      pointer-events: none;
+      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.45), transparent 90%);
+      z-index: -1;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .page-shell {
+      width: min(calc(100% - 32px), var(--max-width));
+      margin: 22px auto 64px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 42px 42px 36px;
+      border-radius: 36px;
+      background:
+        radial-gradient(circle at 85% 18%, rgba(255, 244, 240, 0.16), transparent 28%),
+        radial-gradient(circle at 18% 100%, rgba(210, 169, 160, 0.14), transparent 36%),
+        linear-gradient(138deg, rgba(46, 28, 31, 0.97), rgba(87, 53, 58, 0.95) 54%, rgba(124, 78, 84, 0.92));
+      color: #f8f3ef;
+      box-shadow: var(--shadow);
+      isolation: isolate;
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(4px);
+      z-index: -1;
+    }
+
+    .hero::before {
+      width: 320px;
+      height: 320px;
+      right: -90px;
+      top: -70px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.16), transparent 68%);
+    }
+
+    .hero::after {
+      width: 420px;
+      height: 420px;
+      left: -160px;
+      bottom: -240px;
+      background: radial-gradient(circle, rgba(255, 204, 179, 0.12), transparent 70%);
+    }
+
+    .hero-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 64px;
+      flex-wrap: wrap;
+    }
+
+    .hero-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      color: rgba(248, 243, 238, 0.74);
+    }
+
+    .hero-label::before {
+      content: "";
+      width: 34px;
+      height: 1px;
+      background: currentColor;
+    }
+
+    .hero-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .hero-nav a {
+      text-decoration: none;
+      padding: 8px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 999px;
+      font-size: 0.9rem;
+      color: rgba(248, 243, 238, 0.82);
+      backdrop-filter: blur(8px);
+      transition: background-color 180ms ease, color 180ms ease, transform 180ms ease;
+    }
+
+    .hero-nav a:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+      gap: 36px;
+      align-items: end;
+    }
+
+    .hero-copy h1 {
+      margin: 0;
+      font-family: "Noto Serif TC", serif;
+      font-weight: 900;
+      font-size: clamp(2.4rem, 5vw, 4.7rem);
+      line-height: 1.1;
+      letter-spacing: 0.02em;
+      max-width: 12ch;
+    }
+
+    .hero-copy p {
+      margin: 20px 0 0;
+      max-width: 62ch;
+      color: rgba(248, 243, 238, 0.86);
+      font-size: 1.03rem;
+    }
+
+    .hero-meta {
+      display: grid;
+      gap: 16px;
+      align-self: stretch;
+      background: linear-gradient(180deg, rgba(255, 248, 244, 0.94), rgba(246, 231, 226, 0.9));
+      border: 1px solid rgba(124, 78, 84, 0.24);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 18px 44px rgba(38, 23, 25, 0.18);
+      backdrop-filter: blur(12px);
+    }
+
+    .hero-meta .eyebrow {
+      font-size: 1.25rem;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: none;
+      color: #2b1418;
+    }
+
+    .hero-meta strong {
+      display: block;
+      font-family: "Noto Serif TC", serif;
+      font-size: clamp(1.68rem, 2.6vw, 1.96rem);
+      line-height: 1.35;
+      color: #2b1b1d;
+    }
+
+    .hero-meta small {
+      color: #5d4d4f;
+      font-size: 0.96rem;
+    }
+
+    .hero-arrow {
+      margin-top: 30px;
+      font-size: 1.5rem;
+      opacity: 0.85;
+      animation: drift 2.2s ease-in-out infinite;
+      width: fit-content;
+    }
+
+    @keyframes drift {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(8px);
+      }
+    }
+
+    main {
+      display: grid;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .intro-panel,
+    .section,
+    .footer-panel {
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.08)),
+        linear-gradient(180deg, rgba(250, 244, 240, 0.96), rgba(239, 230, 226, 0.96));
+      border: 1px solid rgba(124, 78, 84, 0.14);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius-xl);
+      backdrop-filter: blur(10px);
+    }
+
+    .intro-panel::after,
+    .section::after,
+    .footer-panel::after {
+      content: "";
+      position: absolute;
+      left: 22px;
+      right: 22px;
+      bottom: 0;
+      height: 12px;
+      background: linear-gradient(90deg, transparent, rgba(124, 78, 84, 0.12), transparent);
+      pointer-events: none;
+    }
+
+    .intro-panel {
+      padding: 30px;
+    }
+
+    .intro-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+      gap: 22px;
+    }
+
+    .intro-copy {
+      font-size: 1.02rem;
+      color: var(--ink);
+    }
+
+    .intro-copy p {
+      margin: 0;
+    }
+
+    .key-points {
+      display: grid;
+      gap: 14px;
+    }
+
+    .fact-card {
+      padding: 18px 18px 16px;
+      border-radius: var(--radius-md);
+      background: var(--paper-strong);
+      border: 1px solid var(--line);
+    }
+
+    .fact-card .tag {
+      display: inline-block;
+      margin-bottom: 12px;
+      color: var(--accent);
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .fact-card strong {
+      display: block;
+      font-size: 1.1rem;
+      line-height: 1.5;
+      margin-bottom: 4px;
+    }
+
+    .fact-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    .section {
+      padding: 34px 30px;
+    }
+
+    .section::before {
+      content: attr(data-section);
+      position: absolute;
+      top: 18px;
+      right: 26px;
+      font-size: clamp(3rem, 8vw, 6.2rem);
+      font-weight: 700;
+      letter-spacing: -0.08em;
+      color: rgba(124, 78, 84, 0.08);
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: 124px minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+      margin-bottom: 28px;
+    }
+
+    .section-index {
+      color: var(--accent);
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-family: "Noto Serif TC", serif;
+      font-size: clamp(1.6rem, 3vw, 2.35rem);
+      line-height: 1.25;
+    }
+
+    .section-head p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      max-width: 64ch;
+    }
+
+    .section-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .story-card,
+    .policy-card,
+    .summary-card {
+      height: 100%;
+      padding: 20px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(255, 250, 246, 0.96)),
+        var(--paper-strong);
+    }
+
+    .story-card .label,
+    .policy-card .label,
+    .summary-card .label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .story-card .label::before,
+    .policy-card .label::before,
+    .summary-card .label::before {
+      content: "";
+      width: 18px;
+      height: 1px;
+      background: currentColor;
+    }
+
+    .story-card h3,
+    .policy-card h3,
+    .summary-card h3 {
+      margin: 0 0 10px;
+      font-size: 1.14rem;
+      line-height: 1.45;
+    }
+
+    .story-card p,
+    .policy-card p,
+    .summary-card p,
+    .policy-card ul,
+    .summary-card ul {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.96rem;
+      line-height: 1.8;
+    }
+
+    .policy-card ul,
+    .summary-card ul {
+      padding-left: 1.15rem;
+    }
+
+    .policy-card li + li,
+    .summary-card li + li {
+      margin-top: 10px;
+    }
+
+    .quote-block {
+      padding: 24px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, rgba(124, 78, 84, 0.1), rgba(255, 255, 255, 0.88));
+      border: 1px solid rgba(124, 78, 84, 0.14);
+    }
+
+    .quote-block p {
+      margin: 0;
+      font-size: clamp(1.05rem, 2vw, 1.28rem);
+      line-height: 1.85;
+    }
+
+    .source-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: 8px;
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: rgba(124, 78, 84, 0.1);
+      color: var(--accent-deep);
+      text-decoration: none;
+      font-size: 0.86rem;
+      font-weight: 600;
+      vertical-align: middle;
+      transition: background-color 180ms ease, transform 180ms ease;
+      white-space: nowrap;
+    }
+
+    .source-link:hover {
+      background: rgba(124, 78, 84, 0.16);
+      transform: translateY(-1px);
+    }
+
+    .source-link::before {
+      content: "↗";
+      font-size: 0.8rem;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead {
+      background: rgba(77, 45, 49, 0.95);
+      color: #f9f5ef;
+    }
+
+    th,
+    td {
+      padding: 16px 18px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    tbody tr:nth-child(even) {
+      background: rgba(124, 78, 84, 0.05);
+    }
+
+    tbody tr:hover {
+      background: rgba(124, 78, 84, 0.09);
+    }
+
+    .weight {
+      font-weight: 700;
+      color: var(--accent-deep);
+      white-space: nowrap;
+    }
+
+    .footer-panel {
+      padding: 32px 30px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .footer-panel h2 {
+      margin: 0 0 12px;
+      font-family: "Noto Serif TC", serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      line-height: 1.2;
+    }
+
+    .footer-panel p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .footer-note {
+      padding: 20px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(249, 242, 236, 0.96));
+    }
+
+    .footer-note strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1rem;
+      color: var(--ink);
+    }
+
+    .report-credit {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 22px 0 0;
+    }
+
+    .report-credit span {
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 16px;
+      border-radius: 4px;
+      font-size: 0.95rem;
+      letter-spacing: 0.04em;
+    }
+
+    .credit-label {
+      background: var(--accent-deep);
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .credit-chip {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(49, 28, 31, 0.16);
+    }
+
+    @keyframes fade-up {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .reveal {
+      animation: fade-up 640ms ease both;
+    }
+
+    @media (max-width: 980px) {
+      .hero,
+      .intro-panel,
+      .section,
+      .footer-panel {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+
+      .hero-grid,
+      .intro-grid,
+      .footer-grid,
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-topbar {
+        margin-bottom: 34px;
+      }
+
+      .section-head {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page-shell {
+        width: min(calc(100% - 20px), var(--max-width));
+        margin: 10px auto 34px;
+      }
+
+      .hero {
+        padding-top: 24px;
+        border-radius: 28px;
+      }
+
+      .hero-nav {
+        gap: 8px;
+      }
+
+      .hero-nav a {
+        font-size: 0.84rem;
+        padding: 7px 12px;
+      }
+
+      .intro-panel,
+      .section,
+      .footer-panel {
+        padding: 22px 18px;
+        border-radius: 24px;
+      }
+
+      .section::before {
+        font-size: 4.2rem;
+        right: 16px;
+      }
+
+      .quote-block {
+        padding: 18px;
+      }
+
+      th,
+      td {
+        padding: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero reveal">
+      <div class="hero-topbar">
+        <div class="hero-label">Policy Research Brief</div>
+        <nav class="hero-nav" aria-label="章節導覽">
+          <a href="#overview">概覽</a>
+          <a href="#section-1">重點一</a>
+          <a href="#section-2">重點二</a>
+          <a href="#section-3">應對建議</a>
+          <a href="#section-4">政策定義</a>
+          <a href="#summary">總結</a>
+        </nav>
+      </div>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <h1>回覆董事長：波蘭 Local Content 政策與電動車、巴士相關規範研究</h1>
+          <p>本頁整理波蘭政府是否要求電動汽車或公車必須在波蘭生產、是否要求中國企業在當地設廠，以及市場流傳的「51% 零件須源於波蘭」說法是否屬實，供董事長與團隊快速掌握政策實質影響。</p>
+          <div class="hero-arrow" aria-hidden="true">↓</div>
+        </div>
+        <aside class="hero-meta" aria-label="結論摘要">
+          <div class="eyebrow">結論摘要</div>
+          <strong>政策核心不是排除外資，而是把「本土參與度」納入國營採購的加分邏輯。</strong>
+          <small>換言之，波蘭目前沒有針對電動車或電動巴士設下必須在波蘭製造、或零件必須達 51% 波蘭來源的硬性法律門檻。</small>
+        </aside>
+      </div>
+    </header>
+
+    <main>
+      <section class="intro-panel reveal" id="overview">
+        <div class="intro-grid">
+          <div class="intro-copy">
+            <p>董事長您好，針對您詢問的「波蘭政府是否規定電動汽車或公車必須在波蘭生產，特別是要求中國企業在波蘭設廠，或是產品需有 51% 零件源於波蘭？」以下為查驗 MAP 官方訊息與相關報導後的完整研究整理。本報告先給出結論，再拆解政策定義、謠言來源、招標影響，以及公司未來若規劃參與波蘭公共採購時的實務應對方向。</p>
+          </div>
+          <div class="key-points" aria-label="結論先行">
+            <article class="fact-card">
+              <span class="tag">結論一</span>
+              <strong>沒有強制外國企業必須在波蘭製造</strong>
+              <span>目前查得的官方定義聚焦於「本土參與度」評估，而非銷售資格限制。</span>
+            </article>
+            <article class="fact-card">
+              <span class="tag">結論二</span>
+              <strong>「51% 零件須在波蘭生產」是誤讀</strong>
+              <span>政策中出現的「超過 50%」門檻，是用於衡量企業與波蘭經濟的連結，不是產品零件產地要求。</span>
+            </article>
+            <article class="fact-card">
+              <span class="tag">結論三</span>
+              <strong>外資仍可投標，但本土性較高者有加分優勢</strong>
+              <span>若公司想提高中標率，重點是提升在波蘭的法人、雇用、納稅與營運布局，而非強行改變全球零件供應來源。</span>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section reveal" id="section-1" data-section="01">
+        <div class="section-head">
+          <div class="section-index">法規確認</div>
+          <div>
+            <h2>1. 無強制規定外國企業在波蘭製造</h2>
+            <p>第一個需要釐清的是，MAP 公布的 Local Content 方向，是否已經把「在波蘭設廠生產」列為外國企業的法定前提。</p>
+          </div>
+        </div>
+        <div class="section-grid">
+          <div class="quote-block">
+            <p>根據波蘭國家資產部（MAP）於 2026 年 2 月 19 日發布的新聞稿，政府提出「Local Content」概念，目的在增進波蘭企業在國營公司重大投資案中的參與度。<a class="source-link" href="https://www.gov.pl/web/aktywa-panstwowe/map-przyjmuje-definicje-local-content-i-wyznacza-kierunek-dzialan-na-rzecz-dlugofalowego-rozwoju-polskiej-gospodarki#:~:text=Definicja%20local%20content%20przyj%C4%99ta%20przez,Zesp%C3%B3%C5%82" target="_blank" rel="noreferrer">參考來源</a></p>
+          </div>
+          <div class="card-grid">
+            <article class="story-card">
+              <div class="label">官方定義</div>
+              <h3>採雙層定義，而非設門檻</h3>
+              <p>該文指出當局採用「總體面」和「操作面」兩個層次的定義來衡量本土成分，強調這些定義必須包容各行業，不能排除任何企業。<a class="source-link" href="https://www.gov.pl/web/aktywa-panstwowe/map-przyjmuje-definicje-local-content-i-wyznacza-kierunek-dzialan-na-rzecz-dlugofalowego-rozwoju-polskiej-gospodarki#:~:text=Definicja%20local%20content%20przyj%C4%99ta%20przez,Zesp%C3%B3%C5%82" target="_blank" rel="noreferrer">參考來源</a></p>
+            </article>
+            <article class="story-card">
+              <div class="label">政策意涵</div>
+              <h3>政策主軸是鼓勵本土供應鏈</h3>
+              <p>這代表政策核心在於提高波蘭企業在戰略投資中的參與比例，讓採購決策更傾向支持本地經濟、就業與稅基，而非直接把外資排除在市場之外。</p>
+            </article>
+            <article class="story-card">
+              <div class="label">重點結論</div>
+              <h3>沒有出現強制設廠銷售條文</h3>
+              <p>目前未見要求外國企業必須先在波蘭設廠，才得以銷售電動車或電動巴士的法條或明確行政命令，因此不能把 Local Content 直接等同於「不在地生產就不能賣」。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section reveal" id="section-2" data-section="02">
+        <div class="section-head">
+          <div class="section-index">謠言澄清</div>
+          <div>
+            <h2>2. 「51% 零件須在波蘭生產」為傳言</h2>
+            <p>第二個重點是市場上流傳的 51% 零件在地化說法，究竟來自法律規定，還是對 MAP 評分邏輯的誤解。</p>
+          </div>
+        </div>
+        <div class="section-grid">
+          <article class="policy-card">
+            <div class="label">來源追溯</div>
+            <h3>傳言來源較可能是指標中的「過半」門檻被誤讀</h3>
+            <ul>
+              <li>2026 年 4 月 9 日 MAP 發布《Local Content. Z korzyścią dla Polski》文章，進一步說明評估企業「波蘭性」的做法。<a class="source-link" href="https://www.gov.pl/web/aktywa-panstwowe/local-content-z-korzyscia-dla-polski-wspieramy-krajowe-firmy-budujemy-gospodarke#:~:text=,local%20content%20%E2%80%93%20powiedzia%C5%82%20minister" target="_blank" rel="noreferrer">參考來源</a></li>
+              <li>文中列出六項評估企業「波蘭性」的指標，包括母公司所在地、主要業務地、是否在波蘭納稅、員工是否主要為波蘭居民與納稅人、在波蘭註冊且經營逾三年，以及每年營收是否有半數以上來自波蘭。<a class="source-link" href="https://www.gov.pl/web/aktywa-panstwowe/local-content-z-korzyscia-dla-polski-wspieramy-krajowe-firmy-budujemy-gospodarke#:~:text=%2A%20Waga%2025%25%20,dzia%C5%82alno%C5%9Bci%20wykonywanego%20na%20terytorium%20Polski" target="_blank" rel="noreferrer">參考來源</a></li>
+              <li>最高權重的兩項為「母公司總部所在地」與「主要業務所在地」，各占 25%，這些標準是採購評分參考，不是零件產地規定。<a class="source-link" href="https://www.gov.pl/web/aktywa-panstwowe/local-content-z-korzyscia-dla-polski-wspieramy-krajowe-firmy-budujemy-gospodarke#:~:text=%2A%20Waga%2025%25%20,rocznych%20obrot%C3%B3w%20generowanych%20w%20Polsce" target="_blank" rel="noreferrer">參考來源</a></li>
+            </ul>
+          </article>
+          <div class="card-grid">
+            <article class="story-card">
+              <div class="label">過半門檻</div>
+              <h3>「過半」指的是企業連結，不是產品 BOM</h3>
+              <p>多項指標提到「超過 50%」的比例，例如員工或營收有過半與波蘭相關。這些數字是評估企業與波蘭經濟的連結，並非檢驗產品零件來源。<a class="source-link" href="https://www.gov.pl/web/aktywa-panstwowe/local-content-z-korzyscia-dla-polski-wspieramy-krajowe-firmy-budujemy-gospodarke#:~:text=%2A%20Waga%2010%25%20,rocznych%20obrot%C3%B3w%20generowanych%20w%20Polsce" target="_blank" rel="noreferrer">參考來源</a></p>
+            </article>
+            <article class="story-card">
+              <div class="label">市場解讀</div>
+              <h3>「51% 零件」應屬市場傳言</h3>
+              <p>因此，市場上流傳的「零件必須有 51% 產於波蘭」較可能是對指標設計的誤解，而不是 MAP 公布的正式要求。</p>
+            </article>
+            <article class="story-card">
+              <div class="label">實務影響</div>
+              <h3>未見電動車或巴士零件比例的強制規定</h3>
+              <p>截至目前查得的 MAP 官方訊息與相關報導，均未顯示任何針對電動車或電動巴士零件比例的硬性要求。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section reveal" id="section-3" data-section="03">
+        <div class="section-head">
+          <div class="section-index">應對建議</div>
+          <div>
+            <h2>3. 影響與應對建議</h2>
+            <p>如果未來公司要參與波蘭政府或國營公司的電動巴士採購，真正要思考的不是零件原產地敘事，而是如何提升公司在當地評分架構中的「波蘭性」。</p>
+          </div>
+        </div>
+        <div class="section-grid">
+          <article class="policy-card">
+            <div class="label">政策效應</div>
+            <h3>政策不是封鎖外資，而是透過採購導向在地化</h3>
+            <p>「Local Content」政策重點在於鼓勵國營企業優先與波蘭企業合作，透過採購策略促進本土供應鏈及就業，但 MAP 也強調政策需符合歐盟公共採購規範。<a class="source-link" href="https://www.gov.pl/web/aktywa-panstwowe/local-content-z-korzyscia-dla-polski-wspieramy-krajowe-firmy-budujemy-gospodarke#:~:text=,local%20content%20%E2%80%93%20powiedzia%C5%82%20minister" target="_blank" rel="noreferrer">參考來源</a></p>
+          </article>
+          <div class="card-grid">
+            <article class="summary-card">
+              <div class="label">招標邏輯</div>
+              <h3>外國企業仍能參與招標</h3>
+              <p>外國企業並未被排除在招標之外，但若本土性得分較低，在評選上可能處於不利地位。換句話說，競爭力的差距更可能來自評分，而不是參與資格。</p>
+            </article>
+            <article class="summary-card">
+              <div class="label">營運調整</div>
+              <h3>可透過在地布局提高中標機會</h3>
+              <ul>
+                <li>在波蘭設立子公司或組裝工廠</li>
+                <li>聘用波蘭居民並建立當地管理團隊</li>
+                <li>在波蘭納稅，建立明確在地營運軌跡</li>
+              </ul>
+            </article>
+            <article class="summary-card">
+              <div class="label">戰略解讀</div>
+              <h3>零件可全球供應，但企業要呈現在地承諾</h3>
+              <p>即使產品零件主要由其他地區供應，只要企業能明確展現深耕波蘭市場的經營決心，仍有機會在 MAP 的評分邏輯中取得更好的位置。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section reveal" id="section-4" data-section="04">
+        <div class="section-head">
+          <div class="section-index">政策定義</div>
+          <div>
+            <h2>4. 官方政策原則與定義整理</h2>
+            <p>為便於董事長與團隊快速判讀，以下將 MAP 公布的政策目的、定義層次與評分標準整理成一頁化摘要。</p>
+          </div>
+        </div>
+        <div class="section-grid">
+          <div class="card-grid">
+            <article class="policy-card">
+              <div class="label">政策目標</div>
+              <h3>政策目標</h3>
+              <p>加強波蘭在軍工、能源、基建與數位化等戰略投資的本土供應鏈，提升經濟自主與國家安全。<a class="source-link" href="https://www.gov.pl/web/aktywa-panstwowe/local-content-z-korzyscia-dla-polski-wspieramy-krajowe-firmy-budujemy-gospodarke#:~:text=,local%20content%20%E2%80%93%20powiedzia%C5%82%20minister" target="_blank" rel="noreferrer">參考來源</a></p>
+            </article>
+            <article class="policy-card">
+              <div class="label">總體面定義</div>
+              <h3>總體面</h3>
+              <p>對整體投資項目給出寬泛包容的定義，不排斥任何國籍的企業。<a class="source-link" href="https://www.gov.pl/web/aktywa-panstwowe/map-przyjmuje-definicje-local-content-i-wyznacza-kierunek-dzialan-na-rzecz-dlugofalowego-rozwoju-polskiej-gospodarki#:~:text=Definicja%20local%20content%20przyj%C4%99ta%20przez,Zesp%C3%B3%C5%82" target="_blank" rel="noreferrer">參考來源</a></p>
+            </article>
+            <article class="policy-card">
+              <div class="label">操作面定義</div>
+              <h3>操作面</h3>
+              <p>作為政府內部制定政策與報告的參照，用於後續指標與統計。<a class="source-link" href="https://www.gov.pl/web/aktywa-panstwowe/map-przyjmuje-definicje-local-content-i-wyznacza-kierunek-dzialan-na-rzecz-dlugofalowego-rozwoju-polskiej-gospodarki#:~:text=Definicja%20local%20content%20przyj%C4%99ta%20przez,Zesp%C3%B3%C5%82" target="_blank" rel="noreferrer">參考來源</a></p>
+            </article>
+          </div>
+
+          <div class="policy-card">
+            <div class="label">評分機制</div>
+            <h3>企業「波蘭性」評分</h3>
+            <p>以下六項為國營企業採購時衡量供應商本土參與度的加分參考，並非法律上的參標門檻。<a class="source-link" href="https://www.gov.pl/web/aktywa-panstwowe/local-content-z-korzyscia-dla-polski-wspieramy-krajowe-firmy-budujemy-gospodarke#:~:text=%2A%20Waga%2025%25%20,rocznych%20obrot%C3%B3w%20generowanych%20w%20Polsce" target="_blank" rel="noreferrer">參考來源</a></p>
+          </div>
+
+          <div class="table-wrap" aria-label="企業波蘭性評分表">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">指標</th>
+                  <th scope="col">說明</th>
+                  <th scope="col">權重</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>母公司總部在波蘭</td>
+                  <td>若最高層母公司設於波蘭可得滿分</td>
+                  <td class="weight">25%</td>
+                </tr>
+                <tr>
+                  <td>主要業務在波蘭</td>
+                  <td>公司主要營運活動在波蘭境內</td>
+                  <td class="weight">25%</td>
+                </tr>
+                <tr>
+                  <td>在波蘭納稅</td>
+                  <td>具波蘭稅籍</td>
+                  <td class="weight">15%</td>
+                </tr>
+                <tr>
+                  <td>員工構成</td>
+                  <td>超過半數員工為波蘭居民或公民，且在波蘭繳稅及保險</td>
+                  <td class="weight">15%</td>
+                </tr>
+                <tr>
+                  <td>註冊與經營年限</td>
+                  <td>在波蘭註冊並連續經營三年以上</td>
+                  <td class="weight">10%</td>
+                </tr>
+                <tr>
+                  <td>營收來源</td>
+                  <td>每年營收過半來自波蘭市場</td>
+                  <td class="weight">10%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <article class="policy-card">
+            <div class="label">條文解讀</div>
+            <h3>這套評分是採購加分，不是法律義務</h3>
+            <p>公司無需達到某一特定分數才能參與招標，但得分越高，在國營企業評選中就越有優勢。因此，企業最重要的不是追求不存在的零件比例門檻，而是判斷哪些在地投資能有效提高得分與成交率。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="footer-panel reveal" id="summary">
+        <div class="footer-grid">
+          <div>
+            <h2>總結</h2>
+            <p>綜合 MAP 官方公告與相關報導，波蘭並沒有強制規定電動車或電動巴士必須在波蘭生產，也沒有要求零件必須有 51% 產自波蘭。傳言較可能源於 MAP 在衡量企業「本土性」時使用的過半門檻，但這是評估企業經濟活動與波蘭的連結，不是檢驗產品零件來源。未來若公司考慮參與波蘭公共採購，建議逐步增加在波蘭的經營、雇用與納稅布局，以提升評分，並持續追蹤 MAP 後續政策更新。</p>
+          </div>
+          <aside class="footer-note">
+            <strong>董事長可直接掌握的決策重點</strong>
+            <p>如果未來要搶波蘭國營電動巴士標案，真正的決勝點不是去證明零件有 51% 來自波蘭，而是公司是否願意用法人、就業、納稅與在地營運，把自己從單純出口商提升為對波蘭經濟有實質連結的供應夥伴。</p>
+          </aside>
+        </div>
+        <p class="report-credit"><span class="credit-label">報告撰寫</span><span class="credit-chip">顧問方崇懿</span><span class="credit-chip">吳勝富</span></p>
+      </section>
+    </main>
+  </div>
+
+</body>
+</html>

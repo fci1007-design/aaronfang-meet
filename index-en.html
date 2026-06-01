@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Poland Local Content Policy & EV / Bus Regulations Research</title>
+  <meta name="description" content="Research review of Poland's Local Content policy, EV and electric bus manufacturing requirements, and the rumored 51% parts rule.">
+  <meta name="theme-color" content="#7c4e54">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Noto+Serif:wght@500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #5a3a40;
+      --paper: rgba(252, 245, 242, 0.94);
+      --paper-strong: rgba(255, 249, 246, 0.98);
+      --ink: #23191a;
+      --muted: #69595b;
+      --accent: #8c424e;
+      --accent-deep: #4d2128;
+      --accent-soft: rgba(140, 66, 78, 0.15);
+      --line: rgba(77, 45, 49, 0.15);
+      --shadow: 0 28px 72px rgba(46, 26, 29, 0.25);
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --max-width: 1180px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "IBM Plex Sans", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(166, 99, 110, 0.25), transparent 38%),
+        radial-gradient(circle at 84% 14%, rgba(135, 78, 86, 0.2), transparent 26%),
+        linear-gradient(180deg, #744e54 0%, #633f46 42%, var(--bg) 100%);
+      line-height: 1.8;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(24, 21, 18, 0.028) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(24, 21, 18, 0.028) 1px, transparent 1px);
+      background-size: 36px 36px;
+      pointer-events: none;
+      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.45), transparent 90%);
+      z-index: -1;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .page-shell {
+      width: min(calc(100% - 32px), var(--max-width));
+      margin: 22px auto 64px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 42px 42px 36px;
+      border-radius: 36px;
+      background:
+        radial-gradient(circle at 85% 18%, rgba(255, 244, 240, 0.16), transparent 28%),
+        radial-gradient(circle at 18% 100%, rgba(210, 169, 160, 0.14), transparent 36%),
+        linear-gradient(138deg, rgba(46, 28, 31, 0.97), rgba(87, 53, 58, 0.95) 54%, rgba(124, 78, 84, 0.92));
+      color: #f8f3ef;
+      box-shadow: var(--shadow);
+      isolation: isolate;
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(4px);
+      z-index: -1;
+    }
+
+    .hero::before {
+      width: 320px;
+      height: 320px;
+      right: -90px;
+      top: -70px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.16), transparent 68%);
+    }
+
+    .hero::after {
+      width: 420px;
+      height: 420px;
+      left: -160px;
+      bottom: -240px;
+      background: radial-gradient(circle, rgba(255, 204, 179, 0.12), transparent 70%);
+    }
+
+    .hero-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 64px;
+      flex-wrap: wrap;
+    }
+
+    .hero-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      color: rgba(248, 243, 238, 0.74);
+    }
+
+    .hero-label::before {
+      content: "";
+      width: 34px;
+      height: 1px;
+      background: currentColor;
+    }
+
+    .hero-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .hero-nav a {
+      text-decoration: none;
+      padding: 8px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 999px;
+      font-size: 0.9rem;
+      color: rgba(248, 243, 238, 0.82);
+      backdrop-filter: blur(8px);
+      transition: background-color 180ms ease, color 180ms ease, transform 180ms ease;
+    }
+
+    .hero-nav a:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+      gap: 36px;
+      align-items: end;
+    }
+
+    .hero-copy h1 {
+      margin: 0;
+      font-family: "Noto Serif", serif;
+      font-weight: 900;
+      font-size: clamp(2.4rem, 5vw, 4.7rem);
+      line-height: 1.1;
+      letter-spacing: 0.02em;
+      max-width: 14ch;
+    }
+
+    .hero-copy p {
+      margin: 20px 0 0;
+      max-width: 62ch;
+      color: rgba(248, 243, 238, 0.86);
+      font-size: 1.03rem;
+    }
+
+    .hero-meta {
+      display: grid;
+      gap: 16px;
+      align-self: stretch;
+      background: linear-gradient(180deg, rgba(255, 248, 244, 0.94), rgba(246, 231, 226, 0.9));
+      border: 1px solid rgba(124, 78, 84, 0.24);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 18px 44px rgba(38, 23, 25, 0.18);
+      backdrop-filter: blur(12px);
+    }
+
+    .hero-meta .eyebrow {
+      font-size: 1.25rem;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: none;
+      color: #2b1418;
+    }
+
+    .hero-meta strong {
+      display: block;
+      font-family: "Noto Serif", serif;
+      font-size: clamp(1.68rem, 2.6vw, 1.96rem);
+      line-height: 1.35;
+      color: #2b1b1d;
+    }
+
+    .hero-meta small {
+      color: #5d4d4f;
+      font-size: 0.96rem;
+    }
+
+    .hero-arrow {
+      margin-top: 30px;
+      font-size: 1.5rem;
+      opacity: 0.85;
+      animation: drift 2.2s ease-in-out infinite;
+      width: fit-content;
+    }
+
+    @keyframes drift {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(8px);
+      }
+    }
+
+    main {
+      display: grid;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .intro-panel,
+    .section,
+    .footer-panel {
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.08)),
+        linear-gradient(180deg, rgba(250, 244, 240, 0.96), rgba(239, 230, 226, 0.96));
+      border: 1px solid rgba(124, 78, 84, 0.14);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius-xl);
+      backdrop-filter: blur(10px);
+    }
+
+    .intro-panel::after,
+    .section::after,
+    .footer-panel::after {
+      content: "";
+      position: absolute;
+      left: 22px;
+      right: 22px;
+      bottom: 0;
+      height: 12px;
+      background: linear-gradient(90deg, transparent, rgba(124, 78, 84, 0.12), transparent);
+      pointer-events: none;
+    }
+
+    .intro-panel {
+      padding: 30px;
+    }
+
+    .intro-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+      gap: 22px;
+    }
+
+    .intro-copy {
+      font-size: 1.02rem;
+      color: var(--ink);
+    }
+
+    .intro-copy p {
+      margin: 0;
+    }
+
+    .key-points {
+      display: grid;
+      gap: 14px;
+    }
+
+    .fact-card {
+      padding: 18px 18px 16px;
+      border-radius: var(--radius-md);
+      background: var(--paper-strong);
+      border: 1px solid var(--line);
+    }
+
+    .fact-card .tag {
+      display: inline-block;
+      margin-bottom: 12px;
+      color: var(--accent);
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .fact-card strong {
+      display: block;
+      font-size: 1.1rem;
+      line-height: 1.5;
+      margin-bottom: 4px;
+    }
+
+    .fact-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    .section {
+      padding: 34px 30px;
+    }
+
+    .section::before {
+      content: attr(data-section);
+      position: absolute;
+      top: 18px;
+      right: 26px;
+      font-size: clamp(3rem, 8vw, 6.2rem);
+      font-weight: 700;
+      letter-spacing: -0.08em;
+      color: rgba(124, 78, 84, 0.08);
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: 124px minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+      margin-bottom: 28px;
+    }
+
+    .section-index {
+      color: var(--accent);
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-family: "Noto Serif", serif;
+      font-size: clamp(1.6rem, 3vw, 2.35rem);
+      line-height: 1.25;
+    }
+
+    .section-head p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      max-width: 64ch;
+    }
+
+    .section-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .story-card,
+    .policy-card,
+    .summary-card {
+      height: 100%;
+      padding: 20px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(255, 250, 246, 0.96)),
+        var(--paper-strong);
+    }
+
+    .story-card .label,
+    .policy-card .label,
+    .summary-card .label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .story-card .label::before,
+    .policy-card .label::before,
+    .summary-card .label::before {
+      content: "";
+      width: 18px;
+      height: 1px;
+      background: currentColor;
+    }
+
+    .story-card h3,
+    .policy-card h3,
+    .summary-card h3 {
+      margin: 0 0 10px;
+      font-size: 1.14rem;
+      line-height: 1.45;
+    }
+
+    .story-card p,
+    .policy-card p,
+    .summary-card p,
+    .policy-card ul,
+    .summary-card ul {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.96rem;
+      line-height: 1.8;
+    }
+
+    .policy-card ul,
+    .summary-card ul {
+      padding-left: 1.15rem;
+    }
+
+    .policy-card li + li,
+    .summary-card li + li {
+      margin-top: 10px;
+    }
+
+    .quote-block {
+      padding: 24px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, rgba(124, 78, 84, 0.1), rgba(255, 255, 255, 0.88));
+      border: 1px solid rgba(124, 78, 84, 0.14);
+    }
+
+    .quote-block p {
+      margin: 0;
+      font-size: clamp(1.05rem, 2vw, 1.28rem);
+      line-height: 1.85;
+    }
+
+    .source-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: 8px;
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: rgba(124, 78, 84, 0.1);
+      color: var(--accent-deep);
+      text-decoration: none;
+      font-size: 0.86rem;
+      font-weight: 600;
+      vertical-align: middle;
+      transition: background-color 180ms ease, transform 180ms ease;
+      white-space: nowrap;
+    }
+
+    .source-link:hover {
+      background: rgba(124, 78, 84, 0.16);
+      transform: translateY(-1px);
+    }
+
+    .source-link::before {
+      content: "↗";
+      font-size: 0.8rem;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead {
+      background: rgba(77, 45, 49, 0.95);
+      color: #f9f5ef;
+    }
+
+    th,
+    td {
+      padding: 16px 18px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    tbody tr:nth-child(even) {
+      background: rgba(124, 78, 84, 0.05);
+    }
+
+    tbody tr:hover {
+      background: rgba(124, 78, 84, 0.09);
+    }
+
+    .weight {
+      font-weight: 700;
+      color: var(--accent-deep);
+      white-space: nowrap;
+    }
+
+    .footer-panel {
+      padding: 32px 30px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .footer-panel h2 {
+      margin: 0 0 12px;
+      font-family: "Noto Serif", serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      line-height: 1.2;
+    }
+
+    .footer-panel p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .footer-note {
+      padding: 20px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(249, 242, 236, 0.96));
+    }
+
+    .footer-note strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1rem;
+      color: var(--ink);
+    }
+
+    .report-credit {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 22px 0 0;
+    }
+
+    .report-credit span {
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 16px;
+      border-radius: 4px;
+      font-size: 0.95rem;
+      letter-spacing: 0.04em;
+    }
+
+    .credit-label {
+      background: var(--accent-deep);
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .credit-chip {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(49, 28, 31, 0.16);
+    }
+
+    @keyframes fade-up {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .reveal {
+      animation: fade-up 640ms ease both;
+    }
+
+    @media (max-width: 980px) {
+      .hero,
+      .intro-panel,
+      .section,
+      .footer-panel {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+
+      .hero-grid,
+      .intro-grid,
+      .footer-grid,
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-topbar {
+        margin-bottom: 34px;
+      }
+
+      .section-head {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page-shell {
+        width: min(calc(100% - 20px), var(--max-width));
+        margin: 10px auto 34px;
+      }
+
+      .hero {
+        padding-top: 24px;
+        border-radius: 28px;
+      }
+
+      .hero-nav {
+        gap: 8px;
+      }
+
+      .hero-nav a {
+        font-size: 0.84rem;
+        padding: 7px 12px;
+      }
+
+      .intro-panel,
+      .section,
+      .footer-panel {
+        padding: 22px 18px;
+        border-radius: 24px;
+      }
+
+      .section::before {
+        font-size: 4.2rem;
+        right: 16px;
+      }
+
+      .quote-block {
+        padding: 18px;
+      }
+
+      th,
+      td {
+        padding: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero reveal">
+      <div class="hero-topbar">
+        <div class="hero-label">Policy Research Brief</div>
+        <nav class="hero-nav" aria-label="Section navigation">
+          <a href="#overview">Overview</a>
+          <a href="#section-1">Key 1</a>
+          <a href="#section-2">Key 2</a>
+          <a href="#section-3">Recommendations</a>
+          <a href="#section-4">Definitions</a>
+          <a href="#summary">Summary</a>
+        </nav>
+      </div>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <h1>Research Report on Poland's Local Content Policy and EV / Bus Regulations</h1>
+          <p>An investigation into whether the Polish government requires electric vehicles or buses to be manufactured in Poland, whether Chinese companies must establish local production facilities, and whether the rumored "51% parts must originate from Poland" claim is valid.</p>
+          <div class="hero-arrow" aria-hidden="true">↓</div>
+        </div>
+        <aside class="hero-meta" aria-label="Key conclusions">
+          <div class="eyebrow">Executive Summary</div>
+          <strong>The Polish government's policy is not about excluding foreign investment, but rather incorporating "local participation" as a scoring advantage in state-owned procurement.</strong>
+          <small>Poland currently has no hard legal threshold requiring electric vehicles or electric buses to be manufactured in Poland, nor any requirement that 51% of parts must originate from Poland.</small>
+        </aside>
+      </div>
+    </header>
+
+    <main>
+      <section class="intro-panel reveal" id="overview">
+        <div class="intro-grid">
+          <div class="intro-copy">
+            <p>In response to the question, "Does the Polish government require electric vehicles or buses to be manufactured in Poland, particularly requiring Chinese companies to establish factories in Poland, or that 51% of product parts must originate from Poland?" — the following is a comprehensive research summary based on official announcements from Poland's Ministry of State Assets (MAP) and related reports.</p>
+          </div>
+          <div class="key-points" aria-label="Conclusions at a glance">
+            <article class="fact-card">
+              <span class="tag">Conclusion 1</span>
+              <strong>No mandatory requirement for foreign companies to manufacture in Poland</strong>
+              <span>The official definitions found to date focus on "local participation" assessment, not sales qualification restrictions.</span>
+            </article>
+            <article class="fact-card">
+              <span class="tag">Conclusion 2</span>
+              <strong>"51% parts must be produced in Poland" is a misinterpretation</strong>
+              <span>The "over 50%" threshold appearing in the policy measures a company's connection to the Polish economy, not the origin of product parts.</span>
+            </article>
+            <article class="fact-card">
+              <span class="tag">Conclusion 3</span>
+              <strong>Foreign investors can still bid, but higher local engagement offers a scoring advantage</strong>
+              <span>If a company wishes to improve its chances of winning bids, the focus should be on strengthening its legal presence, employment, taxation, and operational footprint in Poland — rather than forcibly changing global parts sourcing.</span>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section reveal" id="section-1" data-section="01">
+        <div class="section-head">
+          <div class="section-index">Regulation Check</div>
+          <div>
+            <h2>1. No Mandatory Requirement for Foreign Companies to Manufacture in Poland</h2>
+            <p>The first point to clarify is whether the Local Content direction announced by MAP has already established "setting up production in Poland" as a legal prerequisite for foreign companies.</p>
+          </div>
+        </div>
+        <div class="section-grid">
+          <div class="quote-block">
+            <p>According to a press release published by Poland's Ministry of State Assets (MAP) on February 19, 2026, the government introduced the "Local Content" concept aimed at increasing the participation of Polish enterprises in major investment projects by state-owned companies.<a class="source-link" href="https://www.gov.pl/web/aktywa-panstwowe/map-przyjmuje-definicje-local-content-i-wyznacza-kierunek-dzialan-na-rzecz-dlugofalowego-rozwoju-polskiej-gospodarki#:~:text=Definicja%20local%20content%20przyj%C4%99ta%20przez,Zesp%C3%B3%C5%82" target="_blank" rel="noreferrer">Source</a></p>
+          </div>
+          <div class="card-grid">
+            <article class="story-card">
+              <div class="label">Official Definition</div>
+              <h3>Adopts a two-tier definition, not a threshold</h3>
+              <p>The document indicates that the authorities use "macro-level" and "operational-level" definitions to measure local content, emphasizing that these definitions must be inclusive across industries and must not exclude any enterprise.<a class="source-link" href="https://www.gov.pl/web/aktywa-panstwowe/map-przyjmuje-definicje-local-content-i-wyznacza-kierunek-dzialan-na-rzecz-dlugofalowego-rozwoju-polskiej-gospodarki#:~:text=Definicja%20local%20content%20przyj%C4%99ta%20przez,Zesp%C3%B3%C5%82" target="_blank" rel="noreferrer">Source</a></p>
+            </article>
+            <article class="story-card">
+              <div class="label">Policy Implication</div>
+              <h3>Core policy objective is to encourage local supply chains</h3>
+              <p>This means the policy centers on increasing the share of Polish enterprises in strategic investments, steering procurement decisions toward supporting the local economy, employment, and tax base — rather than directly excluding foreign investment from the market.</p>
+            </article>
+            <article class="story-card">
+              <div class="label">Key Conclusion</div>
+              <h3>No clauses mandating local production for market access have been found</h3>
+              <p>To date, no law or explicit administrative order has been identified requiring foreign companies to first establish factories in Poland before being allowed to sell EVs or electric buses. Therefore, Local Content should not be directly equated with "no local production, no sales."</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section reveal" id="section-2" data-section="02">
+        <div class="section-head">
+          <div class="section-index">Rumor Analysis</div>
+          <div>
+            <h2>2. "51% Parts Must Be Produced in Poland" Is a Misinterpretation</h2>
+            <p>The second focus is whether the market rumor of a 51% parts localization requirement stems from legislation or from a misunderstanding of MAP's scoring logic.</p>
+          </div>
+        </div>
+        <div class="section-grid">
+          <article class="policy-card">
+            <div class="label">Source Tracing</div>
+            <h3>The rumor likely stems from the "over half" threshold in the scoring indicators being misinterpreted</h3>
+            <ul>
+              <li>On April 9, 2026, MAP published an article titled "Local Content. For the Benefit of Poland," further explaining the methodology for assessing a company's "Polishness."<a class="source-link" href="https://www.gov.pl/web/aktywa-panstwowe/local-content-z-korzyscia-dla-polski-wspieramy-krajowe-firmy-budujemy-gospodarke#:~:text=,local%20content%20%E2%80%93%20powiedzia%C5%82%20minister" target="_blank" rel="noreferrer">Source</a></li>
+              <li>The article lists six indicators for evaluating a company's "Polishness," including the location of the parent company headquarters, primary place of business, whether taxes are paid in Poland, whether employees are predominantly Polish residents and taxpayers, registration and continuous operation in Poland for more than three years, and whether more than half of annual revenue is generated in Poland.<a class="source-link" href="https://www.gov.pl/web/aktywa-panstwowe/local-content-z-korzyscia-dla-polski-wspieramy-krajowe-firmy-budujemy-gospodarke#:~:text=%2A%20Waga%2025%25%20,dzia%C5%82alno%C5%9Bci%20wykonywanego%20na%20terytorium%20Polski" target="_blank" rel="noreferrer">Source</a></li>
+              <li>The two highest-weighted criteria — "parent company headquarters location" and "primary place of business" — each account for 25%. These criteria serve as procurement scoring references, not parts origin requirements.<a class="source-link" href="https://www.gov.pl/web/aktywa-panstwowe/local-content-z-korzyscia-dla-polski-wspieramy-krajowe-firmy-budujemy-gospodarke#:~:text=%2A%20Waga%2025%25%20,rocznych%20obrot%C3%B3w%20generowanych%20w%20Polsce" target="_blank" rel="noreferrer">Source</a></li>
+            </ul>
+          </article>
+          <div class="card-grid">
+            <article class="story-card">
+              <div class="label">Over-50% Threshold</div>
+              <h3>"Over half" refers to corporate ties, not product BOM</h3>
+              <p>Several indicators mention an "over 50%" ratio — for example, over half of employees or revenue being Poland-related. These figures assess a company's connection to the Polish economy, not the origin of product parts.<a class="source-link" href="https://www.gov.pl/web/aktywa-panstwowe/local-content-z-korzyscia-dla-polski-wspieramy-krajowe-firmy-budujemy-gospodarke#:~:text=%2A%20Waga%2010%25%20,rocznych%20obrot%C3%B3w%20generowanych%20w%20Polsce" target="_blank" rel="noreferrer">Source</a></p>
+            </article>
+            <article class="story-card">
+              <div class="label">Market Interpretation</div>
+              <h3>"51% parts" is most likely a market rumor</h3>
+              <p>Therefore, the circulating claim that "51% of parts must be produced in Poland" is more likely a misunderstanding of the indicator design rather than an official requirement published by MAP.</p>
+            </article>
+            <article class="story-card">
+              <div class="label">Practical Impact</div>
+              <h3>No mandatory EV or bus parts ratio requirement has been identified</h3>
+              <p>Based on all official MAP announcements and related reports reviewed to date, there is no hard requirement for any specific parts ratio for electric vehicles or electric buses.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section reveal" id="section-3" data-section="03">
+        <div class="section-head">
+          <div class="section-index">Recommendations</div>
+          <div>
+            <h2>3. Impact and Strategic Recommendations</h2>
+            <p>If the goal is to participate in Polish government or state-owned company electric bus procurement in the future, the real focus should not be on the parts origin narrative, but on how to enhance "Polishness" within the local scoring framework.</p>
+          </div>
+        </div>
+        <div class="section-grid">
+          <article class="policy-card">
+            <div class="label">Policy Effect</div>
+            <h3>The policy does not block foreign investment; it steers procurement toward localization</h3>
+            <p>The "Local Content" policy focuses on encouraging state-owned enterprises to prioritize cooperation with Polish companies, using procurement strategies to foster local supply chains and employment. However, MAP also emphasizes that the policy must comply with EU public procurement regulations.<a class="source-link" href="https://www.gov.pl/web/aktywa-panstwowe/local-content-z-korzyscia-dla-polski-wspieramy-krajowe-firmy-budujemy-gospodarke#:~:text=,local%20content%20%E2%80%93%20powiedzia%C5%82%20minister" target="_blank" rel="noreferrer">Source</a></p>
+          </article>
+          <div class="card-grid">
+            <article class="summary-card">
+              <div class="label">Bidding Logic</div>
+              <h3>Foreign companies can still participate in tenders</h3>
+              <p>Foreign companies are not excluded from bidding; however, if their local engagement scores are low, they may be at a disadvantage during evaluation. In other words, the competitiveness gap is more likely to come from scoring rather than eligibility.</p>
+            </article>
+            <article class="summary-card">
+              <div class="label">Operational Adjustments</div>
+              <h3>Improve chances of winning through local presence</h3>
+              <ul>
+                <li>Establish a subsidiary or assembly plant in Poland</li>
+                <li>Hire Polish residents and build a local management team</li>
+                <li>Pay taxes in Poland, creating a clear local operational track record</li>
+              </ul>
+            </article>
+            <article class="summary-card">
+              <div class="label">Strategic Insight</div>
+              <h3>Parts can be globally sourced, but the company must demonstrate local commitment</h3>
+              <p>Even if product parts are primarily supplied from other regions, as long as the company can clearly demonstrate a commitment to deepening its presence in the Polish market, it still has an opportunity to achieve a better position under MAP's scoring logic.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section reveal" id="section-4" data-section="04">
+        <div class="section-head">
+          <div class="section-index">Policy Definitions</div>
+          <div>
+            <h2>4. Official Policy Principles and Definitions Summary</h2>
+            <p>The following provides a one-page summary of the policy objectives, definition levels, and scoring criteria published by MAP.</p>
+          </div>
+        </div>
+        <div class="section-grid">
+          <div class="card-grid">
+            <article class="policy-card">
+              <div class="label">Policy Objective</div>
+              <h3>Policy Objective</h3>
+              <p>Strengthen Poland's local supply chains in strategic investments such as defense, energy, infrastructure, and digitalization, enhancing economic autonomy and national security.<a class="source-link" href="https://www.gov.pl/web/aktywa-panstwowe/local-content-z-korzyscia-dla-polski-wspieramy-krajowe-firmy-budujemy-gospodarke#:~:text=,local%20content%20%E2%80%93%20powiedzia%C5%82%20minister" target="_blank" rel="noreferrer">Source</a></p>
+            </article>
+            <article class="policy-card">
+              <div class="label">Macro-Level Definition</div>
+              <h3>Macro-Level</h3>
+              <p>Provides a broad, inclusive definition for overall investment projects, without discriminating against enterprises of any nationality.<a class="source-link" href="https://www.gov.pl/web/aktywa-panstwowe/map-przyjmuje-definicje-local-content-i-wyznacza-kierunek-dzialan-na-rzecz-dlugofalowego-rozwoju-polskiej-gospodarki#:~:text=Definicja%20local%20content%20przyj%C4%99ta%20przez,Zesp%C3%B3%C5%82" target="_blank" rel="noreferrer">Source</a></p>
+            </article>
+            <article class="policy-card">
+              <div class="label">Operational Definition</div>
+              <h3>Operational-Level</h3>
+              <p>Serves as a reference for internal government policy-making and reporting, used for subsequent indicators and statistics.<a class="source-link" href="https://www.gov.pl/web/aktywa-panstwowe/map-przyjmuje-definicje-local-content-i-wyznacza-kierunek-dzialan-na-rzecz-dlugofalowego-rozwoju-polskiej-gospodarki#:~:text=Definicja%20local%20content%20przyj%C4%99ta%20przez,Zesp%C3%B3%C5%82" target="_blank" rel="noreferrer">Source</a></p>
+            </article>
+          </div>
+
+          <div class="policy-card">
+            <div class="label">Scoring Mechanism</div>
+            <h3>Enterprise "Polishness" Scoring</h3>
+            <p>The following six criteria serve as bonus references for state-owned enterprise procurement when evaluating supplier local participation. They are not legal bidding eligibility thresholds.<a class="source-link" href="https://www.gov.pl/web/aktywa-panstwowe/local-content-z-korzyscia-dla-polski-wspieramy-krajowe-firmy-budujemy-gospodarke#:~:text=%2A%20Waga%2025%25%20,rocznych%20obrot%C3%B3w%20generowanych%20w%20Polsce" target="_blank" rel="noreferrer">Source</a></p>
+          </div>
+
+          <div class="table-wrap" aria-label="Enterprise Polishness scoring table">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Criterion</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Weight</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Parent company HQ in Poland</td>
+                  <td>Full score if the ultimate parent company is based in Poland</td>
+                  <td class="weight">25%</td>
+                </tr>
+                <tr>
+                  <td>Primary business in Poland</td>
+                  <td>The company's main operational activities are conducted within Poland</td>
+                  <td class="weight">25%</td>
+                </tr>
+                <tr>
+                  <td>Taxation in Poland</td>
+                  <td>Possesses a Polish tax identification</td>
+                  <td class="weight">15%</td>
+                </tr>
+                <tr>
+                  <td>Workforce composition</td>
+                  <td>Over half of employees are Polish residents or citizens, paying taxes and social insurance in Poland</td>
+                  <td class="weight">15%</td>
+                </tr>
+                <tr>
+                  <td>Registration & operating history</td>
+                  <td>Registered in Poland and continuously operating for more than three years</td>
+                  <td class="weight">10%</td>
+                </tr>
+                <tr>
+                  <td>Revenue source</td>
+                  <td>Over half of annual revenue is generated from the Polish market</td>
+                  <td class="weight">10%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <article class="policy-card">
+            <div class="label">Interpretation</div>
+            <h3>This scoring system is a procurement bonus, not a legal obligation</h3>
+            <p>Companies do not need to reach any specific score to participate in tenders, but the higher the score, the greater the advantage in state-owned enterprise evaluations. Therefore, the most important thing for enterprises is not to pursue a non-existent parts-ratio threshold, but to assess which local investments can effectively increase their score and win rate.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="footer-panel reveal" id="summary">
+        <div class="footer-grid">
+          <div>
+            <h2>Summary</h2>
+            <p>Based on a comprehensive review of MAP official announcements and related reports, Poland does not mandate that electric vehicles or electric buses must be manufactured in Poland, nor does it require that 51% of parts must originate from Poland. The rumor more likely stems from the "over half" threshold used by MAP to measure a company's "local engagement," but this is an assessment of the enterprise's economic ties to Poland, not an inspection of product parts origin. Going forward, if a company considers participating in Polish public procurement, it is recommended to gradually increase its operational, employment, and tax presence in Poland to improve scoring, and to continuously monitor MAP's subsequent policy updates.</p>
+          </div>
+          <aside class="footer-note">
+            <strong>Decision Point</strong>
+            <p>If the goal is to compete for Polish state-owned electric bus tenders in the future, the real priority is not to prove that 51% of parts come from Poland, but whether the company is willing to use legal presence, employment, taxation, and local operations to transform itself from a mere exporter into a supply partner with genuine connections to the Polish economy.</p>
+          </aside>
+        </div>
+        <p class="report-credit"><span class="credit-label">Report Prepared By</span><span class="credit-chip">Consultants: Fang Chongyi, Wu Shengfu</span></p>
+      </section>
+    </main>
+  </div>
+
+</body>
+</html>
